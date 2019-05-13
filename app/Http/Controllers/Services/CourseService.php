@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Services;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Course;
+use App\Models\Course;
 
 class CourseService extends Controller
 {
