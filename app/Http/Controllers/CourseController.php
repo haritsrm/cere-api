@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Services\CourseService;
+use App\Http\Resources\CourseResource;
 
 class CourseController extends Controller
 {
@@ -37,7 +38,7 @@ class CourseController extends Controller
     {
         $course = $this->course->find($id);
 
-        return $course;
+        return new CourseResource($course);
     }
 
     public function update($id, Request $req)
