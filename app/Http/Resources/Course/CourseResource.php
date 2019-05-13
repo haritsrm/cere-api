@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Course;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
@@ -24,6 +24,11 @@ class CourseResource extends JsonResource
             'curriculum' => $this->curriculum,
             'lesson' => $lesson,
             'teacher' => $this->teacher_id,
+            'href' => [
+                'forums' => 'unlinked',
+                'reviews' => 'unlinked',
+            ],
+            'rating' => 'rated by reviews',
             'created' => $this->created_at->diffForHumans()
         ];
     }
