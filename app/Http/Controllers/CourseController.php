@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Services\CourseService;
-use App\Http\Resources\CourseResource;
+use App\Http\Resources\Course\CourseCollection;
+use App\Http\Resources\Course\CourseResource;
 
 class CourseController extends Controller
 {
@@ -17,7 +18,7 @@ class CourseController extends Controller
     {
         $courses = $this->course->browse();
 
-        return $courses;
+        return CourseCollection::collection($courses);
     }
 
     public function create(Request $req)
