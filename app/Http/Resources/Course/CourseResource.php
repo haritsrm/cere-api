@@ -22,7 +22,10 @@ class CourseResource extends JsonResource
             'cover' => $this->cover,
             'description' => $this->description,
             'curriculum' => $this->curriculum,
-            'lesson' => $lesson,
+            'lesson' => [
+                'category' => $lesson->lesson_category,
+                'name' => $lesson->name,
+            ],
             'teacher' => $this->teacher_id,
             'href' => [
                 'forums' => 'unlinked',

@@ -32,7 +32,7 @@ class CourseController extends Controller
             'teacher_id' => $req->teacher_id
         ]);
 
-        return $result;
+        return new CourseResource($result);
     }
 
     public function find($id)
@@ -53,13 +53,13 @@ class CourseController extends Controller
             'teacher_id' => $req->teacher_id
         ]);
 
-        return $result;
+        return new CourseResource($result);
     }
 
     public function delete($id)
     {
         $result = $this->course->destroy($id);
 
-        return $result;
+        return new CourseResource($result);
     }
 }
