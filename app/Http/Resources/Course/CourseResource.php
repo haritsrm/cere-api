@@ -29,9 +29,9 @@ class CourseResource extends JsonResource
             'teacher' => $this->teacher_id,
             'href' => [
                 'forums' => 'unlinked',
-                'reviews' => 'unlinked',
+                'reviews' => route('reviews', $this->id),
             ],
-            'rating' => 'rated by reviews',
+            'rating' => round($this->reviews()->avg('star')),
             'created' => $this->created_at->diffForHumans()
         ];
     }
