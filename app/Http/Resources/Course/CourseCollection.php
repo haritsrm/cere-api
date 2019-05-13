@@ -22,8 +22,7 @@ class CourseCollection extends JsonResource
             'cover' => $this->cover,
             'lesson_category' => $lesson_category,
             'href' => [
-                'forums' => 'unlinked',
-                'reviews' => 'unlinked',
+                'link' => route('course/detail', $this->id),
             ],
             'rating' => 'rated by reviews',
         ];

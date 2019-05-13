@@ -22,13 +22,16 @@ class CourseResource extends JsonResource
             'cover' => $this->cover,
             'description' => $this->description,
             'curriculum' => $this->curriculum,
-            'lesson' => $lesson,
+            'lesson' => [
+                'category' => $lesson->lesson_category,
+                'name' => $lesson->name,
+            ],
             'teacher' => $this->teacher_id,
             'href' => [
                 'forums' => 'unlinked',
-                'reviews' => 'unlinked',
+                'reviews' => route('reviews', $this->id),
             ],
-            'rating' => 'rated by reviews',
+            'rating' => round($this->reviews()->avg('star')),
             'created' => $this->created_at->diffForHumans()
         ];
     }

@@ -32,7 +32,7 @@ class CourseController extends Controller
             'teacher_id' => $req->teacher_id
         ]);
 
-        return $result;
+        return new CourseResource($result);
     }
 
     public function find($id)
@@ -53,7 +53,7 @@ class CourseController extends Controller
             'teacher_id' => $req->teacher_id
         ]);
 
-        return $result;
+        return new CourseResource($result);
     }
 
     public function delete($id)
