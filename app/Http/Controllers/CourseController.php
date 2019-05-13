@@ -60,6 +60,6 @@ class CourseController extends Controller
     {
         $result = $this->course->destroy($id);
 
-        return new CourseResource($result);
+        return $result;
     }
 }

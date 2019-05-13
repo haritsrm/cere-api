@@ -46,13 +46,13 @@ class ReviewController extends Controller
             'body' => $req->body,
         ]);
 
-        return new ReviewResource($result);
+        return $result;
     }
 
     public function delete($course_id, $review_id)
     {
         $result = $this->review->destroy($review_id);
 
-        return new ReviewResource($result);
+        return $result;
     }
 }
