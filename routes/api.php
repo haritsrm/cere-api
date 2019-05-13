@@ -23,12 +23,12 @@ Route::group(['prefix' => 'courses'], function(){
     Route::get('/{id}', 'CourseController@find')->name('course/detail');
     Route::put('/{id}', 'CourseController@update')->name('course/update');
     Route::delete('/{id}', 'CourseController@delete')->name('course/delete');
-});
 
-Route::group(['prefix' => 'lessons'], function(){
-    Route::get('/', 'LessonController@index')->name('lessons');
-    Route::post('/create', 'LessonController@create')->name('lesson/create');
-    Route::get('/{id}', 'LessonController@find')->name('lesson/detail');
-    Route::put('/{id}', 'LessonController@update')->name('lesson/update');
-    Route::delete('/{id}', 'LessonController@delete')->name('lesson/delete');
+    Route::group(['prefix' => '/{course_id}/reviews'], function(){
+        Route::get('/', 'ReviewController@index')->name('reviews');
+        Route::post('/create', 'ReviewController@create')->name('review/create');
+        Route::get('/{review_id}', 'ReviewController@find')->name('review/detail');
+        Route::put('/{review_id}', 'ReviewController@update')->name('review/update');
+        Route::delete('/{review_id}', 'ReviewController@delete')->name('review/delete');
+    });
 });

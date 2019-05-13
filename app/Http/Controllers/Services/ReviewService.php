@@ -4,28 +4,30 @@ namespace App\Http\Controllers\Services;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Lesson;
+use App\Models\Review;
+use App\Models\Course;
 
-class LessonService extends Controller
+class ReviewService extends Controller
 {
     public function __construct()
     {
-        $this->newLesson = new Lesson;
+        $this->newReview = new Review;
+        $this->newCourse = new Course;
     }
 
-    public function browse()
+    public function browse($course_id)
     {
-        return $this->newLesson->paginate(10);
+        return $this->newCourse->find($course_id)->reviews()->paginate(10);
     }
 
     public function create(Array $req)
     {
-        return $this->newLesson->create($req);
+        return $this->newReview->create($req);
     }
 
     public function find($id)
     {
-        return $this->newLesson->find($id);
+        return $this->newReview->find($id);
     }
 
     public function update($id, Array $req)
