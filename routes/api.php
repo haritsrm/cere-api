@@ -65,4 +65,13 @@ Route::group(['prefix' => 'courses'], function(){
         Route::put('/{review_id}', 'ReviewController@update')->name('review/update');
         Route::delete('/{review_id}', 'ReviewController@delete')->name('review/delete');
     });
+
+    Route::group(['prefix' => '/{course_id}/forums'], function(){
+        Route::get('/', 'ForumController@index')->name('forums');
+        Route::post('/student_create', 'ForumController@createForStudent')->name('forum/student_create');
+        Route::post('/teacher_create', 'ForumController@createForTeacher')->name('forum/teacher_create');
+        Route::get('/{forum_id}', 'ForumController@find')->name('forum/detail');
+        Route::put('/{forum_id}', 'ForumController@update')->name('forum/update');
+        Route::delete('/{forum_id}', 'ForumController@delete')->name('forum/delete');
+    });
 });
