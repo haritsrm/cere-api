@@ -92,7 +92,7 @@ class AuthController extends Controller
         if(empty($image)){
            $namaFile = "null";
         }else{
-            $namaFile = $id."-".$image->getClientOriginalExtension();
+            $namaFile = $id;
             $request->file('photo')->move('images', $namaFile);
         }
         $data->photo_url = $namaFile;

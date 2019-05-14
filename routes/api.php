@@ -17,7 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -49,6 +48,7 @@ Route::group([
     Route::get('find/{token}', 'PasswordResetController@find');
     //reset password
     Route::post('reset', 'PasswordResetController@reset');
+ });   
 
 Route::group(['prefix' => 'courses'], function(){
     Route::get('/', 'CourseController@index')->name('courses');
@@ -64,3 +64,5 @@ Route::group(['prefix' => 'courses'], function(){
         Route::put('/{review_id}', 'ReviewController@update')->name('review/update');
         Route::delete('/{review_id}', 'ReviewController@delete')->name('review/delete');
     });
+
+});
