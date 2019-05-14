@@ -20,10 +20,10 @@ class ReviewController extends Controller
         return ReviewResource::collection($reviews);
     }
 
-    public function create(Request $req)
+    public function create($course_id, Request $req)
     {
         $result = $this->review->create([
-            'course_id' => $req->course_id,
+            'course_id' => $course_id,
             'star' => $req->star,
             'body' => $req->body,
             'student_id' => $req->student_id,
