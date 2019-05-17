@@ -24,4 +24,9 @@ class Course extends Model
     {
         return $this->hasMany(Cerevid::class);
     }
+
+    function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

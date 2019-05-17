@@ -77,8 +77,15 @@ Route::group(['prefix' => 'courses'], function(){
 
     Route::group(['prefix' => '/{course_id}/cerevids'], function(){
         Route::get('/', 'CerevidController@index')->name('cerevids');
-        Route::post('/create', 'CerevidController@create')->name('cerevid/student_create');
+        Route::post('/create', 'CerevidController@create')->name('cerevid/create');
         Route::get('/{cerevid_id}', 'CerevidController@find')->name('cerevid/detail');
         Route::delete('/{cerevid_id}', 'CerevidController@delete')->name('cerevid/delete');
+    });
+
+    Route::group(['prefix' => '/{course_id}/favorites'], function(){
+        Route::get('/', 'FavoriteController@index')->name('favorites');
+        Route::post('/create', 'FavoriteController@create')->name('favorite/create');
+        Route::get('/{favorite_id}', 'FavoriteController@find')->name('favorite/detail');
+        Route::delete('/{favorite_id}', 'FavoriteController@delete')->name('favorite/delete');
     });
 });
