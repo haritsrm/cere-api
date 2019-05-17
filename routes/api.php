@@ -51,6 +51,7 @@ Route::group([
     Route::post('reset', 'PasswordResetController@reset');
 });
 
+//Cerevid's Routes --begin
 Route::group(['prefix' => 'courses'], function(){
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
@@ -87,5 +88,23 @@ Route::group(['prefix' => 'courses'], function(){
         Route::post('/create', 'Cerevids\FavoriteController@create')->name('favorite/create');
         Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
         Route::delete('/{favorite_id}', 'Cerevids\FavoriteController@delete')->name('favorite/delete');
+    });
+});
+//Cerevid's Routes --end
+
+//Cereout's Routes --begin
+Route::group(['prefix' => 'cereouts'], function(){
+    Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
+    Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');
+    Route::get('/{id}', 'Cereouts\TryoutController@find')->name('tryout/detail');
+    Route::put('/{id}', 'Cereouts\TryoutController@update')->name('tryout/update');
+    Route::delete('/{id}', 'Cereouts\TryoutController@delete')->name('tryout/delete');
+
+    Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
+        Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');
+        Route::post('/', 'Cereouts\CereoutController@attempt')->name('cereout/attempt');
+        Route::get('/{id}', 'Cereouts\CereoutController@find')->name('cereout/detail');
+        Route::put('/{id}', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
+        Route::delete('/{id}', 'Cereouts\CereoutController@delete')->name('cereout/delete');
     });
 });
