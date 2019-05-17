@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cerevids;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Services\CerevidService;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\Cerevids\CerevidService;
 use App\Http\Resources\Cerevid\CerevidResource;
 
 class CerevidController extends Controller

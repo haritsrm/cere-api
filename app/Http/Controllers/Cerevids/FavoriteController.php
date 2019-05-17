@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cerevids;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Services\FavoriteService;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\Cerevids\FavoriteService;
 use App\Http\Resources\Favorite\FavoriteResource;
 
 class FavoriteController extends Controller

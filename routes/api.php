@@ -52,40 +52,40 @@ Route::group([
 });
 
 Route::group(['prefix' => 'courses'], function(){
-    Route::get('/', 'CourseController@index')->name('courses');
-    Route::post('/create', 'CourseController@create')->name('course/create');
-    Route::get('/{id}', 'CourseController@find')->name('course/detail');
-    Route::put('/{id}', 'CourseController@update')->name('course/update');
-    Route::delete('/{id}', 'CourseController@delete')->name('course/delete');
+    Route::get('/', 'Cerevids\CourseController@index')->name('courses');
+    Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
+    Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');
+    Route::put('/{id}', 'Cerevids\CourseController@update')->name('course/update');
+    Route::delete('/{id}', 'Cerevids\CourseController@delete')->name('course/delete');
 
     Route::group(['prefix' => '/{course_id}/reviews'], function(){
-        Route::get('/', 'ReviewController@index')->name('reviews');
-        Route::post('/create', 'ReviewController@create')->name('review/create');
-        Route::get('/{review_id}', 'ReviewController@find')->name('review/detail');
-        Route::put('/{review_id}', 'ReviewController@update')->name('review/update');
-        Route::delete('/{review_id}', 'ReviewController@delete')->name('review/delete');
+        Route::get('/', 'Cerevids\ReviewController@index')->name('reviews');
+        Route::post('/create', 'Cerevids\ReviewController@create')->name('review/create');
+        Route::get('/{review_id}', 'Cerevids\ReviewController@find')->name('review/detail');
+        Route::put('/{review_id}', 'Cerevids\ReviewController@update')->name('review/update');
+        Route::delete('/{review_id}', 'Cerevids\ReviewController@delete')->name('review/delete');
     });
 
     Route::group(['prefix' => '/{course_id}/forums'], function(){
-        Route::get('/', 'ForumController@index')->name('forums');
-        Route::post('/student_create', 'ForumController@createForStudent')->name('forum/student_create');
-        Route::post('/teacher_create', 'ForumController@createForTeacher')->name('forum/teacher_create');
-        Route::get('/{forum_id}', 'ForumController@find')->name('forum/detail');
-        Route::put('/{forum_id}', 'ForumController@update')->name('forum/update');
-        Route::delete('/{forum_id}', 'ForumController@delete')->name('forum/delete');
+        Route::get('/', 'Cerevids\ForumController@index')->name('forums');
+        Route::post('/student_create', 'Cerevids\ForumController@createForStudent')->name('forum/student_create');
+        Route::post('/teacher_create', 'Cerevids\ForumController@createForTeacher')->name('forum/teacher_create');
+        Route::get('/{forum_id}', 'Cerevids\ForumController@find')->name('forum/detail');
+        Route::put('/{forum_id}', 'Cerevids\ForumController@update')->name('forum/update');
+        Route::delete('/{forum_id}', 'Cerevids\ForumController@delete')->name('forum/delete');
     });
 
     Route::group(['prefix' => '/{course_id}/cerevids'], function(){
-        Route::get('/', 'CerevidController@index')->name('cerevids');
-        Route::post('/create', 'CerevidController@create')->name('cerevid/create');
-        Route::get('/{cerevid_id}', 'CerevidController@find')->name('cerevid/detail');
-        Route::delete('/{cerevid_id}', 'CerevidController@delete')->name('cerevid/delete');
+        Route::get('/', 'Cerevids\CerevidController@index')->name('cerevids');
+        Route::post('/create', 'Cerevids\CerevidController@create')->name('cerevid/create');
+        Route::get('/{cerevid_id}', 'Cerevids\CerevidController@find')->name('cerevid/detail');
+        Route::delete('/{cerevid_id}', 'Cerevids\CerevidController@delete')->name('cerevid/delete');
     });
 
     Route::group(['prefix' => '/{course_id}/favorites'], function(){
-        Route::get('/', 'FavoriteController@index')->name('favorites');
-        Route::post('/create', 'FavoriteController@create')->name('favorite/create');
-        Route::get('/{favorite_id}', 'FavoriteController@find')->name('favorite/detail');
-        Route::delete('/{favorite_id}', 'FavoriteController@delete')->name('favorite/delete');
+        Route::get('/', 'Cerevids\FavoriteController@index')->name('favorites');
+        Route::post('/create', 'Cerevids\FavoriteController@create')->name('favorite/create');
+        Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
+        Route::delete('/{favorite_id}', 'Cerevids\FavoriteController@delete')->name('favorite/delete');
     });
 });

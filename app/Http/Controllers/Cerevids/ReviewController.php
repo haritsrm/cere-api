@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cerevids;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Services\ReviewService;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\Cerevids\ReviewService;
 use App\Http\Resources\Review\ReviewResource;
 
 class ReviewController extends Controller
