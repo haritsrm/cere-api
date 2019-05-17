@@ -15,7 +15,7 @@ class ReviewResource extends JsonResource
      */
     public function toArray($request)
     {
-        $course = Course::find($this->course_id);
+        $course = Course::findOrFail($this->course_id);
 
         return [
             'course' => [
