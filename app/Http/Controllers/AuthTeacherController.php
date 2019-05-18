@@ -6,33 +6,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Teacher;
-class AuthController extends Controller
+
+class AuthTeacherController extends Controller
 {
-    public function signup(Request $request)
-    {
-        $request->validate([
+    //
+    public function signup(Request $request){
+    	$request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:students',
             'password' => 'required|string|confirmed'
         ]);
-        $user = new User([
+        $user = new Teacher([
             'name' => $request->name,
             'gender' => $request->gender,
             'address' => $request->address,
             'phone' => $request->phone,
-            'birth_place' => $request->birth_place,
-            'birth_date' => $request->birth_date,
-            'parrent_name' => $request->parrent_name,
-            'parrent_phone' => $request->parrent_phone,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
         $user->save();
         return response()->json([
-            'message' => 'Successfully created student!'
+            'message' => 'Successfully created teacher!'
         ], 201);
     }
-  
+
     public function login(Request $request)
     {
         $request->validate([
@@ -59,12 +56,7 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
-  
-    /**
-     * Logout user (Revoke the token)
-     *
-     * @return [string] message
-     */
+
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
@@ -72,13 +64,8 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
-  
-    /**
-     * Get the authenticated User
-     *
-     * @return [json] user object
-     */
-    public function user(Request $request)
+
+    public function teacher(Request $request)
     {
         return response()->json($request->user());
     }
@@ -87,51 +74,37 @@ class AuthController extends Controller
         $request->validate([
             'photo' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
           ]);
-    	$data = User::where('id',$id)->first();
+    	$data = Teacher::where('id',$id)->first();
         $image = $request->file('photo');
         if(empty($image)){
            $namaFile = "null";
         }else{
             $namaFile = $id;
-            $request->file('photo')->move('images/student/', $namaFile);
+            $request->file('photo')->move('images/teacher/', $namaFile);
         }
         $data->photo_url = $namaFile;
         $data->save();
         return response()->json([
-            'message' => 'Successfully changed photo student!'
+            'message' => 'Successfully changed photo teacher!'
         ], 201);
     }
 
     public function changeProfile(Request $request, $id){
-    	$data =  User::where('id',$id)->first();
+    	$data =  Teacher::where('id',$id)->first();
         $data->name = $request->name;
         $data->gender = $request->gender;
         $data->address = $request->address;
         $data->phone = $request->phone;
-        $data->birth_place = $request->birth_place;
-        $data->birth_date = $request->birth_date;
-        $data->parrent_name = $request->parrent_name;
-        $data->parrent_phone = $request->parrent_phone;
         $data->save();
 
         return response()->json([
-            'message' => 'Successfully changed student!'
-        ], 201);
-    }
-
-    public function changePassword(Request $request, $id){
-        $data =  User::where('id',$id)->first();
-        $data->password = bcrypt($request->password);
-        $data->save();
-
-        return response()->json([
-            'message' => 'Successfully changed password student!'
+            'message' => 'Successfully changed user!'
         ], 201);
     }
 
     public function getPhotoProfile($id){
-        $data =  User::where('id',$id)->first();
-        $pathToFile = public_path().'/images/student/'.$data->photo_url;
+        $data =  Teacher::where('id',$id)->first();
+        $pathToFile = public_path().'/images/teacher/'.$data->photo_url;
         return response()->download($pathToFile);        
     }
 }

@@ -14,4 +14,9 @@ class Course extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    function forums()
+    {
+        return $this->hasMany(Forum::class);
+    }
 }
