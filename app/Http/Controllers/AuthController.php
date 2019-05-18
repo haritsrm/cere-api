@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Teacher;
+use App\User;
 class AuthController extends Controller
 {
     public function signup(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:students',
+            'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
         $user = new User([
@@ -28,8 +28,9 @@ class AuthController extends Controller
             'password' => bcrypt($request->password)
         ]);
         $user->save();
+        $user->attachRole(2);
         return response()->json([
-            'message' => 'Successfully created student!'
+            'message' => 'Successfully created user!'
         ], 201);
     }
   
@@ -93,12 +94,12 @@ class AuthController extends Controller
            $namaFile = "null";
         }else{
             $namaFile = $id;
-            $request->file('photo')->move('images/student/', $namaFile);
+            $request->file('photo')->move('images/', $namaFile);
         }
         $data->photo_url = $namaFile;
         $data->save();
         return response()->json([
-            'message' => 'Successfully changed photo student!'
+            'message' => 'Successfully changed photo user!'
         ], 201);
     }
 
@@ -115,7 +116,7 @@ class AuthController extends Controller
         $data->save();
 
         return response()->json([
-            'message' => 'Successfully changed student!'
+            'message' => 'Successfully changed user!'
         ], 201);
     }
 
@@ -125,13 +126,13 @@ class AuthController extends Controller
         $data->save();
 
         return response()->json([
-            'message' => 'Successfully changed password student!'
+            'message' => 'Successfully changed password user!'
         ], 201);
     }
 
     public function getPhotoProfile($id){
         $data =  User::where('id',$id)->first();
-        $pathToFile = public_path().'/images/student/'.$data->photo_url;
+        $pathToFile = public_path().'/images/'.$data->photo_url;
         return response()->download($pathToFile);        
     }
 }
