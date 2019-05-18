@@ -17,25 +17,35 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/test','TeacherController@index');
+Route::get('/testCreate','TeacherController@create');
+Route::get('/testDestroy','TeacherController@destroy');
 
 Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
+    Route::post('loginTeacher', 'AuthTeacherController@login');
+    Route::post('signupTeacher', 'AuthTeacherController@signup');
   
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'AuthController@logout');
+        Route::get('logoutTeacher', 'AuthTeacherController@logout');
         //get profile
         Route::get('user', 'AuthController@user');
+        Route::get('teacher', 'AuthTeacherController@teacher');
         //change profile
         Route::put('user/{id}', 'AuthController@changeProfile');
+        Route::put('teacher/{id}', 'AuthTeacherController@changeProfile');
         //change avatar
         Route::post('changePhotoProfile/{id}', 'AuthController@changePhotoProfile');
+        Route::post('changePhotoProfileTeacher/{id}', 'AuthTeacherController@changePhotoProfile');
         //get avatar
         Route::get('photoProfile/{id}', 'AuthController@getPhotoProfile');
+        Route::get('photoProfileTeacher/{id}', 'AuthTeacherController@getPhotoProfile');
     });
 });
 

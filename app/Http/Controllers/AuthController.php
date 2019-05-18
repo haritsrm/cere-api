@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\User;
+use App\Teacher;
 class AuthController extends Controller
 {
     public function signup(Request $request)
@@ -29,7 +29,7 @@ class AuthController extends Controller
         ]);
         $user->save();
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created student!'
         ], 201);
     }
   
@@ -92,13 +92,13 @@ class AuthController extends Controller
         if(empty($image)){
            $namaFile = "null";
         }else{
-            $namaFile = $id."-".$image->getClientOriginalExtension();
-            $request->file('photo')->move('images', $namaFile);
+            $namaFile = $id;
+            $request->file('photo')->move('images/student/', $namaFile);
         }
         $data->photo_url = $namaFile;
         $data->save();
         return response()->json([
-            'message' => 'Successfully changed photo user!'
+            'message' => 'Successfully changed photo student!'
         ], 201);
     }
 
@@ -115,13 +115,23 @@ class AuthController extends Controller
         $data->save();
 
         return response()->json([
-            'message' => 'Successfully changed user!'
+            'message' => 'Successfully changed student!'
+        ], 201);
+    }
+
+    public function changePassword(Request $request, $id){
+        $data =  User::where('id',$id)->first();
+        $data->password = bcrypt($request->password);
+        $data->save();
+
+        return response()->json([
+            'message' => 'Successfully changed password student!'
         ], 201);
     }
 
     public function getPhotoProfile($id){
         $data =  User::where('id',$id)->first();
-        $pathToFile = public_path().'/images/'.$data->photo_url;
+        $pathToFile = public_path().'/images/student/'.$data->photo_url;
         return response()->download($pathToFile);        
     }
 }
