@@ -19,4 +19,14 @@ class Course extends Model
     {
         return $this->hasMany(Forum::class);
     }
+
+    function cerevids()
+    {
+        return $this->hasMany(Cerevid::class);
+    }
+
+    function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

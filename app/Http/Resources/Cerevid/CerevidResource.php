@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Review;
+namespace App\Http\Resources\Cerevid;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Course;
 
-class ReviewResource extends JsonResource
+class CerevidResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,11 +23,9 @@ class ReviewResource extends JsonResource
                 'cover' => $course->cover,
                 'description' => $course->description,
             ],
-            'star' => $this->star,
-            'body' => $this->body,
             'student' => 'student name',
             'href' => [
-                'link' => route('review/detail', [$course->id, $this->id]),
+                'link' => route('cerevid/detail', [$course->id, $this->id]),
             ],
             'posted' => $this->created_at->diffForHumans(),
         ];

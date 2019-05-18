@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cerevids;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Services\CourseService;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\Cerevids\CourseService;
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
 

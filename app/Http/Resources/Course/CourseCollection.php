@@ -15,7 +15,7 @@ class CourseCollection extends JsonResource
      */
     public function toArray($request)
     {
-        $lesson_category = Lesson::find($this->lesson_id)->lesson_category;
+        $lesson_category = Lesson::findOrFail($this->lesson_id)->lesson_category;
 
         return [
             'title' => $this->title,
