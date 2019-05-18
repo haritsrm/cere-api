@@ -1,33 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\Services;
+namespace App\Http\Controllers\Services\Cerevids;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Forum;
+use App\Models\Review;
 use App\Models\Course;
 
-class ForumService extends Controller
+class ReviewService extends Controller
 {
     public function __construct()
     {
-        $this->newForum = new Forum;
+        $this->newReview = new Review;
         $this->newCourse = new Course;
     }
 
     public function browse($course_id)
     {
-        return $this->newCourse->find($course_id)->forums()->paginate(10);
+        return $this->newCourse->find($course_id)->reviews()->paginate(10);
     }
 
     public function create(Array $req)
     {
-        return $this->newForum->create($req);
+        return $this->newReview->create($req);
     }
 
     public function find($id)
     {
-        return $this->newForum->find($id);
+        return $this->newReview->find($id);
     }
 
     public function update($id, Array $req)
