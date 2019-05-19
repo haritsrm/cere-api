@@ -25,6 +25,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'AuthController@login');
+    Route::post('student/login', 'AuthController@studentLogin');
     Route::post('signup', 'AuthController@signup');
   
     Route::group([
@@ -65,6 +66,17 @@ Route::group([
     Route::put('/{id}', 'Cerevids\CourseController@update')->name('course/update');
     Route::delete('/{id}', 'Cerevids\CourseController@delete')->name('course/delete');
 
+    Route::group([
+        'prefix' => '/{course_id}/reviews',
+        'middleware' => ['scopes:check-status,student-only'],
+    ], function(){
+        Route::get('/', 'Cerevids\ReviewController@index')->name('reviews');
+        Route::post('/create', 'Cerevids\ReviewController@create')->name('review/create');
+        Route::get('/{review_id}', 'Cerevids\ReviewController@find')->name('review/detail');
+        Route::put('/{review_id}', 'Cerevids\ReviewController@update')->name('review/update');
+        Route::delete('/{review_id}', 'Cerevids\ReviewController@delete')->name('review/delete');
+    });
+
     Route::group(['prefix' => '/{course_id}/forums'], function(){
         Route::get('/', 'Cerevids\ForumController@index')->name('forums');
         Route::post('/student_create', 'Cerevids\ForumController@createForStudent')->name('forum/student_create');
@@ -87,17 +99,6 @@ Route::group([
         Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
         Route::delete('/{favorite_id}', 'Cerevids\FavoriteController@delete')->name('favorite/delete');
     });
-});
-
-Route::group([
-    'prefix' => 'courses/{course_id}/reviews',
-    'middleware' => ['auth:api', 'role:student'],
-], function(){
-    Route::get('/', 'Cerevids\ReviewController@index')->name('reviews');
-    Route::post('/create', 'Cerevids\ReviewController@create')->name('review/create');
-    Route::get('/{review_id}', 'Cerevids\ReviewController@find')->name('review/detail');
-    Route::put('/{review_id}', 'Cerevids\ReviewController@update')->name('review/update');
-    Route::delete('/{review_id}', 'Cerevids\ReviewController@delete')->name('review/delete');
 });
 //Cerevid's Routes --end
 
