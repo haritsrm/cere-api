@@ -36,33 +36,6 @@ class AuthController extends Controller
         ], 201);
     }
   
-    public function studentLogin(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'remember_me' => 'boolean'
-        ]);
-        $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token', ['student-only']);
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]);
-    }
-
     public function login(Request $request)
     {
         $request->validate([
@@ -181,7 +154,7 @@ class AuthController extends Controller
         $findUser = User::where('email', $user->getEmail())->first();
 
         if($findUser){
-            $tokenResult = $findUser->createToken($user->token, ['student-only']);
+            $tokenResult = $findUser->createToken($user->token);
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
@@ -206,7 +179,7 @@ class AuthController extends Controller
             $user_local->save();
             $user_local->attachRole(2);
 
-            $tokenResult = $user_local->createToken($user->token, ['student-only']);
+            $tokenResult = $user_local->createToken($user->token);
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',

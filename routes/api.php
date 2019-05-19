@@ -25,7 +25,6 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'AuthController@login');
-    Route::post('student/login', 'AuthController@studentLogin');
     Route::post('signup', 'AuthController@signup');
   
     Route::group([
@@ -58,7 +57,7 @@ Route::group([
 //Cerevid's Routes --begin
 Route::group([
     'prefix' => 'courses',
-    'middleware' => 'auth:api',
+    'middleware' => 'auth:api'
 ], function(){
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
@@ -67,8 +66,7 @@ Route::group([
     Route::delete('/{id}', 'Cerevids\CourseController@delete')->name('course/delete');
 
     Route::group([
-        'prefix' => '/{course_id}/reviews',
-        'middleware' => ['scopes:check-status,student-only'],
+        'prefix' => '/{course_id}/reviews'
     ], function(){
         Route::get('/', 'Cerevids\ReviewController@index')->name('reviews');
         Route::post('/create', 'Cerevids\ReviewController@create')->name('review/create');
