@@ -169,7 +169,7 @@ class AuthController extends Controller
                 'address' => "Indonesia",
                 'phone' => "0877777777",
                 'birth_place' => "Bandung",
-                'birth_date' => "04-09-1998",
+                'birth_date' => "1998-09-04",
                 'parrent_name' => "Sukirman",
                 'parrent_phone' => "087777777777",
                 'email' => $user->getEmail(),
