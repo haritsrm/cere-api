@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use Socialite;
+
 class AuthController extends Controller
 {
     public function signup(Request $request)
@@ -134,5 +136,54 @@ class AuthController extends Controller
         $data =  User::where('id',$id)->first();
         $pathToFile = public_path().'/images/'.$data->photo_url;
         return response()->download($pathToFile);        
+    }
+
+    public function redirectToProvider($service)
+    {
+        return Socialite::driver($service)->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback($service)
+    {
+        $user = Socialite::driver($service)->stateless()->user();
+        $findUser = User::where('email', $user->getEmail())->first();
+
+        if($findUser){
+            return response()->json([
+                'access_token' => $user->token,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $user->expiresIn
+                )->toDateTimeString()
+            ], 201);
+        }
+        else{
+            $user_local = new User([
+                'name' => $user->getName(),
+                'gender' => "Woman",
+                'address' => "Indonesia",
+                'phone' => "0877777777",
+                'birth_place' => "Bandung",
+                'birth_date' => "04-09-1998",
+                'parrent_name' => "Sukirman",
+                'parrent_phone' => "087777777777",
+                'email' => $user->getEmail(),
+                'password' => bcrypt('12345678')
+            ]);
+            $user_local->save();
+            $user_local->attachRole(2);
+            return response()->json([
+                'access_token' => $user->token,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $user->expiresIn
+                )->toDateTimeString()
+            ], 201);
+        }
     }
 }
