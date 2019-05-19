@@ -154,8 +154,9 @@ class AuthController extends Controller
         $findUser = User::where('email', $user->getEmail())->first();
 
         if($findUser){
+            $tokenResult = $findUser->createToken($user->token);
             return response()->json([
-                'access_token' => $user->token,
+                'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse(
                     $user->expiresIn
@@ -177,8 +178,10 @@ class AuthController extends Controller
             ]);
             $user_local->save();
             $user_local->attachRole(2);
+
+            $tokenResult = $user_local->createToken($user->token);
             return response()->json([
-                'access_token' => $user->token,
+                'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse(
                     $user->expiresIn

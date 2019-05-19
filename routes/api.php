@@ -26,26 +26,19 @@ Route::group([
 ], function () {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
-    Route::post('loginTeacher', 'AuthTeacherController@login');
-    Route::post('signupTeacher', 'AuthTeacherController@signup');
   
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'AuthController@logout');
-        Route::get('logoutTeacher', 'AuthTeacherController@logout');
         //get profile
         Route::get('user', 'AuthController@user');
-        Route::get('teacher', 'AuthTeacherController@teacher');
         //change profile
         Route::put('user/{id}', 'AuthController@changeProfile');
-        Route::put('teacher/{id}', 'AuthTeacherController@changeProfile');
         //change avatar
         Route::post('changePhotoProfile/{id}', 'AuthController@changePhotoProfile');
-        Route::post('changePhotoProfileTeacher/{id}', 'AuthTeacherController@changePhotoProfile');
         //get avatar
         Route::get('photoProfile/{id}', 'AuthController@getPhotoProfile');
-        Route::get('photoProfileTeacher/{id}', 'AuthTeacherController@getPhotoProfile');
     });
 });
 
@@ -62,14 +55,20 @@ Route::group([
 });
 
 //Cerevid's Routes --begin
-Route::group(['prefix' => 'courses'], function(){
+Route::group([
+    'prefix' => 'courses',
+    'middleware' => 'auth:api',
+], function(){
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
     Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');
     Route::put('/{id}', 'Cerevids\CourseController@update')->name('course/update');
     Route::delete('/{id}', 'Cerevids\CourseController@delete')->name('course/delete');
 
-    Route::group(['prefix' => '/{course_id}/reviews'], function(){
+    Route::group([
+        'prefix' => '/{course_id}/reviews',
+        'middleware' => ['auth', 'role:student'],
+    ], function(){
         Route::get('/', 'Cerevids\ReviewController@index')->name('reviews');
         Route::post('/create', 'Cerevids\ReviewController@create')->name('review/create');
         Route::get('/{review_id}', 'Cerevids\ReviewController@find')->name('review/detail');
