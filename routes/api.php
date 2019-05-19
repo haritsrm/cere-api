@@ -67,7 +67,7 @@ Route::group([
 
     Route::group([
         'prefix' => '/{course_id}/reviews',
-        'middleware' => 'role:student',
+        'middleware' => ['role:student'],
     ], function(){
         Route::get('/', 'Cerevids\ReviewController@index')->name('reviews');
         Route::post('/create', 'Cerevids\ReviewController@create')->name('review/create');
