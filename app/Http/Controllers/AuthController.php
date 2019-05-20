@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use Hash;
+use Auth;
 use Socialite;
 
 class AuthController extends Controller
@@ -124,7 +126,7 @@ class AuthController extends Controller
 
     public function changePassword(Request $request, $id){
         $data =  User::where('id',$id)->first();
-        $data->password = bcrypt($request->password);
+        $data->password = bcrypt($request->newPassword);
         $data->save();
 
         return response()->json([
