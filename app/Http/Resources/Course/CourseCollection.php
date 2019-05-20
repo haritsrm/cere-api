@@ -24,7 +24,7 @@ class CourseCollection extends JsonResource
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],
-            'rating' => 'rated by reviews',
+            'rating' => round($this->reviews()->avg('star')),
         ];
     }
 }

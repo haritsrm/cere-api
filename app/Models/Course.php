@@ -10,6 +10,11 @@ class Course extends Model
         'title', 'cover', 'description', 'curriculum', 'lesson_id', 'teacher_id'
     ];
 
+    function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
+
     function reviews()
     {
         return $this->hasMany(Review::class);
