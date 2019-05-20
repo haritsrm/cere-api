@@ -108,6 +108,28 @@ Route::group([
         Route::delete('/{favorite_id}', 'Cerevids\FavoriteController@delete')->name('favorite/delete');
     });
 });
+
+Route::group([
+    'prefix' => 'sections/{section_id}'
+], function(){
+    Route::get('/videos', 'Cerevids\VideoController@index')->name('videos');
+    Route::post('/videos/create', 'Cerevids\VideoController@create')->name('video/create');
+    Route::get('/videos/{video_id}', 'Cerevids\VideoController@find')->name('video/detail');
+    Route::put('/videos/{video_id}', 'Cerevids\VideoController@update')->name('video/update');
+    Route::delete('/videos/{video_id}', 'Cerevids\VideoController@delete')->name('video/delete');
+
+    Route::get('/texts', 'Cerevids\TextController@index')->name('texts');
+    Route::post('/texts/create', 'Cerevids\TextController@create')->name('text/create');
+    Route::get('/texts/{text_id}', 'Cerevids\TextController@find')->name('text/detail');
+    Route::put('/texts/{text_id}', 'Cerevids\TextController@update')->name('text/update');
+    Route::delete('/texts/{text_id}', 'Cerevids\TextController@delete')->name('text/delete');
+
+    Route::get('/quiz', 'Cerevids\QuizController@index')->name('quiz');
+    Route::post('/quiz/create', 'Cerevids\QuizController@create')->name('quiz/create');
+    Route::get('/quiz/{video_id}', 'Cerevids\QuizController@find')->name('quiz/detail');
+    Route::put('/quiz/{video_id}', 'Cerevids\QuizController@update')->name('quiz/update');
+    Route::delete('/quiz/{video_id}', 'Cerevids\QuizController@delete')->name('quiz/delete');
+});
 //Cerevid's Routes --end
 
 //Cereout's Routes --begin

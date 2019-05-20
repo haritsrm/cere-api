@@ -14,4 +14,19 @@ class Section extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    function texts()
+    {
+        return $this->hasMany(Text::class);
+    }
+
+    function quiz()
+    {
+        return $this->hasMany(Quiz::class);
+    }
 }

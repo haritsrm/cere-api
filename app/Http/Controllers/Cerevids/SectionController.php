@@ -18,7 +18,7 @@ class SectionController extends Controller
     {
         $sections = $this->section->browse($course_id);
 
-        return SectionResource::collection($Sections);
+        return SectionResource::collection($sections);
     }
 
     public function create($course_id, Request $req)
