@@ -16,6 +16,9 @@ class SectionResource extends JsonResource
     public function toArray($request)
     {
         $course = Course::findOrFail($this->course_id);
+        $videos = $this->videos();
+        $texts  = $this->texts();
+        $quiz   = $this->quiz();
 
         return [
             'course' => [
@@ -24,9 +27,9 @@ class SectionResource extends JsonResource
                 'description' => $course->description,
             ],
             'title' => $this->title,
-            'videos' => $this->videos(),
-            'texts' => $this->texts(),
-            'quiz' => $this->quiz(),
+            'videos' => $videos->get(),
+            'texts' => $texts->get(),
+            'quiz' => $quiz->get(),
             'href' => [
                 'link' => route('section/detail', [$course->id, $this->id]),
             ],
