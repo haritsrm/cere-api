@@ -35,6 +35,8 @@ Route::group([
         Route::get('user', 'AuthController@user');
         //change profile
         Route::put('user/{id}', 'AuthController@changeProfile');
+        //change password
+        Route::post('user/changePassword/{id}', 'AuthController@changePassword');
         //change avatar
         Route::post('changePhotoProfile/{id}', 'AuthController@changePhotoProfile');
         //get avatar

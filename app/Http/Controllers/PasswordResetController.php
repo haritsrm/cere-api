@@ -25,6 +25,7 @@ class PasswordResetController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user)
             return response()->json([
+                'status' => false,
                 'message' => 'We cant find a user with that e-mail address.'
             ], 404);
         $passwordReset = PasswordReset::updateOrCreate(
@@ -39,6 +40,7 @@ class PasswordResetController extends Controller
                 new PasswordResetRequest($passwordReset->token)
             );
         return response()->json([
+            'status' => true,
             'message' => 'We have e-mailed your password reset link!'
         ]);
     }
@@ -55,15 +57,20 @@ class PasswordResetController extends Controller
             ->first();
         if (!$passwordReset)
             return response()->json([
+                'status' => false,
                 'message' => 'This password reset token is invalid.'
             ], 404);
         if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
             $passwordReset->delete();
             return response()->json([
+                'status' => false,
                 'message' => 'This password reset token is invalid.'
             ], 404);
         }
-        return response()->json($passwordReset);
+        return response()->json([
+            'status' => true,
+            'data' => $passwordReset
+        ],201);
     }
      /**
      * Reset password
@@ -88,17 +95,22 @@ class PasswordResetController extends Controller
         ])->first();
         if (!$passwordReset)
             return response()->json([
+                'status' => false,
                 'message' => 'This password reset token is invalid.'
             ], 404);
         $user = User::where('email', $passwordReset->email)->first();
         if (!$user)
             return response()->json([
+                'status' => false,
                 'message' => 'We cant find a user with that e-mail address.'
             ], 404);
         $user->password = bcrypt($request->password);
         $user->save();
         $passwordReset->delete();
         $user->notify(new PasswordResetSuccess($passwordReset));
-        return response()->json($user);
+        return response()->json([
+            'status' => true,
+            'data' => $user
+        ],201);
     }
 }

@@ -32,6 +32,7 @@ class AuthController extends Controller
         $user->save();
         $user->attachRole(2);
         return response()->json([
+            'status' => true,
             'message' => 'Successfully created user!'
         ], 201);
     }
@@ -55,6 +56,7 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
         return response()->json([
+            'status' => true,
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
@@ -72,6 +74,7 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
         return response()->json([
+            'status' => true,
             'message' => 'Successfully logged out'
         ]);
     }
@@ -83,7 +86,10 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json([
+            'status' => true,
+            'data' => $request->user()
+        ],201);
     }
 
     public function changePhotoProfile(Request $request, $id){
@@ -101,6 +107,7 @@ class AuthController extends Controller
         $data->photo_url = $namaFile;
         $data->save();
         return response()->json([
+            'status' => true,
             'message' => 'Successfully changed photo user!'
         ], 201);
     }
@@ -118,16 +125,18 @@ class AuthController extends Controller
         $data->save();
 
         return response()->json([
+            'status' => true,
             'message' => 'Successfully changed user!'
         ], 201);
     }
 
     public function changePassword(Request $request, $id){
         $data =  User::where('id',$id)->first();
-        $data->password = bcrypt($request->password);
+        $data->password = bcrypt($request->newPassword);
         $data->save();
 
         return response()->json([
+            'status' => true,
             'message' => 'Successfully changed password user!'
         ], 201);
     }
@@ -156,6 +165,7 @@ class AuthController extends Controller
         if($findUser){
             $tokenResult = $findUser->createToken($user->token);
             return response()->json([
+                'status' => true,
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse(
@@ -166,21 +176,14 @@ class AuthController extends Controller
         else{
             $user_local = new User([
                 'name' => $user->getName(),
-                'gender' => "Woman",
-                'address' => "Indonesia",
-                'phone' => "0877777777",
-                'birth_place' => "Bandung",
-                'birth_date' => "1998-09-04",
-                'parrent_name' => "Sukirman",
-                'parrent_phone' => "087777777777",
-                'email' => $user->getEmail(),
-                'password' => bcrypt('12345678')
+                'email' => $user->getEmail()
             ]);
             $user_local->save();
             $user_local->attachRole(2);
 
             $tokenResult = $user_local->createToken($user->token);
             return response()->json([
+                'status' => true,
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse(
