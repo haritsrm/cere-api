@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Social media route --begin
+Route::get('login/{service}', 'AuthController@redirectToProvider');
+Route::get('login/{service}/callback', 'AuthController@handleProviderCallback');
+// Social media route --end

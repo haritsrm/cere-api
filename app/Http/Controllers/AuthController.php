@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Teacher;
+use App\User;
+use Socialite;
+
 class AuthController extends Controller
 {
     public function signup(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:students',
+            'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
         $user = new User([
@@ -28,8 +30,9 @@ class AuthController extends Controller
             'password' => bcrypt($request->password)
         ]);
         $user->save();
+        $user->attachRole(2);
         return response()->json([
-            'message' => 'Successfully created student!'
+            'message' => 'Successfully created user!'
         ], 201);
     }
   
@@ -93,12 +96,12 @@ class AuthController extends Controller
            $namaFile = "null";
         }else{
             $namaFile = $id;
-            $request->file('photo')->move('images/student/', $namaFile);
+            $request->file('photo')->move('images/', $namaFile);
         }
         $data->photo_url = $namaFile;
         $data->save();
         return response()->json([
-            'message' => 'Successfully changed photo student!'
+            'message' => 'Successfully changed photo user!'
         ], 201);
     }
 
@@ -115,7 +118,7 @@ class AuthController extends Controller
         $data->save();
 
         return response()->json([
-            'message' => 'Successfully changed student!'
+            'message' => 'Successfully changed user!'
         ], 201);
     }
 
@@ -125,13 +128,65 @@ class AuthController extends Controller
         $data->save();
 
         return response()->json([
-            'message' => 'Successfully changed password student!'
+            'message' => 'Successfully changed password user!'
         ], 201);
     }
 
     public function getPhotoProfile($id){
         $data =  User::where('id',$id)->first();
-        $pathToFile = public_path().'/images/student/'.$data->photo_url;
+        $pathToFile = public_path().'/images/'.$data->photo_url;
         return response()->download($pathToFile);        
+    }
+
+    public function redirectToProvider($service)
+    {
+        return Socialite::driver($service)->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback($service)
+    {
+        $user = Socialite::driver($service)->stateless()->user();
+        $findUser = User::where('email', $user->getEmail())->first();
+
+        if($findUser){
+            $tokenResult = $findUser->createToken($user->token);
+            return response()->json([
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $user->expiresIn
+                )->toDateTimeString()
+            ], 201);
+        }
+        else{
+            $user_local = new User([
+                'name' => $user->getName(),
+                'gender' => "Woman",
+                'address' => "Indonesia",
+                'phone' => "0877777777",
+                'birth_place' => "Bandung",
+                'birth_date' => "1998-09-04",
+                'parrent_name' => "Sukirman",
+                'parrent_phone' => "087777777777",
+                'email' => $user->getEmail(),
+                'password' => bcrypt('12345678')
+            ]);
+            $user_local->save();
+            $user_local->attachRole(2);
+
+            $tokenResult = $user_local->createToken($user->token);
+            return response()->json([
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $user->expiresIn
+                )->toDateTimeString()
+            ], 201);
+        }
     }
 }

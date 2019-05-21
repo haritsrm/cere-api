@@ -28,6 +28,7 @@ class CourseResource extends JsonResource
             ],
             'teacher' => $this->teacher_id,
             'href' => [
+                'sections' => route('sections', $this->id),
                 'forums' => route('forums', $this->id),
                 'reviews' => route('reviews', $this->id),
             ],
