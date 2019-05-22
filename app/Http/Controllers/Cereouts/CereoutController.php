@@ -30,7 +30,11 @@ class CereoutController extends Controller
             'user_id' => $req->user_id
         ]);
 
-        return new CereoutResource($result);
+        return (new CereoutResource($result))
+                    ->additional([
+                        'status' => 'success',
+                        'message' => 'Succesfully attempt a tryout'
+                    ]);
     }
 
     public function find($tryout_id, $id)
@@ -80,13 +84,19 @@ class CereoutController extends Controller
             'result_status' => $result_status
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => 'success',
+            'data' => $result,
+        ], 201);
     }
 
     public function delete($tryout_id, $id)
     {
         $result = $this->cereout->destroy($id);
 
-        return $result;
+        return response()->json([
+            'status' => 'success',
+            'message'=> 'Succesfully remove attempt',
+        ], 201);
     }
 }
