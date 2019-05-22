@@ -10,6 +10,11 @@ class Course extends Model
         'title', 'cover', 'description', 'curriculum', 'lesson_id', 'teacher_id'
     ];
 
+    function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
+
     function reviews()
     {
         return $this->hasMany(Review::class);
@@ -18,5 +23,15 @@ class Course extends Model
     function forums()
     {
         return $this->hasMany(Forum::class);
+    }
+
+    function cerevids()
+    {
+        return $this->hasMany(Cerevid::class);
+    }
+
+    function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 }

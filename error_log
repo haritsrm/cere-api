@@ -1,0 +1,3 @@
+[21-May-2019 15:52:10 UTC] PHP Fatal error:  Cannot declare class CreatePasswordResetsTable, because the name is already in use in /home/ceredinas/public_html/cerebrum-api/database/migrations/2019_05_13_230252_create_password_resets_table.php on line 33
+[21-May-2019 15:52:18 UTC] PHP Fatal error:  Cannot declare class CreatePasswordResetsTable, because the name is already in use in /home/ceredinas/public_html/cerebrum-api/database/migrations/2019_05_13_230252_create_password_resets_table.php on line 33
+[21-May-2019 15:52:24 UTC] PHP Fatal error:  Cannot declare class CreatePasswordResetsTable, because the name is already in use in /home/ceredinas/public_html/cerebrum-api/database/migrations/2019_05_13_230252_create_password_resets_table.php on line 33
