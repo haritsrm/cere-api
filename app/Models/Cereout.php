@@ -14,4 +14,9 @@ class Cereout extends Model
     {
         $this->belongsTo(Tryout::class);
     }
+
+    function answers()
+    {
+        $this->hasMany(Answer::class);
+    }
 }
