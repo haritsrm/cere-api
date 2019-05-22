@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('option1')->nullable();
             $table->string('option2')->nullable();
             $table->string('option3')->nullable();
+            $table->string('class_id')->nullable();
             $table->string('status')->default('available');
             $table->rememberToken();
             $table->timestamps();
