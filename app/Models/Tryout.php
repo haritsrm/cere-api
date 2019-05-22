@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tryout extends Model
 {
     protected $fillable = [
-        'name', 'passing_percentage', 'instruction', 'duration', 'class', 'attempt_count', 'start_date', 'end_date', 'expire_days', 'price'
+        'name', 'lesson_id', 'class_id', 'instruction', 'duration', 'class', 'attempt_count', 'start_date', 'end_date', 'price', 'scoring_system'
     ];
 
     function cereouts()
