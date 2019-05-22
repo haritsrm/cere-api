@@ -13,6 +13,7 @@ class CereoutController extends Controller
     public function __construct()
     {
         $this->cereout = new CereoutService;
+        $this->tryout = new TryoutService;
         $this->answer = new AnswerService;
     }
 
