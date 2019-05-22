@@ -30,6 +30,11 @@ class CereoutService extends Controller
         return $this->newCereout->find($id);
     }
 
+    public function findUser($user_id)
+    {
+        return $this->newCereout->where('user_id', $user_id)->get();
+    }
+
     public function update($id, Array $req)
     {
         $this->find($id)->update($req);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Services\Answers;
+namespace App\Http\Controllers\Services\Cereouts;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
