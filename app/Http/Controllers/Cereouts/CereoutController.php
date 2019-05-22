@@ -25,16 +25,26 @@ class CereoutController extends Controller
 
     public function attempt($tryout_id, Request $req)
     {
-        $result = $this->cereout->create([
-            'tryout_id' => $tryout_id,
-            'user_id' => $req->user_id
-        ]);
+        $attempted_count = count($this->cereout->findUser($req->user_id));
+        $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
+        if($attempt_count < $available_attempts){
+            $result = $this->cereout->create([
+                'tryout_id' => $tryout_id,
+                'user_id' => $req->user_id
+            ]);
 
-        return (new CereoutResource($result))
-                    ->additional([
-                        'status' => 'success',
-                        'message' => 'Succesfully attempt a tryout'
-                    ]);
+            return (new CereoutResource($result))
+                        ->additional([
+                            'status' => 'success',
+                            'message' => 'Succesfully attempt a tryout'
+                        ]);
+        }
+        else{
+            return response()->json([
+                'status' => 'error',
+                'message' => "You've maximum limit of attempts"
+            ]);
+        }
     }
 
     public function find($tryout_id, $id)

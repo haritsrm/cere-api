@@ -16,7 +16,7 @@ class TryoutResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'question' => $this->questions()->get()
+            'question' => $this->questions()
         ];
     }
 }
