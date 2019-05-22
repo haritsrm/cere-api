@@ -12,7 +12,7 @@ class LessonController extends Controller
     //
     public function index(){
     	$data = Lesson::join('classes','classes.id','=','lessons.class_id')
-                    ->select('classes.*','classes.name_class as class')->get();
+                    ->select('lessons.*','classes.name_class as class')->get();
         return LessonResource::collection($data);
     }
 }
