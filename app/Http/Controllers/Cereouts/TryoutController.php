@@ -24,16 +24,17 @@ class TryoutController extends Controller
     public function create(Request $req)
     {
         $result = $this->tryout->create([
+            'lesson_id' => $req->lesson_id, 
+            'class_id' => $req->class_id, 
             'name' => $req->name, 
-            'passing_percentage' => $req->passing_percentage, 
             'instruction' => $req->instruction, 
             'duration' => $req->duration, 
             'class' => $req->class, 
             'attempt_count' => $req->attempt_count, 
             'start_date' => $req->start_date, 
             'end_date' => $req->end_date, 
-            'expire_days' => $req->expire_days, 
-            'price' => $req->price
+            'price' => $req->price,
+            'scoring_system' => $req->scoring_system
         ]);
 
         return new TryoutResource($result);
@@ -49,16 +50,17 @@ class TryoutController extends Controller
     public function update($id, Request $req)
     {
         $result = $this->tryout->update($id, [
+            'lesson_id' => $req->lesson_id, 
+            'class_id' => $req->class_id, 
             'name' => $req->name, 
-            'passing_percentage' => $req->passing_percentage, 
             'instruction' => $req->instruction, 
             'duration' => $req->duration, 
             'class' => $req->class, 
             'attempt_count' => $req->attempt_count, 
             'start_date' => $req->start_date, 
             'end_date' => $req->end_date, 
-            'expire_days' => $req->expire_days, 
-            'price' => $req->price
+            'price' => $req->price,
+            'scoring_system' => $req->scoring_system
         ]);
 
         return new TryoutResource($result);
