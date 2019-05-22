@@ -159,4 +159,5 @@ Route::group(['prefix' => 'master'], function(){
     Route::get('/faculty', 'Master\FacultyController@index');
     Route::get('/information', 'Master\InformationController@index');
     Route::get('/generalInformation', 'Master\GeneralInformationController@index');
+    Route::get('/lesson', 'Master\LessonController@index');
 });
