@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cereouts\CereoutService;
 use App\Http\Controllers\Services\Cereouts\AnswerService;
+use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 
 class CereoutController extends Controller
