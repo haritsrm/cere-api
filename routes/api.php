@@ -147,7 +147,7 @@ Route::group(['prefix' => 'cereouts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');
         Route::post('/attempt', 'Cereouts\CereoutController@attempt')->name('cereout/attempt');
         Route::get('/{id}', 'Cereouts\CereoutController@find')->name('cereout/detail');
-        Route::put('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
+        Route::post('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
         Route::delete('/{id}', 'Cereouts\CereoutController@delete')->name('cereout/delete');
     });
 });
