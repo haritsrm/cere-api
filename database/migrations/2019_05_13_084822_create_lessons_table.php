@@ -15,7 +15,7 @@ class CreateLessonsTable extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('kelas_id');
+            $table->string('class_id');
             $table->string('name');
             $table->double('passing_percentage');
             $table->timestamps();

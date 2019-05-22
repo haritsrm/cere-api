@@ -14,6 +14,9 @@ class TryoutResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'name' => $this->name,
+            'question' => $this->questions()->get()
+        ];
     }
 }

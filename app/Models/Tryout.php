@@ -14,4 +14,8 @@ class Tryout extends Model
     {
         $this->hasMany(Cereout::class);
     }
+
+    function questions(){
+    	$this->hasMany(Question::class);
+    }
 }
