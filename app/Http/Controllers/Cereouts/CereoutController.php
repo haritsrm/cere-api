@@ -29,7 +29,7 @@ class CereoutController extends Controller
     {
         $attempted_count = count($this->cereout->findUser($req->user_id));
         $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
-        if($attempt_count < $available_attempts){
+        if($attempted_count < $available_attempts){
             $result = $this->cereout->create([
                 'tryout_id' => $tryout_id,
                 'user_id' => $req->user_id
