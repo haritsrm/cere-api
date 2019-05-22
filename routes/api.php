@@ -136,6 +136,7 @@ Route::group([
 
 //Cereout's Routes --begin
 Route::group(['prefix' => 'cereouts'], function(){
+    Route::get('/question/{id}', 'Cereouts\QuestionController@index')->name('questions');
     Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
     Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');
     Route::get('/{id}', 'Cereouts\TryoutController@find')->name('tryout/detail');

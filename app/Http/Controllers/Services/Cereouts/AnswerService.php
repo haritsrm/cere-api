@@ -1,33 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Services\Cereouts;
+namespace App\Http\Controllers\Services\Answers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Answer;
 use App\Models\Cereout;
-use App\Models\Tryout;
 
-class CereoutService extends Controller
+class AnswerService extends Controller
 {
     public function __construct()
     {
+        $this->newAnswer = new Answer;
         $this->newCereout = new Cereout;
-        $this->newTryout = new Tryout;
     }
 
-    public function browse($tryout_id)
+    public function browse($cereout_id)
     {
-        return $this->newTryout->find($tryout_id)->cereouts()->paginate(10);
+        return $this->newCereout->find($Cereout_id)->answers()->paginate(10);
     }
 
     public function create(Array $req)
     {
-        return $this->newCereout->create($req);
+        return $this->newAnswer->create($req);
     }
 
     public function find($id)
     {
-        return $this->newCereout->find($id);
+        return $this->newAnswer->find($id);
+    }
+
+    public function findCereout($cereout_id)
+    {
+        return $this->newAnswer->where($cereout_id)->get();
     }
 
     public function update($id, Array $req)

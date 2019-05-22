@@ -33,7 +33,11 @@ class CourseController extends Controller
             'teacher_id' => $req->teacher_id
         ]);
 
-        return new CourseResource($result);
+        return (new CourseResource($result))
+                ->additional([
+                    'status' => 'success',
+                    'message' => 'Succesfully add '.$result->title
+                ]);
     }
 
     public function find($id)
