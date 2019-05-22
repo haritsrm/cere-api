@@ -15,12 +15,16 @@ class CourseCollection extends JsonResource
      */
     public function toArray($request)
     {
-        $lesson_category = Lesson::findOrFail($this->lesson_id)->lesson_category;
+        $lesson = Lesson::find($this->lesson_id);
 
         return [
             'title' => $this->title,
             'cover' => $this->cover,
-            'lesson_category' => $lesson_category,
+            'lesson' => [
+                'class_id' => $lesson->class_id,
+                'name' => $lesson->name,
+                'passing_percentage' => $lesson->passing_percentage
+            ],
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],

@@ -12,11 +12,11 @@ class Cereout extends Model
 
     function tryout()
     {
-        $this->belongsTo(Tryout::class);
+        return $this->belongsTo(Tryout::class);
     }
 
     function answers()
     {
-        $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class);
     }
 }
