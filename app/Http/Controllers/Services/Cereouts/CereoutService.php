@@ -25,6 +25,11 @@ class CereoutService extends Controller
         return $this->newCereout->create($req);
     }
 
+    public function ranking($tryout_id)
+    {
+        return $this->newCereout->where('tryout_id', $tryout_id)->orderByDesc('score');
+    }
+
     public function find($id)
     {
         return $this->newCereout->find($id);
