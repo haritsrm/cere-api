@@ -9,4 +9,9 @@ class Lesson extends Model
     protected $fillable = [
         'class_id', 'name', 'passing_percentage'
     ];
+
+    function class()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
 }

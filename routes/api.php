@@ -111,7 +111,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'sections/{section_id}'
+    'prefix' => 'sections/{section_id}',
+    'middleware' => 'auth:api'
 ], function(){
     Route::get('/videos', 'Cerevids\VideoController@index')->name('videos');
     Route::post('/videos/create', 'Cerevids\VideoController@create')->name('video/create');
@@ -134,7 +135,7 @@ Route::group([
 //Cerevid's Routes --end
 
 //Cereout's Routes --begin
-Route::group(['prefix' => 'cereouts'], function(){
+Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/question/{id}', 'Cereouts\QuestionController@index')->name('questions');
     Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
     Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');
@@ -144,13 +145,15 @@ Route::group(['prefix' => 'cereouts'], function(){
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');
+        Route::get('/mine', 'Cereouts\CereoutController@indexByUser')->name('cereoutsByUser');
         Route::get('/rankings', 'Cereouts\CereoutController@ranking')->name('cereout/ranking');
-        Route::post('/attempt', 'Cereouts\CereoutController@attempt')->name('cereout/attempt');
+        Route::post('/', 'Cereouts\CereoutController@attempt')->name('cereout/attempt');
         Route::get('/{id}', 'Cereouts\CereoutController@find')->name('cereout/detail');
         Route::post('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
         Route::delete('/{id}', 'Cereouts\CereoutController@delete')->name('cereout/delete');
     });
 });
+//Cereout's Routes --end
 
 //master data Routes
 Route::group(['prefix' => 'master'], function(){
@@ -160,5 +163,4 @@ Route::group(['prefix' => 'master'], function(){
     Route::get('/faculty', 'Master\FacultyController@index');
     Route::get('/information', 'Master\InformationController@index');
     Route::get('/generalInformation', 'Master\GeneralInformationController@index');
-    Route::get('/lesson', 'Master\LessonController@index');
 });

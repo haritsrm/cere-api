@@ -20,6 +20,11 @@ class CereoutService extends Controller
         return $this->newTryout->find($tryout_id)->cereouts()->paginate(10);
     }
 
+    public function browseByUser($tryout_id, $user_id)
+    {
+        return $this->newTryout->cereouts()->where('tryout_id', $tryout_id)->where('user_id', $user_id)->paginate(10);
+    }
+
     public function create(Array $req)
     {
         return $this->newCereout->create($req);
@@ -27,7 +32,7 @@ class CereoutService extends Controller
 
     public function ranking($tryout_id)
     {
-        return $this->newCereout->where('tryout_id', $tryout_id)->orderByDesc('score');
+        return $this->newCereout->where('tryout_id', $tryout_id)->orderByDesc('score')->get();
     }
 
     public function find($id)

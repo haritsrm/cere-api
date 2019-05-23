@@ -25,6 +25,14 @@ class CereoutController extends Controller
         return CereoutResource::collection($cereouts);
     }
 
+    public function indexByUser($tryout_id, Request $req)
+    {
+        $user_id = $req->user()->id;
+        $cereouts = $this->cereout->browseByUser($tryout_id, $user_id);
+
+        return CereoutResource::collection($cereouts);
+    }
+
     public function ranking($tryout_id)
     {
         $rankings = $this->cereout->ranking($tryout_id);
