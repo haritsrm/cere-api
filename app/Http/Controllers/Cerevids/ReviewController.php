@@ -30,7 +30,7 @@ class ReviewController extends Controller
             'user_id' => $req->user_id,
         ]);
 
-        return new ReviewResource($result);
+        return $result;
     }
 
     public function find($course_id, $review_id)
