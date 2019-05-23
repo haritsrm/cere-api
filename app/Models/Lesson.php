@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
     protected $fillable = [
-        'lesson_category', 'name'
+        'class_id', 'name', 'passing_percentage'
     ];
+
+    function class()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
 }

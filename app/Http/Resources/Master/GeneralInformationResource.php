@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Tryout;
+namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TryoutResource extends JsonResource
+class GeneralInformationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +14,6 @@ class TryoutResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'name' => $this->name,
-            'question' => $this->questions()
-        ];
+        return parent::toArray($request);
     }
 }

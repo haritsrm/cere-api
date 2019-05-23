@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cereouts\CereoutService;
 use App\Http\Controllers\Services\Cereouts\AnswerService;
+use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 
 class CereoutController extends Controller
@@ -13,6 +14,7 @@ class CereoutController extends Controller
     public function __construct()
     {
         $this->cereout = new CereoutService;
+        $this->tryout = new TryoutService;
         $this->answer = new AnswerService;
     }
 
@@ -23,18 +25,43 @@ class CereoutController extends Controller
         return CereoutResource::collection($cereouts);
     }
 
+    public function indexByUser($tryout_id, Request $req)
+    {
+        $user_id = $req->user()->id;
+        $cereouts = $this->cereout->browseByUser($tryout_id, $user_id);
+
+        return CereoutResource::collection($cereouts);
+    }
+
+    public function ranking($tryout_id)
+    {
+        $rankings = $this->cereout->ranking($tryout_id);
+
+        return $rankings;
+    }
+
     public function attempt($tryout_id, Request $req)
     {
-        $result = $this->cereout->create([
-            'tryout_id' => $tryout_id,
-            'user_id' => $req->user_id
-        ]);
+        $attempted_count = count($this->cereout->findUser($req->user_id));
+        $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
+        if($attempted_count < $available_attempts){
+            $result = $this->cereout->create([
+                'tryout_id' => $tryout_id,
+                'user_id' => $req->user_id
+            ]);
 
-        return (new CereoutResource($result))
-                    ->additional([
-                        'status' => 'success',
-                        'message' => 'Succesfully attempt a tryout'
-                    ]);
+            return (new CereoutResource($result))
+                        ->additional([
+                            'status' => 'success',
+                            'message' => 'Succesfully attempt a tryout'
+                        ]);
+        }
+        else{
+            return response()->json([
+                'status' => 'error',
+                'message' => "You've maximum limit of attempts"
+            ]);
+        }
     }
 
     public function find($tryout_id, $id)

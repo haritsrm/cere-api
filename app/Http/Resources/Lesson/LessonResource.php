@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Tryout;
+namespace App\Http\Resources\Lesson;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TryoutResource extends JsonResource
+class LessonResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class TryoutResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'question' => $this->questions()
+            'passing_percentage' => $this->passing_percentage,
         ];
     }
 }

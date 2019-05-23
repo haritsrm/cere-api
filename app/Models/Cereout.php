@@ -10,13 +10,13 @@ class Cereout extends Model
         'tryout_id', 'user_id', 'my_time', 'score', 'total_answer', 'correct_answered', 'incorrect_answered', 'left_answered', 'result_status'
     ];
 
-    function course()
+    function tryout()
     {
-        $this->belongsTo(Tryout::class);
+        return $this->belongsTo(Tryout::class);
     }
 
     function answers()
     {
-        $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class);
     }
 }

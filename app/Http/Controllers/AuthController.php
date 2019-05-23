@@ -123,6 +123,10 @@ class AuthController extends Controller
         $data->birth_date = $request->birth_date;
         $data->parrent_name = $request->parrent_name;
         $data->parrent_phone = $request->parrent_phone;
+        $data->class_id = $request->class_id;
+        $data->option1 = $request->option1;
+        $data->option2 = $request->option2;
+        $data->option3 = $request->option3;
         $data->save();
 
         return response()->json([
@@ -132,14 +136,26 @@ class AuthController extends Controller
     }
 
     public function changePassword(Request $request, $id){
-        $data =  User::where('id',$id)->first();
-        $data->password = bcrypt($request->newPassword);
-        $data->save();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully changed password user!'
-        ], 201);
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+            'newPassword' => 'required|string'
+        ]);
+        $credentials = request(['email', 'password']);
+        if(!Auth::attempt($credentials)){
+            return response()->json([
+                'status' => false,
+                'message' => 'Current password wrong!'
+            ], 401);
+        }else{
+            $data =  User::where('id',$id)->first();
+            $data->password = bcrypt($request->newPassword);
+            $data->save();    
+            return response()->json([
+                'status' => true,
+                'message' => 'Successfully changed password user!'
+            ], 201);
+        }
     }
 
     public function getPhotoProfile($id){

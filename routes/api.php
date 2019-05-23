@@ -26,7 +26,8 @@ Route::group([
 ], function () {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
-  
+    //change password
+    Route::post('user/changePassword/{id}', 'AuthController@changePassword');
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
@@ -35,8 +36,6 @@ Route::group([
         Route::get('user', 'AuthController@user');
         //change profile
         Route::put('user/{id}', 'AuthController@changeProfile');
-        //change password
-        Route::post('user/changePassword/{id}', 'AuthController@changePassword');
         //change avatar
         Route::post('changePhotoProfile/{id}', 'AuthController@changePhotoProfile');
         //get avatar
@@ -112,7 +111,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'sections/{section_id}'
+    'prefix' => 'sections/{section_id}',
+    'middleware' => 'auth:api'
 ], function(){
     Route::get('/videos', 'Cerevids\VideoController@index')->name('videos');
     Route::post('/videos/create', 'Cerevids\VideoController@create')->name('video/create');
@@ -135,7 +135,7 @@ Route::group([
 //Cerevid's Routes --end
 
 //Cereout's Routes --begin
-Route::group(['prefix' => 'cereouts'], function(){
+Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/question/{id}', 'Cereouts\QuestionController@index')->name('questions');
     Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
     Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');
@@ -145,9 +145,23 @@ Route::group(['prefix' => 'cereouts'], function(){
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');
-        Route::post('/attempt', 'Cereouts\CereoutController@attempt')->name('cereout/attempt');
+        Route::get('/mine', 'Cereouts\CereoutController@indexByUser')->name('cereoutsByUser');
+        Route::get('/rankings', 'Cereouts\CereoutController@ranking')->name('cereout/ranking');
+        Route::post('/', 'Cereouts\CereoutController@attempt')->name('cereout/attempt');
         Route::get('/{id}', 'Cereouts\CereoutController@find')->name('cereout/detail');
-        Route::put('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
+        Route::post('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
         Route::delete('/{id}', 'Cereouts\CereoutController@delete')->name('cereout/delete');
     });
+});
+//Cereout's Routes --end
+
+//master data Routes
+Route::group(['prefix' => 'master'], function(){
+    Route::get('/class', 'Master\ClassController@index');
+    Route::get('/lesson', 'Cerevids\EnvironmentController@lessons');
+    Route::get('/university', 'Master\UniversityController@index');
+    Route::get('/department', 'Master\DepartmentController@index');
+    Route::get('/faculty', 'Master\FacultyController@index');
+    Route::get('/information', 'Master\InformationController@index');
+    Route::get('/generalInformation', 'Master\GeneralInformationController@index');
 });
