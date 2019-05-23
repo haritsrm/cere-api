@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\Models\Kelas;
 
-class TryoutResource extends JsonResource
+class TryoutCollection extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,7 +24,6 @@ class TryoutResource extends JsonResource
             'lesson' => $lesson,
             'class' => $class,
             'instruction' => $this->instruction,
-            'questions' => $this->questions,
             'duration' => $this->duration,
             'attempt_count' => $this->attempt_count,
             'start_date' => $this->start_date,

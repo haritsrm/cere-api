@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cereouts;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
+use App\Http\Resources\Tryout\TryoutCollection;
 use App\Http\Resources\Tryout\TryoutResource;
 use App\Models\Question;
 use App\Models\Tryout;
@@ -21,7 +22,7 @@ class TryoutController extends Controller
     {
         $tryouts = $this->tryout->browse();
 
-        return TryoutResource::collection($tryouts);
+        return TryoutCollection::collection($tryouts);
     }
 
     public function create(Request $req)
@@ -39,7 +40,7 @@ class TryoutController extends Controller
             'scoring_system' => $req->scoring_system
         ]);
 
-        return new TryoutResource($result);
+        return new TryoutCollection($result);
     }
 
     public function find($id)
@@ -64,13 +65,16 @@ class TryoutController extends Controller
             'scoring_system' => $req->scoring_system
         ]);
 
-        return new TryoutResource($result);
+        return new TryoutCollection($result);
     }
 
     public function delete($id)
     {
         $result = $this->tryout->destroy($id);
 
-        return $result;
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully delete a tryout',
+        ]);
     }
 }
