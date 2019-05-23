@@ -15,21 +15,11 @@ class ReviewResource extends JsonResource
      */
     public function toArray($request)
     {
-        $course = Course::findOrFail($this->course_id);
-
         return [
             'id' => $this->id,
-            'course' => [
-                'title' => $course->title,
-                'cover' => $course->cover,
-                'description' => $course->description,
-            ],
             'star' => $this->star,
             'body' => $this->body,
             'user' => $this->user_id,
-            'href' => [
-                'link' => route('review/detail', [$course->id, $this->id]),
-            ],
             'posted' => $this->created_at->diffForHumans(),
         ];
     }
