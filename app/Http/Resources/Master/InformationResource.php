@@ -14,6 +14,11 @@ class InformationResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $announcements = Information::where('category', 'announcements')->get();
+        $sliders = Information::where('category', 'sliders')->get();
+        return [
+            'announcemets' => $announcements,
+            'sliders' => $sliders
+        ];
     }
 }
