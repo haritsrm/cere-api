@@ -21,6 +21,7 @@ class SectionResource extends JsonResource
         $quiz   = $this->quiz();
 
         return [
+            'id' => $this->id,
             'course' => [
                 'title' => $course->title,
                 'cover' => $course->cover,

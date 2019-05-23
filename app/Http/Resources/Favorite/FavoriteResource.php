@@ -18,6 +18,7 @@ class FavoriteResource extends JsonResource
         $course = Course::findOrFail($this->course_id);
 
         return [
+            'id' => $this->id,
             'course' => [
                 'title' => $course->title,
                 'cover' => $course->cover,

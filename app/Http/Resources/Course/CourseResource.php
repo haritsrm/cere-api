@@ -18,6 +18,7 @@ class CourseResource extends JsonResource
         $lesson = Lesson::find($this->lesson_id);
 
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'cover' => $this->cover,
             'description' => $this->description,

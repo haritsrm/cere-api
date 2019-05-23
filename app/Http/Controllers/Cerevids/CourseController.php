@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\CourseService;
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
+use App\Models\Lesson;
 
 class CourseController extends Controller
 {
@@ -20,6 +21,13 @@ class CourseController extends Controller
         $courses = $this->course->browse();
 
         return CourseCollection::collection($courses);
+    }
+
+    public function indexByLesson()
+    {
+        $lessons = Lesson::all();
+
+        return LessonCollection::collection($lessons);
     }
 
     public function create(Request $req)
