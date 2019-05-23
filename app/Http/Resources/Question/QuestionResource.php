@@ -21,12 +21,12 @@ class QuestionResource extends JsonResource
             'duration' => $this->duration,
             'question' => $this->question,
             'option' => [
-                'option_a' => $this->option_a,
-                'option_b' => $this->option_b,
-                'option_c' => $this->option_c,
-                'option_d' => $this->option_d,
-                'option_e' => $this->option_e,
-                'option_f' => $this->option_f
+                ['option' => $this->option_a],
+                ['option' => $this->option_b],
+                ['option' => $this->option_c],
+                ['option' => $this->option_d],
+                ['option' => $this->option_e],
+                ['option' => $this->option_f]
             ],
             'correct_answer' => $this->correct_answer,
             'explanation' => $this->explanation,
