@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Lesson;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Course\CourseCollection;
 
 class LessonCollection extends JsonResource
 {
@@ -18,7 +19,7 @@ class LessonCollection extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'passing_percentage' => $this->passing_percentage,
-            'courses' => Course::collection($this->courses),
+            'courses' => CourseCollection::collection($this->courses),
         ];
     }
 }
