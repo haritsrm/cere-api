@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Information;
 
 class InformationResource extends JsonResource
 {
