@@ -21,23 +21,12 @@ class ForumController extends Controller
         return ForumResource::collection($forums);
     }
 
-    public function createForStudent($course_id, Request $req)
+    public function create($course_id, Request $req)
     {
         $result = $this->forum->create([
             'course_id' => $course_id,
             'body' => $req->body,
-            'student_id' => $req->student_id,
-        ]);
-
-        return new ForumResource($result);
-    }
-
-    public function createForTeacher($course_id, Request $req)
-    {
-        $result = $this->forum->create([
-            'course_id' => $course_id,
-            'body' => $req->body,
-            'teacher_id' => $req->teacher_id,
+            'user_id' => $req->user_id,
         ]);
 
         return new ForumResource($result);
