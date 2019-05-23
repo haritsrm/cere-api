@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cerevids;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\CourseService;
+use App\Http\Resources\Lesson\LessonCollection;
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
 use App\Models\Lesson;
@@ -23,9 +24,9 @@ class CourseController extends Controller
         return CourseCollection::collection($courses);
     }
 
-    public function indexByLesson()
+    public function indexByLesson($lesson_id)
     {
-        $lessons = Lesson::all();
+        $lessons = Lesson::find($lesson_id);
 
         return LessonCollection::collection($lessons);
     }
