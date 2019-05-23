@@ -32,7 +32,12 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "providers": [
+                "Barryvdh\\Cors\\ServiceProvider"
+            ],
+            "aliases": {
+                "Debugbar": "Barryvdh\\Cors\\Facade"
+            }
         }
     },
     "autoload": {
