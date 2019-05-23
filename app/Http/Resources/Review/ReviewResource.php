@@ -26,7 +26,7 @@ class ReviewResource extends JsonResource
             ],
             'star' => $this->star,
             'body' => $this->body,
-            'student' => 'student name',
+            'user' => $this->user_id,
             'href' => [
                 'link' => route('review/detail', [$course->id, $this->id]),
             ],

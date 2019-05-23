@@ -27,7 +27,7 @@ class ReviewController extends Controller
             'course_id' => $course_id,
             'star' => $req->star,
             'body' => $req->body,
-            'student_id' => $req->student_id,
+            'user_id' => $req->user_id,
         ]);
 
         return new ReviewResource($result);
