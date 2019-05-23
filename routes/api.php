@@ -112,7 +112,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'sections/{section_id}'
+    'prefix' => 'sections/{section_id}',
+    'middleware' => 'auth:api'
 ], function(){
     Route::get('/videos', 'Cerevids\VideoController@index')->name('videos');
     Route::post('/videos/create', 'Cerevids\VideoController@create')->name('video/create');
@@ -135,7 +136,7 @@ Route::group([
 //Cerevid's Routes --end
 
 //Cereout's Routes --begin
-Route::group(['prefix' => 'cereouts'], function(){
+Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/question/{id}', 'Cereouts\QuestionController@index')->name('questions');
     Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
     Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');
@@ -152,4 +153,20 @@ Route::group(['prefix' => 'cereouts'], function(){
         Route::post('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
         Route::delete('/{id}', 'Cereouts\CereoutController@delete')->name('cereout/delete');
     });
+});
+//Cereout's Routes --end
+
+//Client's environments --begin
+Route::group([
+    'prefix' => 'classes'
+], function(){
+    Route::get('/', 'Cerevids\EnvironmentController@classes')->name('list/class');
+    Route::get('/{class_id}', 'Cerevids\EnvironmentController@findClass')->name('class/detail');
+});
+
+Route::group([
+    'prefix' => 'lessons'
+], function(){
+    Route::get('/', 'Cerevids\EnvironmentController@lessons')->name('list/lesson');
+    Route::get('/{class_id}', 'Cerevids\EnvironmentController@findLesson')->name('lesson/detail');
 });
