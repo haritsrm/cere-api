@@ -107,8 +107,12 @@ class CereoutController extends Controller
         $passing_percentage = Question::join('tryouts','tryouts.id','=','question.tryout_id')
                     ->join('lessons','lessons.id','=','tryouts.lesson_id')
                     ->select('lessons.passing_percentage')
-                    ->get(); 
-        $result_status = "Lulus";
+                    ->first(); 
+        if($score > $passing_percentage){
+            $result_status = "Lulus";
+        }else{
+            $result_status = "Tidak Lulus";
+        }
 
         $result = $this->cereout->update($id, [
             'my_time' => $req->my_time,
