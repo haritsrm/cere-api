@@ -61,7 +61,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
-    Route::get('/by_lesson', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
+    Route::get('/lesson/{lesson_id}', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
     Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');
     Route::put('/{id}', 'Cerevids\CourseController@update')->name('course/update');

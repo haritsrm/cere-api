@@ -29,11 +29,9 @@ class CourseResource extends JsonResource
                 'passing_percentage' => $lesson->passing_percentage
             ],
             'teacher' => $this->teacher_id,
-            'href' => [
-                'sections' => route('sections', $this->id),
-                'forums' => route('forums', $this->id),
-                'reviews' => route('reviews', $this->id),
-            ],
+            'sections' => $this->sections,
+            'forums' => $this->forums,
+            'reviews' => $this->reviews,
             'rating' => round($this->reviews()->avg('star')),
             'created' => $this->created_at->diffForHumans()
         ];
