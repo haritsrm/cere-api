@@ -25,8 +25,7 @@ class ForumResource extends JsonResource
                 'description' => $course->description,
             ],
             'body' => $this->body,
-            'student' => $this->student_id,
-            'teacher' => $this->teacher_id,
+            'user' => $this->user_id,
             'href' => [
                 'link' => route('forum/detail', [$course->id, $this->id]),
             ],
