@@ -18,7 +18,7 @@ class LessonCollection extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'passing_percentage' => $this->passing_percentage,
-            'courses' => $this->courses,
+            'courses' => Course::collection($this->courses),
         ];
     }
 }
