@@ -9,6 +9,7 @@ use App\Http\Controllers\Services\Cereouts\AnswerService;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 
+
 class CereoutController extends Controller
 {
     public function __construct()
@@ -84,21 +85,29 @@ class CereoutController extends Controller
         $correct_answered = 0;
         $incorrect_answered = 0;
         $left_answered = 0;
+        $score = 0;
         $answers = $this->answer->findCereout($id);
         foreach($answers as $answer){
+            $correct_score = $answer->correct_score;
+            $incorrect_score = $answer->incorrect_score;
             if(!is_null($answer->answer)){
                 if($answer->answer == $this->question->find($answer->question_id)->correct_answer){
                     $correct_answered++;
+                    $score += $correct_score;
                 }
                 else{
                     $incorrect_anwered++;
+                    $score -= $incorrect_score;
                 }
             }
             else{
                 $left_answerd++;
             }
         }
-        $score = $correct_answered * 10;
+        $passing_percentage = Question::join('tryouts','tryouts.id','=','question.tryout_id')
+                    ->join('lessons','lessons.id','=','tryouts.lesson_id')
+                    ->select('lessons.passing_percentage')
+                    ->get(); 
         $result_status = "Lulus";
 
         $result = $this->cereout->update($id, [

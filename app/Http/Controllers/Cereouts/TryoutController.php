@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Tryout\TryoutResource;
+use App\Models\Question;
+use App\Models\Tryout;
+use App\Models\Lesson;
 
 class TryoutController extends Controller
 {
