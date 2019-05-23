@@ -89,8 +89,7 @@ Route::group([
 
     Route::group(['prefix' => '/{course_id}/forums'], function(){
         Route::get('/', 'Cerevids\ForumController@index')->name('forums');
-        Route::post('/student_create', 'Cerevids\ForumController@createForStudent')->name('forum/student_create');
-        Route::post('/teacher_create', 'Cerevids\ForumController@createForTeacher')->name('forum/teacher_create');
+        Route::post('/create', 'Cerevids\ForumController@create')->name('forum/create');
         Route::get('/{forum_id}', 'Cerevids\ForumController@find')->name('forum/detail');
         Route::put('/{forum_id}', 'Cerevids\ForumController@update')->name('forum/update');
         Route::delete('/{forum_id}', 'Cerevids\ForumController@delete')->name('forum/delete');
