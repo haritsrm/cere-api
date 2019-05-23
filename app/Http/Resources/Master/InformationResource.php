@@ -18,7 +18,7 @@ class InformationResource extends JsonResource
         $announcements = Information::where('category', 'announcements')->get();
         $sliders = Information::where('category', 'sliders')->get();
         return [
-            'announcemets' => $announcements,
+            'announcements' => $announcements,
             'sliders' => $sliders
         ];
     }
