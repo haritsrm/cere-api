@@ -28,7 +28,7 @@ class CourseController extends Controller
     {
         $lessons = Lesson::find($lesson_id);
 
-        return LessonCollection::collection($lessons);
+        return new LessonCollection($lessons);
     }
 
     public function create(Request $req)
