@@ -4,6 +4,7 @@ namespace App\Http\Resources\Tryout;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
+use App\Models\Kelas;
 
 class TryoutCollection extends JsonResource
 {
