@@ -166,7 +166,6 @@ return [
          * Package Service Providers...
          */
         Zizaco\Entrust\EntrustServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
