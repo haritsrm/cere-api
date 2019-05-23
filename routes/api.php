@@ -158,6 +158,7 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
 //master data Routes
 Route::group(['prefix' => 'master'], function(){
     Route::get('/class', 'Master\ClassController@index');
+    Route::get('/lesson', 'Cerevids\EnvironmentController@lessons');
     Route::get('/university', 'Master\UniversityController@index');
     Route::get('/department', 'Master\DepartmentController@index');
     Route::get('/faculty', 'Master\FacultyController@index');
