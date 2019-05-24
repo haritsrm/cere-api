@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Cerevids;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Learned;
-use App\Http\Resources\Master\LearnedResource;
+use App\Http\Resources\Learned\LearnedResource;
 
 class LearnedController extends Controller
 {
