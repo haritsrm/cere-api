@@ -5,6 +5,7 @@ namespace App\Http\Resources\Tryout;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\Models\Kelas;
+use App\Models\Question;
 
 class TryoutCollection extends JsonResource
 {
@@ -19,6 +20,7 @@ class TryoutCollection extends JsonResource
         $lesson = Lesson::find($this->lesson_id)->name;
         $passing_percentage = Lesson::find($this->lesson_id)->passing_percentage;
         $class = Kelas::find($this->class_id)->name_class;
+        $question = Question::where('tryout_id',$this->id)->count();
 
         return [
             'id' => $this->id,
@@ -26,6 +28,7 @@ class TryoutCollection extends JsonResource
             'lesson' => $lesson,
             'passing_percentage' => $passing_percentage,
             'class' => $class,
+            'number_of_question' => $question,
             'instruction' => $this->instruction,
             'duration' => $this->duration,
             'attempt_count' => $this->attempt_count,

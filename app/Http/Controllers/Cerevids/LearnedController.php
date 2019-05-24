@@ -21,13 +21,23 @@ class LearnedController extends Controller
     }
 
     public function store(Request $request){
-    	$data = new Learned;
-        $data->course_id = $request->course_id;
-        $data->user_id = $request->user_id;
-        $data->save();
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully created data!'
-        ], 201);
+    	$countLearned = Learned::where('course_id',$request->course_id)
+    					->where('user_id',$request->user_id)
+    					->count();
+    	if($countLearned==0){
+    		$data = new Learned;
+	        $data->course_id = $request->course_id;
+	        $data->user_id = $request->user_id;
+	        $data->save();
+	        return response()->json([
+	            'status' => true,
+	            'message' => 'Successfully created data!'
+	        ], 201);
+    	}else{
+    		return response()->json([
+	            'status' => true,
+	            'message' => 'Data already exist!'
+	        ], 201);
+    	}
     }
 }
