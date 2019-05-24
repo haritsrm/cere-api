@@ -23,6 +23,10 @@ class ForumResource extends JsonResource
                 'title' => $course->title,
                 'cover' => $course->cover,
                 'description' => $course->description,
+                'teacher' => [
+                    'name' => User::find($course->user_id)->name,
+                ],
+                'rating' => round($course->reviews()->avg('star')),
             ],
             'body' => $this->body,
             'user' => $this->user_id,
