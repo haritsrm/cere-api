@@ -17,12 +17,12 @@ class CereoutService extends Controller
 
     public function browse($tryout_id)
     {
-        return $this->newTryout->find($tryout_id)->cereouts()->paginate(10);
+        return $this->newTryout->find($tryout_id)->cereouts()->all();
     }
 
     public function browseByUser($tryout_id, $user_id)
     {
-        return $this->newTryout->cereouts()->where('tryout_id', $tryout_id)->where('user_id', $user_id)->paginate(10);
+        return $this->newTryout->cereouts()->where('tryout_id', $tryout_id)->where('user_id', $user_id)->all();
     }
 
     public function create(Array $req)

@@ -13,21 +13,31 @@ class LearnedController extends Controller
     //
     public function index($id){
     	$data = Learned::join('courses','courses.id','=','learneds.course_id')
-    				->join('users','users.id','=','courses.teacher_id')
-                    ->select('learneds.*', 'courses.title','courses.cover', 'courses.description' ,'courses.teacher_id','users.name')
+    				->join('users','users.id','=','courses.user_id')
+                    ->select('learneds.*', 'courses.title','courses.cover', 'courses.description' ,'courses.user_id','users.name')
                     ->where('learneds.user_id',$id)
                     ->get();
         return LearnedResource::collection($data);
     }
 
     public function store(Request $request){
-    	$data = new Learned;
-        $data->course_id = $request->course_id;
-        $data->user_id = $request->user_id;
-        $data->save();
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully created data!'
-        ], 201);
+    	$countLearned = Learned::where('course_id',$request->course_id)
+    					->where('user_id',$request->user_id)
+    					->count();
+    	if($countLearned==0){
+    		$data = new Learned;
+	        $data->course_id = $request->course_id;
+	        $data->user_id = $request->user_id;
+	        $data->save();
+	        return response()->json([
+	            'status' => true,
+	            'message' => 'Successfully created data!'
+	        ], 201);
+    	}else{
+    		return response()->json([
+	            'status' => true,
+	            'message' => 'Data already exist!'
+	        ], 201);
+    	}
     }
 }
