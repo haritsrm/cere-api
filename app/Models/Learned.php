@@ -8,6 +8,6 @@ class Learned extends Model
 {
     //
     protected $fillable = [
-        'lesson_id', 'user_id', 
+        'course_id', 'user_id', 
     ];
 }

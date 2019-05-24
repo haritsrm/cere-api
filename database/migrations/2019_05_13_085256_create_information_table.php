@@ -18,6 +18,7 @@ class CreateInformationTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->enum('category', ['announcements', 'sliders']);
+            $table->string('url_photo');
             $table->timestamps();
         });
     }

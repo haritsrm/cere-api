@@ -44,30 +44,68 @@ class CereoutController extends Controller
 
     public function attempt($tryout_id, Request $req)
     {
-        $attempted_count = count($this->cereout->findUser($req->user_id));
+        $attempted_count = AttemptTryout::where('tryout_id', $tryout_id)
+                        ->where('user_id', $req->user_id)
+                        ->count();                
         $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
         $price = $this->tryout->find($tryout_id)->price;
         $user = User::where('id',$req->user_id)->first();
         
-        if($attempted_count < $available_attempts){
-            $result = $this->cereout->create([
-                'tryout_id' => $tryout_id,
-                'user_id' => $req->user_id
-            ]);
+        if($attempted_count==0 ){
+            if($user->balance >= $price){
+                $result = $this->cereout->create([
+                        'tryout_id' => $tryout_id,
+                        'user_id' => $req->user_id
+                    ]);
 
-            return (new CereoutResource($result))
+                $data = new AttemptTryout;
+                $data->user_id = $req->user_id;
+                $data->tryout_id = $tryout_id;
+                $data->left_attempt = $available_attempts-1;
+                $data->save();
+
+                $user->balance -= $price;
+                $user->save();
+
+                return (new CereoutResource($result))
                         ->additional([
                             'status' => true,
                             'message' => 'Succesfully attempt a tryout'
-                        ]);
+                        ]);      
+            }else{
+                return (new CereoutResource($result))
+                                ->additional([
+                                    'status' => false,
+                                    'message' => 'Insufficient balance'
+                                ]);
+            }
+        }else{
+            $check_attempted = AttemptTryout::where('tryout_id', $tryout_id)
+                        ->where('user_id', $req->user_id)
+                        ->first();
+            if($check_attempted->left_attempt > 0){
+                $result = $this->cereout->create([
+                        'tryout_id' => $tryout_id,
+                        'user_id' => $req->user_id
+                    ]);
+
+                $check_attempted->left_attempt -= 1;
+                $check_attempted->save();
+                    
+                return (new CereoutResource($result))
+                            ->additional([
+                                'status' => true,
+                                'message' => 'Succesfully attempt a tryout'
+                            ]);
+            }else{
+                return (new CereoutResource($result))
+                                ->additional([
+                                    'status' => false,
+                                    'message' => 'You have maximum limit of attempts'
+                                ]);
+            }                
+                
         }
-        else{
-            return response()->json([
-                'status' => false,
-                'message' => "You've maximum limit of attempts"
-            ]);
-        }       
-        
     }
 
     public function find($tryout_id, $id)
