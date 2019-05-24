@@ -16,11 +16,11 @@ class InformationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $$his->id,
-            'title' => $title,
-            'content' => $content,
-            'category' => $category,
-            'url_photo' => $url_photo
+            'id' => $this->id,
+            'title' => $this->title,
+            'content' => $this->content,
+            'category' => $this->category,
+            'url_photo' => $this->url_photo
         ];
     }
 }
