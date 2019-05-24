@@ -4,6 +4,7 @@ namespace App\Http\Resources\Course;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
+use App\User;
 
 class CourseCollection extends JsonResource
 {
@@ -28,7 +29,9 @@ class CourseCollection extends JsonResource
                 'name' => $lesson->name,
                 'passing_percentage' => $lesson->passing_percentage
             ],
-            'teacher' => $this->user_id,
+            'teacher' => [
+                'name' => User::find($course->user_id)->name,
+            ],
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],
