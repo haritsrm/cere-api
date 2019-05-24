@@ -9,6 +9,7 @@ use App\Models\Favorite;
 use App\Models\Learned;
 use App\Http\Resources\Section\SectionCollection;
 use App\Http\Resources\Forum\ForumCollection;
+use App\Http\Resources\Review\ReviewCollection;
 
 class CourseResource extends JsonResource
 {
