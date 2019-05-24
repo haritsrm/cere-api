@@ -17,7 +17,6 @@ class CourseResource extends JsonResource
      */
     public function toArray($request)
     {
-        $learned = false;
         $lesson = Lesson::find($this->lesson_id);
         $favorites = Favorite::where('user_id', $request->user()->id)
                                     ->where('course_id', $this->id)->get();
@@ -26,6 +25,15 @@ class CourseResource extends JsonResource
         }
         else{
             $favorite_result = $favorites->first()->id;
+        }
+
+        $learned = Cerevid::where('user_id', $request->user()->id)
+                                    ->where('course_id', $this->id)->get();
+        if(count($learned) == 0){
+            $learned_result = false;
+        }
+        else{
+            $learned_result = true;
         }
 
         return [
@@ -42,6 +50,7 @@ class CourseResource extends JsonResource
             'favorite' => [
                 'id' => $favorite_result,
             ],
+            'learned' => $learned_result,
             'teacher' => [
                 'name' => User::find($this->user_id)->name,
             ],

@@ -43,6 +43,9 @@ class FavoriteController extends Controller
     {
         $result = $this->favorite->destroy($favorite_id);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully remove favorite',
+        ], 201);
     }
 }
