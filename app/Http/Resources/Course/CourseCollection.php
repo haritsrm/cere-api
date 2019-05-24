@@ -28,7 +28,7 @@ class CourseCollection extends JsonResource
                 'name' => $lesson->name,
                 'passing_percentage' => $lesson->passing_percentage
             ],
-            'teacher' => $this->teacher_id,
+            'teacher' => $this->user_id,
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],
