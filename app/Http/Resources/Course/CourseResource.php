@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\User;
 use App\Models\Favorite;
+use App\Models\Cerevid;
 
 class CourseResource extends JsonResource
 {
