@@ -28,7 +28,10 @@ class SectionController extends Controller
             'title' => $req->title,
         ]);
 
-        return new SectionResource($result);
+        return (new SectionResource($result))->additional([
+            'status' => true,
+            'message' => 'Succesfully add favorite'
+        ]);
     }
 
     public function find($course_id, $section_id)
@@ -44,13 +47,19 @@ class SectionController extends Controller
             'title' => $req->title,
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully update '.$result->title
+        ]);;
     }
 
     public function delete($course_id, $section_id)
     {
         $result = $this->section->destroy($section_id);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully delete section'
+        ]);;
     }
 }

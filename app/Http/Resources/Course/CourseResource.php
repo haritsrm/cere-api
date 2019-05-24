@@ -7,6 +7,8 @@ use App\Models\Lesson;
 use App\User;
 use App\Models\Favorite;
 use App\Models\Learned;
+use App\Http\Resources\Section\SectionCollection;
+use App\Http\Resources\Forum\ForumCollection;
 
 class CourseResource extends JsonResource
 {
@@ -55,8 +57,8 @@ class CourseResource extends JsonResource
             'teacher' => [
                 'name' => User::find($this->user_id)->name,
             ],
-            'sections' => $this->sections,
-            'forums' => $this->forums,
+            'sections' => SectionCollection::collection($this->sections),
+            'forums' => ForumCollection::collection($this->forums),
             'reviews' => $this->reviews,
             'rating' => round($this->reviews()->avg('star')),
             'created' => $this->created_at->diffForHumans()

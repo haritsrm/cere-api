@@ -30,7 +30,7 @@ class ForumResource extends JsonResource
                 'rating' => round($course->reviews()->avg('star')),
             ],
             'body' => $this->body,
-            'user' => $this->user_id,
+            'user' => User::find($this->user_id)->name,
             'href' => [
                 'link' => route('forum/detail', [$course->id, $this->id]),
             ],
