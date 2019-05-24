@@ -16,7 +16,10 @@ class LearnedResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'title' => $this->title,
+            'description' => $this->description,
+            'cover' => $this->cover,
+            'teacher' => $this->name,
         ];
     }
 }

@@ -16,16 +16,17 @@ class TryoutResource extends JsonResource
      */
     public function toArray($request)
     {
+        $passing_percentage = Lesson::find($this->lesson_id)->passing_percentage;
         $lesson = Lesson::find($this->lesson_id)->name;
-        $lesson = Lesson::find($this->lesson_id)->passing_percentage;
         $class = Kelas::find($this->class_id)->name_class;
 
         return [
             'id', $this->id,
             'name' => $this->name,
-            'passing_percentage' => $lesson,
+            'lesson' => $lesson,
             'class' => $class,
             'instruction' => $this->instruction,
+            'passing_percentage' => $this->lesson,
             'duration' => $this->duration,
             'attempt_count' => $this->attempt_count,
             'start_date' => $this->start_date,
