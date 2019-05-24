@@ -13,7 +13,7 @@ class LearnedController extends Controller
     //
     public function index($id){
     	$data = Learned::join('courses','courses.id','=','learneds.course_id')
-    				->join('users','users.id','=','courses.teacher_id')
+    				->join('users','users.id','=','courses.user_id')
                     ->select('learneds.*', 'courses.title','courses.cover', 'courses.description' ,'courses.teacher_id','users.name')
                     ->where('learneds.user_id',$id)
                     ->get();
