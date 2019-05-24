@@ -66,6 +66,8 @@ Route::group([
     Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');
     Route::put('/{id}', 'Cerevids\CourseController@update')->name('course/update');
     Route::delete('/{id}', 'Cerevids\CourseController@delete')->name('course/delete');
+    Route::get('/lesson/{id}/learned', 'Cerevids\LearnedController@index');
+    Route::post('/lesson/{id}/learned', 'Cerevids\LearnedController@create');
 
     Route::group([
         'prefix' => '/{course_id}/sections'
