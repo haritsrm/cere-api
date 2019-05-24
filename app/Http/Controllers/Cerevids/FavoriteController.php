@@ -15,7 +15,7 @@ class FavoriteController extends Controller
         $this->favorite = new FavoriteService;
     }
 
-    public function index($course_id, Request $req)
+    public function index(Request $req)
     {
         $favorites = User::find($req->user()->id)->favorites;
 
