@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Favorite;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Course;
 use App\User;
 
 class FavoriteResource extends JsonResource

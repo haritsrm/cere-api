@@ -21,7 +21,6 @@ class CourseResource extends JsonResource
      */
     public function toArray($request)
     {
-        $lesson = Lesson::find($this->lesson_id);
         $favorites = Favorite::where('user_id', $request->user()->id)
                                     ->where('course_id', $this->id)->get();
         if(count($favorites) == 0){
@@ -47,9 +46,9 @@ class CourseResource extends JsonResource
             'description' => $this->description,
             'curriculum' => $this->curriculum,
             'lesson' => [
-                'class_id' => $lesson->class_id,
-                'name' => $lesson->name,
-                'passing_percentage' => $lesson->passing_percentage
+                'class_id' => $this->lesson->class_id,
+                'name' => $this->lesson->name,
+                'passing_percentage' => $this->lesson->passing_percentage
             ],
             'favorite' => [
                 'id' => $favorite_result,

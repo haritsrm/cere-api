@@ -34,4 +34,9 @@ class Course extends Model
     {
         return $this->hasMany(Favorite::class);
     }
+
+    function lesson()
+    {
+        return $this->belongsTo(Lesson::class);
+    }
 }
