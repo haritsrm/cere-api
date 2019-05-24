@@ -39,7 +39,7 @@ class CourseController extends Controller
             'description' => $req->description,
             'curriculum' => $req->curriculum,
             'lesson_id' => $req->lesson_id,
-            'teacher_id' => $req->teacher_id
+            'user_id' => $req->user()->id,
         ]);
 
         return (new CourseResource($result))
@@ -64,7 +64,7 @@ class CourseController extends Controller
             'description' => $req->description,
             'curriculum' => $req->curriculum,
             'lesson_id' => $req->lesson_id,
-            'teacher_id' => $req->teacher_id
+            'user_id' => $req->user_id
         ]);
 
         return new CourseResource($result);

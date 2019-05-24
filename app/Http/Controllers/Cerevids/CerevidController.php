@@ -25,7 +25,7 @@ class CerevidController extends Controller
     {
         $result = $this->cerevid->create([
             'course_id' => $course_id,
-            'student_id' => $req->student_id,
+            'student_id' => $req->user()->id,
         ]);
 
         return new CerevidResource($result);
