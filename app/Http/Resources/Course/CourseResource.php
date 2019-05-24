@@ -21,7 +21,7 @@ class CourseResource extends JsonResource
         $lesson = Lesson::find($this->lesson_id);
         $favorites = Favorite::where('user_id', $request->user()->id)
                                     ->where('course_id', $this->id)->get();
-        if(is_null($favorites)){
+        if(count($favorites) == 0){
             $favorite_result = 0;
         }
         else{
