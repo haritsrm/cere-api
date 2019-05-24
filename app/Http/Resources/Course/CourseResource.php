@@ -30,7 +30,7 @@ class CourseResource extends JsonResource
                 'passing_percentage' => $lesson->passing_percentage
             ],
             'teacher' => [
-                'name' => User::find($course->user_id)->name,
+                'name' => User::find($this->user_id)->name,
             ],
             'sections' => $this->sections,
             'forums' => $this->forums,
