@@ -8,7 +8,8 @@ use App\Http\Controllers\Services\Cereouts\CereoutService;
 use App\Http\Controllers\Services\Cereouts\AnswerService;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
-
+use App\User;
+use App\Models\AttemptTryout;
 
 class CereoutController extends Controller
 {
@@ -45,6 +46,9 @@ class CereoutController extends Controller
     {
         $attempted_count = count($this->cereout->findUser($req->user_id));
         $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
+        $price = $this->tryout->find($tryout_id)->price;
+        $user = User::where('id',$req->user_id)->first();
+        
         if($attempted_count < $available_attempts){
             $result = $this->cereout->create([
                 'tryout_id' => $tryout_id,
@@ -53,16 +57,17 @@ class CereoutController extends Controller
 
             return (new CereoutResource($result))
                         ->additional([
-                            'status' => 'success',
+                            'status' => true,
                             'message' => 'Succesfully attempt a tryout'
                         ]);
         }
         else{
             return response()->json([
-                'status' => 'error',
+                'status' => false,
                 'message' => "You've maximum limit of attempts"
             ]);
-        }
+        }       
+        
     }
 
     public function find($tryout_id, $id)
