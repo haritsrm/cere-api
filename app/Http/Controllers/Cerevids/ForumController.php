@@ -26,7 +26,7 @@ class ForumController extends Controller
         $result = $this->forum->create([
             'course_id' => $course_id,
             'body' => $req->body,
-            'user_id' => $req->user_id,
+            'user_id' => $req->user()->id,
         ]);
 
         return new ForumResource($result);

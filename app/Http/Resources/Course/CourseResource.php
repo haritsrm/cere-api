@@ -19,12 +19,13 @@ class CourseResource extends JsonResource
     {
         $learned = false;
         $lesson = Lesson::find($this->lesson_id);
-        try {
-            $favorite_result = Favorite::where('user_id', $request->user()->id)
-                                ->where('course_id', $this->id)->first()->id;
-        }
-        catch(ErrorException $e) {
+        $favorites = Favorite::where('user_id', $request->user()->id)
+                                    ->where('course_id', $this->id)->get();
+        if(is_null($favorites)){
             $favorite_result = 0;
+        }
+        else{
+            $favorite_result = $favorites->first()->id;
         }
 
         return [

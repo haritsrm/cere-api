@@ -26,7 +26,7 @@ class FavoriteController extends Controller
     {
         $result = $this->favorite->create([
             'course_id' => $course_id,
-            'user_id' => $req->user_id,
+            'user_id' => $req->user()->id,
         ]);
 
         return new FavoriteResource($result);
