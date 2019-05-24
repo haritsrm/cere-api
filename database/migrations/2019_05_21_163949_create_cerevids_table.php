@@ -16,7 +16,7 @@ class CreateCerevidsTable extends Migration
         Schema::create('cerevids', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('course_id');
-            $table->bigInteger('student_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

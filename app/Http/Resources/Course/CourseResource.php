@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\User;
 use App\Models\Favorite;
-use App\Models\Cerevid;
+use App\Models\Learned;
 
 class CourseResource extends JsonResource
 {
@@ -28,7 +28,7 @@ class CourseResource extends JsonResource
             $favorite_result = $favorites->first()->id;
         }
 
-        $learned = Cerevid::where('user_id', $request->user()->id)
+        $learned = Learned::where('user_id', $request->user()->id)
                                     ->where('course_id', $this->id)->get();
         if(count($learned) == 0){
             $learned_result = false;
