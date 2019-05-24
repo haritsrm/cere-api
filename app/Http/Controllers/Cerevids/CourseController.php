@@ -67,7 +67,11 @@ class CourseController extends Controller
             'user_id' => $req->user_id
         ]);
 
-        return new CourseResource($result);
+        return (new CourseResource($result))
+        ->additional([
+            'status' => true,
+            'message' => 'Succesfully add '.$result->title
+        ]);
     }
 
     public function delete($id)
