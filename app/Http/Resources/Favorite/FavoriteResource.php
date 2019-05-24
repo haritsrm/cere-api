@@ -25,7 +25,7 @@ class FavoriteResource extends JsonResource
                 'teacher' => [
                     'name' => User::find($this->course->user_id)->name,
                 ],
-                'rating' => round($course->reviews()->avg('star')),
+                'rating' => round($this->course->reviews()->avg('star')),
             ],
             'user' => User::find($this->user_id)->name,
             'posted' => $this->created_at->diffForHumans(),
