@@ -59,7 +59,7 @@ class CourseResource extends JsonResource
             ],
             'sections' => SectionCollection::collection($this->sections),
             'forums' => ForumCollection::collection($this->forums),
-            'reviews' => $this->reviews,
+            'reviews' => ReviewResource::collection($this->reviews),
             'rating' => round($this->reviews()->avg('star')),
             'created' => $this->created_at->diffForHumans()
         ];
