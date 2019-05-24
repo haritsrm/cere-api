@@ -28,7 +28,7 @@ class CourseResource extends JsonResource
                 'name' => $lesson->name,
                 'passing_percentage' => $lesson->passing_percentage
             ],
-            'teacher' => $this->teacher_id,
+            'teacher' => $this->user_id,
             'sections' => $this->sections,
             'forums' => $this->forums,
             'reviews' => $this->reviews,

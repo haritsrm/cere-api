@@ -20,7 +20,7 @@ class CreateCoursesTable extends Migration
             $table->text('description');
             $table->string('curriculum');
             $table->integer('lesson_id');
-            $table->integer('teacher_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
