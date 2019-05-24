@@ -60,6 +60,7 @@ Route::group([
     'prefix' => 'courses',
     'middleware' => 'auth:api'
 ], function(){
+    Route::get('/favorites', 'Cerevids\FavoriteController@index')->name('favorites');
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
     Route::get('/lesson/{lesson_id}', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
@@ -98,7 +99,6 @@ Route::group([
     });
 
     Route::group(['prefix' => '/{course_id}/favorites'], function(){
-        Route::get('/', 'Cerevids\FavoriteController@index')->name('favorites');
         Route::post('/create', 'Cerevids\FavoriteController@create')->name('favorite/create');
         Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
         Route::delete('/{favorite_id}', 'Cerevids\FavoriteController@delete')->name('favorite/delete');
