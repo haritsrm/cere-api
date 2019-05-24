@@ -23,13 +23,11 @@ class FavoriteResource extends JsonResource
                 'cover' => $this->course->cover,
                 'description' => $this->course->description,
                 'teacher' => [
-                    'name' => User::find($course->user_id)->name,
+                    'name' => User::find($this->course->user_id)->name,
                 ],
                 'rating' => round($course->reviews()->avg('star')),
             ],
-            'href' => [
-                'link' => route('favorite/detail', [$course->id, $this->id]),
-            ],
+            'user' => User::find($this->user_id)->name,
             'posted' => $this->created_at->diffForHumans(),
         ];
     }
