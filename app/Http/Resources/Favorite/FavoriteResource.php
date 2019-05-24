@@ -16,14 +16,12 @@ class FavoriteResource extends JsonResource
      */
     public function toArray($request)
     {
-        $course = Course::findOrFail($this->course_id);
-
         return [
             'id' => $this->id,
             'course' => [
-                'title' => $course->title,
-                'cover' => $course->cover,
-                'description' => $course->description,
+                'title' => $this->course->title,
+                'cover' => $this->course->cover,
+                'description' => $this->course->description,
                 'teacher' => [
                     'name' => User::find($course->user_id)->name,
                 ],
