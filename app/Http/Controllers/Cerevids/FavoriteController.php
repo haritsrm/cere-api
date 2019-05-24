@@ -17,9 +17,9 @@ class FavoriteController extends Controller
 
     public function index($course_id, Request $req)
     {
-        $favorites = User::find($req->user()->id)->favorites();
+        $favorites = User::find($req->user()->id)->favorites;
 
-        return FavoriteResource::collection($favorites);
+        return $req->user();
     }
 
     public function create($course_id, Request $req)
