@@ -97,7 +97,10 @@ Route::group([
         Route::delete('/{forum_id}', 'Cerevids\ForumController@delete')->name('forum/delete');
     });
 
-    Route::get('/favorites', 'Cerevids\FavoriteController@index')->name('favorites');
+    Route::group(['prefix' => '/favorites'], function(){
+        Route::get('/', 'Cerevids\FavoriteController@index')->name('favorites');
+    });
+
     Route::group(['prefix' => '/{course_id}/favorites'], function(){
         Route::post('/create', 'Cerevids\FavoriteController@create')->name('favorite/create');
         Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
