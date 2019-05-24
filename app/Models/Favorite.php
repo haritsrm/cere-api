@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     protected $fillable = [
-        'course_id', 'student_id'
+        'course_id', 'user_id'
     ];
 
     function course()
     {
-        $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class);
+    }
+
+    function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

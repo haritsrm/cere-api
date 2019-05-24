@@ -61,6 +61,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
+    Route::get('/lesson/{lesson_id}', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
     Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');
     Route::put('/{id}', 'Cerevids\CourseController@update')->name('course/update');
@@ -90,8 +91,7 @@ Route::group([
 
     Route::group(['prefix' => '/{course_id}/forums'], function(){
         Route::get('/', 'Cerevids\ForumController@index')->name('forums');
-        Route::post('/student_create', 'Cerevids\ForumController@createForStudent')->name('forum/student_create');
-        Route::post('/teacher_create', 'Cerevids\ForumController@createForTeacher')->name('forum/teacher_create');
+        Route::post('/create', 'Cerevids\ForumController@create')->name('forum/create');
         Route::get('/{forum_id}', 'Cerevids\ForumController@find')->name('forum/detail');
         Route::put('/{forum_id}', 'Cerevids\ForumController@update')->name('forum/update');
         Route::delete('/{forum_id}', 'Cerevids\ForumController@delete')->name('forum/delete');

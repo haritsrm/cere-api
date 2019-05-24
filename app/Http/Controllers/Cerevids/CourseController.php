@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Cerevids;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\CourseService;
+use App\Http\Resources\Lesson\LessonCollection;
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
+use App\Models\Lesson;
 
 class CourseController extends Controller
 {
@@ -20,6 +22,13 @@ class CourseController extends Controller
         $courses = $this->course->browse();
 
         return CourseCollection::collection($courses);
+    }
+
+    public function indexByLesson($lesson_id)
+    {
+        $lessons = Lesson::find($lesson_id);
+
+        return new LessonCollection($lessons);
     }
 
     public function create(Request $req)

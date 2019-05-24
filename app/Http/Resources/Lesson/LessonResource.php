@@ -15,6 +15,7 @@ class LessonResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'passing_percentage' => $this->passing_percentage,
         ];

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\FavoriteService;
 use App\Http\Resources\Favorite\FavoriteResource;
+use App\User;
 
 class FavoriteController extends Controller
 {
@@ -14,9 +15,9 @@ class FavoriteController extends Controller
         $this->favorite = new FavoriteService;
     }
 
-    public function index($course_id)
+    public function index($course_id, Request $req)
     {
-        $favorites = $this->favorite->browse($course_id);
+        $favorites = User::find($req->user()->id)->favorites();
 
         return FavoriteResource::collection($favorites);
     }

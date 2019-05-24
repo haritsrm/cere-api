@@ -18,13 +18,17 @@ class CourseCollection extends JsonResource
         $lesson = Lesson::find($this->lesson_id);
 
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'cover' => $this->cover,
+            'description' => $this->description,
+            'curriculum' => $this->curriculum,
             'lesson' => [
                 'class_id' => $lesson->class_id,
                 'name' => $lesson->name,
                 'passing_percentage' => $lesson->passing_percentage
             ],
+            'teacher' => $this->teacher_id,
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],

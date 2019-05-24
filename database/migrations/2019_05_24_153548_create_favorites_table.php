@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateForumsTable extends Migration
+class CreateFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateForumsTable extends Migration
      */
     public function up()
     {
-        Schema::create('forums', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('course_id');
-            $table->integer('user_id');
-            $table->text('body');
+        Schema::create('favorites', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('course_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateForumsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('forums');
+        Schema::dropIfExists('favorite');
     }
 }

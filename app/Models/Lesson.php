@@ -10,6 +10,11 @@ class Lesson extends Model
         'class_id', 'name', 'passing_percentage'
     ];
 
+    function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
     function class()
     {
         return $this->belongsTo(Classroom::class);

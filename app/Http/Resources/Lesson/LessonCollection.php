@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Review;
+namespace App\Http\Resources\Lesson;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Course;
+use App\Http\Resources\Course\CourseCollection;
 
-class ReviewResource extends JsonResource
+class LessonCollection extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +17,9 @@ class ReviewResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'star' => $this->star,
-            'body' => $this->body,
-            'user' => $this->user_id,
-            'posted' => $this->created_at->diffForHumans(),
+            'name' => $this->name,
+            'passing_percentage' => $this->passing_percentage,
+            'courses' => CourseCollection::collection($this->courses),
         ];
     }
 }
