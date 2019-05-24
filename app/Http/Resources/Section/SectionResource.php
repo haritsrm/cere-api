@@ -26,6 +26,10 @@ class SectionResource extends JsonResource
                 'title' => $course->title,
                 'cover' => $course->cover,
                 'description' => $course->description,
+                'teacher' => [
+                    'name' => User::find($course->user_id)->name,
+                ],
+                'rating' => round($course->reviews()->avg('star')),
             ],
             'title' => $this->title,
             'videos' => $videos->get(),
