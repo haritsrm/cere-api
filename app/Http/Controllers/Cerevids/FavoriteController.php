@@ -19,7 +19,7 @@ class FavoriteController extends Controller
     {
         $favorites = User::find($req->user()->id)->favorites;
 
-        return $req->user();
+        return FavoriteResource::collection($favorites);
     }
 
     public function create($course_id, Request $req)
