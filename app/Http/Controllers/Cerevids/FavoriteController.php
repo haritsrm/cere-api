@@ -29,7 +29,10 @@ class FavoriteController extends Controller
             'user_id' => $req->user()->id,
         ]);
 
-        return new FavoriteResource($result);
+        return (new FavoriteResource($result))->additional([
+            'status' => true,
+            'message' => 'Succesfully add favorite'
+        ]);
     }
 
     public function find($course_id, $favorite_id)

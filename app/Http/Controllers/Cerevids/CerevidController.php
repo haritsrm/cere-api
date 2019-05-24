@@ -28,7 +28,11 @@ class CerevidController extends Controller
             'student_id' => $req->user()->id,
         ]);
 
-        return new CerevidResource($result);
+        return (new CerevidResource($result))
+        ->additional([
+            'status' => true,
+            'message' => 'Succesfully add cerevid'
+        ]);
     }
 
     public function find($course_id, $cerevid_id)

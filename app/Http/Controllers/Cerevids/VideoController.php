@@ -29,7 +29,10 @@ class VideoController extends Controller
             'video_url' => $req->video_url
         ]);
 
-        return new VideoResource($result);
+        return (new VideoResource($result))->additional([
+            'status' => true,
+            'message' => 'Succesfully add favorite'
+        ]);
     }
 
     public function find($section_id, $video_id)
@@ -46,13 +49,19 @@ class VideoController extends Controller
             'video_url' => $req->video_url
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully update '.$result->title
+        ]);;
     }
 
     public function delete($section_id, $video_id)
     {
         $result = $this->video->destroy($video_id);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully delete section'
+        ]);;
     }
 }

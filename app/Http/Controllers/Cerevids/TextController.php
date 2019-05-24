@@ -29,7 +29,10 @@ class TextController extends Controller
             'content' => $req->content
         ]);
 
-        return new TextResource($result);
+        return (new TextResource($result))->additional([
+            'status' => true,
+            'message' => 'Succesfully add favorite'
+        ]);
     }
 
     public function find($section_id, $text_id)
@@ -46,13 +49,19 @@ class TextController extends Controller
             'content' => $req->content
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully update '.$result->title
+        ]);;
     }
 
     public function delete($section_id, $text_id)
     {
         $result = $this->text->destroy($text_id);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully delete section'
+        ]);;
     }
 }

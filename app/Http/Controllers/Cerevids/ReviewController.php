@@ -30,7 +30,10 @@ class ReviewController extends Controller
             'user_id' => $req->user()->id,
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully add review'
+        ]);
     }
 
     public function find($course_id, $review_id)
@@ -47,13 +50,19 @@ class ReviewController extends Controller
             'body' => $req->body,
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully update review'
+        ]);;
     }
 
     public function delete($course_id, $review_id)
     {
         $result = $this->review->destroy($review_id);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully delete review'
+        ]);
     }
 }

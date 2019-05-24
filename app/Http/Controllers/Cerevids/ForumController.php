@@ -29,7 +29,11 @@ class ForumController extends Controller
             'user_id' => $req->user()->id,
         ]);
 
-        return new ForumResource($result);
+        return (new ForumResource($result))
+        ->additional([
+            'status' => true,
+            'message' => 'Succesfully post'
+        ]);
     }
 
     public function find($course_id, $forum_id)
