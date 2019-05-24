@@ -15,8 +15,8 @@ class CreateLearnedsTable extends Migration
     {
         Schema::create('learneds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('lesson_id');
-            $table->string('user_id');
+            $table->bigInteger('course_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }
