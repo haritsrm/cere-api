@@ -18,9 +18,9 @@ class InformationResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'content' => $this->content,
+            'caption' => $this->content,
             'category' => $this->category,
-            'url_photo' => $this->url_photo
+            'url' => $this->url_photo
         ];
     }
 }

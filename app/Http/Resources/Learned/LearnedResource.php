@@ -20,6 +20,7 @@ class LearnedResource extends JsonResource
             'description' => $this->description,
             'cover' => $this->cover,
             'teacher' => $this->name,
+            'course_id' => $this->course_id,
         ];
     }
 }
