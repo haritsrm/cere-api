@@ -21,8 +21,7 @@ class CourseResource extends JsonResource
      */
     public function toArray($request)
     {
-        $favorites = Favorite::where('user_id', $request->user()->id)
-                                    ->where('course_id', $this->id)->get();
+        $favorites = Favorite::where('user_id', $request->user()->id)->where('course_id', $this->id)->get();
         if(count($favorites) == 0){
             $favorite_result = 0;
         }
@@ -30,8 +29,7 @@ class CourseResource extends JsonResource
             $favorite_result = $favorites->first()->id;
         }
 
-        $learned = Learned::where('user_id', $request->user()->id)
-                                    ->where('course_id', $this->id)->get();
+        $learned = Learned::where('user_id', $request->user()->id)->where('course_id', $this->id)->get();
         if(count($learned) == 0){
             $learned_result = false;
         }

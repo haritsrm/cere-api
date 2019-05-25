@@ -60,6 +60,7 @@ Route::group([
     'prefix' => 'courses',
     'middleware' => 'auth:api'
 ], function(){
+    Route::get('/favorites', 'Cerevids\FavoriteController@index')->name('favorites');
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
     Route::get('/lesson/{lesson_id}', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
@@ -97,7 +98,6 @@ Route::group([
         Route::delete('/{forum_id}', 'Cerevids\ForumController@delete')->name('forum/delete');
     });
 
-    Route::get('/favorites', 'Cerevids\FavoriteController@index')->name('favorites');
     Route::group(['prefix' => '/{course_id}/favorites'], function(){
         Route::post('/create', 'Cerevids\FavoriteController@create')->name('favorite/create');
         Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
@@ -137,6 +137,7 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/{id}', 'Cereouts\TryoutController@find')->name('tryout/detail');
     Route::put('/{id}', 'Cereouts\TryoutController@update')->name('tryout/update');
     Route::delete('/{id}', 'Cereouts\TryoutController@delete')->name('tryout/delete');
+    Route::post('/{id}/payment', 'Cereouts\CereoutController@paymentTryout')->name('cereout/paymentTryout');
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');

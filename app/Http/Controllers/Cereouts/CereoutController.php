@@ -84,6 +84,47 @@ class CereoutController extends Controller
         }
     }
 
+    public function PaymentTryout($tryout_id, Request $req){
+        $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
+        $price = $this->tryout->find($tryout_id)->price;
+        $user = User::where('id',$req->user_id)->first();
+        $attempted_count = AttemptTryout::where('tryout_id', $tryout_id)
+                        ->where('user_id', $req->user_id)
+                        ->count();
+        if($user->balance >= $price){
+            if($attempted_count==0){
+                $data = new AttemptTryout;
+                $data->user_id = $req->user_id;
+                $data->tryout_id = $tryout_id;
+                $data->left_attempt = $available_attempts;
+                $data->save();
+                $user->balance -= $price;
+                $user->save();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'payment successfull'
+                ]);
+            }else{
+                $attempted_user = AttemptTryout::where('tryout_id', $tryout_id)
+                        ->where('user_id', $req->user_id)
+                        ->first();
+                $attempted_user->left_attempt += $available_attempts;
+                $attempted_user->save();
+                $user->balance -= $price;
+                $user->save();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'payment successfull'
+                ]);
+            }
+        }else{
+            return response()->json([
+                    'status' => false,
+                    'message' => 'insufficient balance'
+                ]);
+        }
+    }
+
     public function find($tryout_id, $id)
     {
         $cereout = $this->cereout->find($id);
