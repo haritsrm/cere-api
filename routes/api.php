@@ -137,6 +137,7 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/{id}', 'Cereouts\TryoutController@find')->name('tryout/detail');
     Route::put('/{id}', 'Cereouts\TryoutController@update')->name('tryout/update');
     Route::delete('/{id}', 'Cereouts\TryoutController@delete')->name('tryout/delete');
+    Route::post('/{id}/payment', 'Cereouts\CereoutController@paymentTryout')->name('cereout/paymentTryout');
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');
