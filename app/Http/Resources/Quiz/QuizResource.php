@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Quiz;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\QuestionQuiz;
 
 class QuizResource extends JsonResource
 {
@@ -14,6 +15,12 @@ class QuizResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $question = QuestionQuiz::where('quiz_id',$this->id)->get();
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'section_id' => $this->section_id,
+            'question' => $question
+        ];
     }
 }
