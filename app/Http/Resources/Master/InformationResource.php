@@ -21,8 +21,8 @@ class InformationResource extends JsonResource
             'caption' => $this->content,
             'category' => $this->category,
             'url' => $this->url_photo,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'created_at' => $this->created_at->diffForHumans(),
+            'updated_at' => $this->updated_at->diffForHumans()
         ];
     }
 }
