@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
 class UniversityResource extends JsonResource
 {
     /**

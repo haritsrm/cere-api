@@ -10,6 +10,7 @@ use App\Http\Resources\Tryout\TryoutResource;
 use App\Models\Question;
 use App\Models\Tryout;
 use App\Models\Lesson;
+use App\Models\AttemptTryout;
 
 class TryoutController extends Controller
 {

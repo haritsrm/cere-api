@@ -138,6 +138,8 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::put('/{id}', 'Cereouts\TryoutController@update')->name('tryout/update');
     Route::delete('/{id}', 'Cereouts\TryoutController@delete')->name('tryout/delete');
     Route::post('/{id}/payment', 'Cereouts\CereoutController@paymentTryout')->name('cereout/paymentTryout');
+    Route::get('/attempttryout/{id}', 'Cereouts\AttemptTryoutController@getTryoutUser');
+    Route::get('/attempttryout/{id}/expire', 'Cereouts\AttemptTryoutController@getExpireTryoutUser');
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');
@@ -160,4 +162,5 @@ Route::group(['prefix' => 'master'], function(){
     Route::get('/faculty', 'Master\FacultyController@index');
     Route::get('/information', 'Master\InformationController@index');
     Route::get('/generalInformation', 'Master\GeneralInformationController@index');
+    Route::get('/getAllDataUniversity', 'Master\UniversityController@getAlldata');
 });

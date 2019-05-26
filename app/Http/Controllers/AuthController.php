@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use App\Models\Department;
 use Socialite;
 
 class AuthController extends Controller
@@ -86,11 +87,47 @@ class AuthController extends Controller
      * @return [json] user object
      */
     public function user(Request $request)
-    {
+    {   
+        $data = User::join('classes','classes.id','=','users.class_id')
+            ->select('classes.id as class_id','classes.name_class as name_class')
+            ->where('users.id','=',$request->user()->id)
+            ->first();
+        $option1 = Department::join('faculties','faculties.id','=','departments.faculty_id')
+            ->select('faculties.id')
+            ->join('universities','universities.id','=','faculties.id')
+            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' )
+            ->where('departments.id',$request->user()->option1)->first();       
+        $option2 = Department::join('faculties','faculties.id','=','departments.faculty_id')
+            ->select('faculties.id')
+            ->join('universities','universities.id','=','faculties.id')
+            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' )
+            ->where('departments.id',$request->user()->option2)->first();       
+        $option3 = Department::join('faculties','faculties.id','=','departments.faculty_id')
+            ->select('faculties.id')
+            ->join('universities','universities.id','=','faculties.id')
+            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' )
+            ->where('departments.id',$request->user()->option3)->first();               
         return response()->json([
             'status' => true,
-            'data' => $request->user()
+            'data' =>[
+                'id' => $request->user()->id,
+                'name' => $request->user()->name,
+                'gender' => $request->user()->gender,
+                'address' => $request->user()->address,
+                'phone' => $request->user()->phone,
+                'birth_place' => $request->user()->birth_place,
+                'birth_date' => $request->user()->birth_date,
+                'parrent_name' => $request->user()->parrent_name,
+                'parrent_phone' => $request->user()->parrent_phone,
+                'balance' => $request->user()->balance,
+                'email' => $request->user()->email,
+                'class' => $data,
+                'option1' => $option1,
+                'option2' => $option2,
+                'option3' => $option3
+            ]  
         ],201);
+        // return UserResource::collection($data);
     }
 
     public function changePhotoProfile(Request $request, $id){
