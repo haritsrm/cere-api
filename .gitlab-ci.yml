@@ -10,7 +10,7 @@ services:
   - mysql:latest
 
 variables:
-  MYSQL_DATABASE: project_name
+  MYSQL_DATABASE: cerebrum-api
   MYSQL_ROOT_PASSWORD: secret
 
 # This folder is cached between builds
