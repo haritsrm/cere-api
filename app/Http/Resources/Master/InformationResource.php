@@ -20,7 +20,9 @@ class InformationResource extends JsonResource
             'title' => $this->title,
             'caption' => $this->content,
             'category' => $this->category,
-            'url' => $this->url_photo
+            'url' => $this->url_photo,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }
