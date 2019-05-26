@@ -17,7 +17,7 @@ class CereoutService extends Controller
 
     public function browse($tryout_id)
     {
-        return $this->newTryout->find($tryout_id)->cereouts()->all();
+        return $this->newTryout->find($tryout_id)->cereouts()->get();
     }
 
     public function browseByUser($tryout_id, $user_id)
