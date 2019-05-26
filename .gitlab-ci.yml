@@ -10,6 +10,7 @@ services:
   - mysql:latest
 
 variables:
+  DB_HOST: mysql
   MYSQL_DATABASE: cerebrum-api
   MYSQL_ROOT_PASSWORD: secret
 
