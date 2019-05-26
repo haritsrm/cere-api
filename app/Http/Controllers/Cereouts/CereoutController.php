@@ -9,6 +9,7 @@ use App\Http\Controllers\Services\Cereouts\AnswerService;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 use App\User;
+use App\Models\Question;
 use App\Models\AttemptTryout;
 
 class CereoutController extends Controller
@@ -18,6 +19,7 @@ class CereoutController extends Controller
         $this->cereout = new CereoutService;
         $this->tryout = new TryoutService;
         $this->answer = new AnswerService;
+        $this->question = new Question;
     }
 
     public function index($tryout_id)
@@ -137,8 +139,8 @@ class CereoutController extends Controller
         foreach($req->answered as $answer){
             $this->answer->create([
                 'cereout_id' => $id,
-                'question_id' => $answer->question_id,
-                'answer' => $answer->answer
+                'question_id' => $answer['question_id'],
+                'answer' => $answer['answer']
             ]);
         }
 
@@ -156,7 +158,7 @@ class CereoutController extends Controller
                     $score += $correct_score;
                 }
                 else{
-                    $incorrect_anwered++;
+                    $incorrect_answered++;
                     $score -= $incorrect_score;
                 }
             }
@@ -164,10 +166,10 @@ class CereoutController extends Controller
                 $left_answerd++;
             }
         }
-        $passing_percentage = Question::join('tryouts','tryouts.id','=','question.tryout_id')
+        $passing_percentage = Question::join('tryouts','tryouts.id','=','questions.tryout_id')
                     ->join('lessons','lessons.id','=','tryouts.lesson_id')
                     ->select('lessons.passing_percentage')
-                    ->first(); 
+                    ->first()->passing_percentage; 
         if($score > $passing_percentage){
             $result_status = "Lulus";
         }else{
