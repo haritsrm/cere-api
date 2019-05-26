@@ -71,7 +71,3 @@ test:
   # set it in your package.json script
   # comment this out if you don't have a frontend test
   - npm test
-
-functions:deploy:
-  extends: .serverless:deploy:functions
-  environment: production
