@@ -32,7 +32,7 @@ class AnswerService extends Controller
 
     public function findCereout($cereout_id)
     {
-        return $this->newAnswer->where($cereout_id)->get();
+        return $this->newAnswer->where('cereout_id', $cereout_id)->get();
     }
 
     public function update($id, Array $req)
