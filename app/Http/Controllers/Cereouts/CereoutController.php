@@ -53,10 +53,10 @@ class CereoutController extends Controller
         $price = $this->tryout->find($tryout_id)->price;
         $user = User::where('id',$req->user_id)->first();
         
-        if($attempted_count==0 ){
+        if($user->membership==false ){
             return response()->json([
                         'status' => false,
-                        'message' => 'You have never been attempt this tryout'
+                        'message' => 'You are not member'
                     ]);      
         }else{
             $check_attempted = AttemptTryout::where('tryout_id', $tryout_id)

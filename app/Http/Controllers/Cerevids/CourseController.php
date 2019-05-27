@@ -10,6 +10,7 @@ use App\Http\Resources\Classroom\ClassCollection;
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
 use App\Models\Lesson;
+use App\Models\Course;
 use App\Models\Kelas;
 
 class CourseController extends Controller
@@ -88,5 +89,10 @@ class CourseController extends Controller
         $result = $this->course->destroy($id);
 
         return $result;
+    }
+
+    public function indexByTeacher($id){
+        $courses = Course::where('teacher_id','=',$id)->get();
+        return CourseCollection::collection($courses);        
     }
 }
