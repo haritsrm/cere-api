@@ -17,7 +17,7 @@ class TextService extends Controller
 
     public function browse($course_id)
     {
-        return $this->newSection->find($course_id)->texts()->paginate(10);
+        return $this->newSection->find($course_id)->texts()->get();
     }
 
     public function create(Array $req)

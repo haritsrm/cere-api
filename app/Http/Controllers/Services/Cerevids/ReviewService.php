@@ -17,7 +17,7 @@ class ReviewService extends Controller
 
     public function browse($course_id)
     {
-        return $this->newCourse->find($course_id)->reviews()->paginate(10);
+        return $this->newCourse->find($course_id)->reviews()->get();
     }
 
     public function create(Array $req)
