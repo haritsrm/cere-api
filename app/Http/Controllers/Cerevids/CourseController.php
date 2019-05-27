@@ -92,7 +92,7 @@ class CourseController extends Controller
     }
 
     public function indexByTeacher($id){
-        $courses = Course::where('teacher_id','=',$id)->get();
+        $courses = Course::where('user_id','=',$id)->get();
         return CourseCollection::collection($courses);        
     }
 }
