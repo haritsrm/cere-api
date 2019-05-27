@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/test','TeacherController@index');
 Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
+Route::get('/class/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
 
 Route::group([
     'prefix' => 'auth'
@@ -62,7 +63,6 @@ Route::group([
 ], function(){
     Route::get('/favorites', 'Cerevids\FavoriteController@index')->name('favorites');
     Route::get('/', 'Cerevids\CourseController@index')->name('courses');
-    Route::get('/class/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
     Route::get('/lesson/{lesson_id}', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
     Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');

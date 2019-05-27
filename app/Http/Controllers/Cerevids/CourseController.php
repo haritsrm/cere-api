@@ -37,7 +37,7 @@ class CourseController extends Controller
     {
         $kelas = Kelas::find($class_id)->lessons;
 
-        return new ClassCollection($kelas);
+        return ClassCollection::collection($kelas);
     }
 
     public function create(Request $req)
