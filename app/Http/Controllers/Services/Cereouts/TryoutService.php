@@ -15,7 +15,7 @@ class TryoutService extends Controller
 
     public function browse()
     {
-        return $this->newTryout->paginate(10);
+        return $this->newTryout->get();
     }
 
     public function create(Array $req)

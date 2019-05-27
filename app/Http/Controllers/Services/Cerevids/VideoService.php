@@ -17,7 +17,7 @@ class VideoService extends Controller
 
     public function browse($course_id)
     {
-        return $this->newSection->find($course_id)->videos()->paginate(10);
+        return $this->newSection->find($course_id)->videos()->get();
     }
 
     public function create(Array $req)

@@ -17,7 +17,7 @@ class ForumService extends Controller
 
     public function browse($course_id)
     {
-        return $this->newCourse->find($course_id)->forums()->paginate(10);
+        return $this->newCourse->find($course_id)->forums()->get();
     }
 
     public function create(Array $req)

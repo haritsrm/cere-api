@@ -17,7 +17,7 @@ class AnswerService extends Controller
 
     public function browse($cereout_id)
     {
-        return $this->newCereout->find($Cereout_id)->answers()->paginate(10);
+        return $this->newCereout->find($Cereout_id)->answers()->get();
     }
 
     public function create(Array $req)
