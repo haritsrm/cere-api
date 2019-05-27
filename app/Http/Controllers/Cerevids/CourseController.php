@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\CourseService;
 use App\Http\Resources\Lesson\LessonCollection;
+use App\Http\Resources\Classroom\ClassCollection;
 use App\Http\Resources\Course\CourseCollection;
 use App\Http\Resources\Course\CourseResource;
 use App\Models\Lesson;
 use App\Models\Course;
+use App\Models\Kelas;
 
 class CourseController extends Controller
 {
@@ -30,6 +32,13 @@ class CourseController extends Controller
         $lessons = Lesson::find($lesson_id);
 
         return new LessonCollection($lessons);
+    }
+
+    public function lessonByClass($class_id)
+    {
+        $kelas = Kelas::find($class_id)->lessons;
+
+        return ClassCollection::collection($kelas);
     }
 
     public function create(Request $req)

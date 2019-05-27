@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/test','TeacherController@index');
 Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
+Route::get('/lessons/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
 
 Route::group([
     'prefix' => 'auth'

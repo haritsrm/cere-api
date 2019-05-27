@@ -17,7 +17,7 @@ class SectionService extends Controller
 
     public function browse($course_id)
     {
-        return $this->newCourse->find($course_id)->sections()->paginate(10);
+        return $this->newCourse->find($course_id)->sections()->get();
     }
 
     public function create(Array $req)

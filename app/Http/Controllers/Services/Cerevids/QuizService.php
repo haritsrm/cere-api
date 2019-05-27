@@ -17,7 +17,7 @@ class QuizService extends Controller
 
     public function browse($course_id)
     {
-        return $this->newSection->find($course_id)->quiz()->paginate(10);
+        return $this->newSection->find($course_id)->quiz()->get();
     }
 
     public function create(Array $req)

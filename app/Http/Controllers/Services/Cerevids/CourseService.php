@@ -15,7 +15,7 @@ class CourseService extends Controller
 
     public function browse()
     {
-        return $this->newCourse->paginate(10);
+        return $this->newCourse->all();
     }
 
     public function create(Array $req)
