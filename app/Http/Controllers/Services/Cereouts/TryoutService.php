@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Services\Cereouts;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tryout;
+use Carbon\Carbon;
 
 class TryoutService extends Controller
 {
@@ -15,7 +16,8 @@ class TryoutService extends Controller
 
     public function browse()
     {
-        return $this->newTryout->paginate(10);
+        $today =  Carbon::now()->todatestring();
+        return $this->newTryout->where('end_date','>=',$today)->get();
     }
 
     public function create(Array $req)
