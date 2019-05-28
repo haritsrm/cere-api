@@ -96,17 +96,17 @@ class AuthController extends Controller
         $option1 = Department::join('faculties','faculties.id','=','departments.faculty_id')
             ->select('faculties.id')
             ->join('universities','universities.id','=','faculties.id')
-            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' )
+            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' ,'universities.id as univ_id')
             ->where('departments.id',$request->user()->option1)->first();       
         $option2 = Department::join('faculties','faculties.id','=','departments.faculty_id')
             ->select('faculties.id')
             ->join('universities','universities.id','=','faculties.id')
-            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' )
+            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' ,'universities.id as univ_id')
             ->where('departments.id',$request->user()->option2)->first();       
         $option3 = Department::join('faculties','faculties.id','=','departments.faculty_id')
             ->select('faculties.id')
             ->join('universities','universities.id','=','faculties.id')
-            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' )
+            ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' ,'universities.id as univ_id')
             ->where('departments.id',$request->user()->option3)->first();               
         return response()->json([
             'status' => true,
