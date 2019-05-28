@@ -53,7 +53,7 @@ class CereoutController extends Controller
         $price = $this->tryout->find($tryout_id)->price;
         $user = User::where('id',$req->user_id)->first();
         
-        if($user->membership==0 ){
+        if($user->membership==false ){
             return response()->json([
                         'status' => false,
                         'message' => 'You are not member'
@@ -62,14 +62,15 @@ class CereoutController extends Controller
             $check_attempted = AttemptTryout::where('tryout_id', $tryout_id)
                         ->where('user_id', $req->user_id)
                         ->first();
-            if($check_attempted->left_attempt > 0 || $attempted_count==0){
-                if($attempted_count==0){
+            if($attempted_count==0){
                     $data = new AttemptTryout;
-                    $data->tryout_id => $tryout_id;
-                    $data->user_id => $req->user_id;
-                    $data->left_attempt => $available_attempts-1;
+                    $data->tryout_id = $tryout_id;
+                    $data->user_id = $req->user_id;
+                    $data->left_attempt = $available_attempts-1;
                     $data->save();
                 }
+            if($check_attempted->left_attempt > 0 ){
+                
                 $result = $this->cereout->create([
                         'tryout_id' => $tryout_id,
                         'user_id' => $req->user_id
@@ -147,8 +148,9 @@ class CereoutController extends Controller
             $this->answer->create([
                 'cereout_id' => $id,
                 'question_id' => $answer['question_id'],
-                'answer' => $answer['answer'],
-                'mark' => $answer['mark']
+                'mark' => $answer['mark'],
+                'answer' => $answer['answer']
+                
             ]);
         }
 
@@ -196,7 +198,13 @@ class CereoutController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $result,
+            'data' => [
+                'score' => $score,
+                'correct_answered' => $correct_answered,
+                'incorrect_answered' => $incorrect_answered,
+                'left_answered' => $left_answered,
+                'result_status' => $result_status
+            ],
         ], 201);
     }
 
