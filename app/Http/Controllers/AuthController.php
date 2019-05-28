@@ -121,6 +121,7 @@ class AuthController extends Controller
                 'parrent_name' => $request->user()->parrent_name,
                 'parrent_phone' => $request->user()->parrent_phone,
                 'balance' => $request->user()->balance,
+                'membership' => $request->user()->membership,
                 'email' => $request->user()->email,
                 'class' => $data,
                 'option1' => $option1,
