@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{items}}
+        <button v-on:click="attempt">Click here!</button>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                items: [],
+                answers: [
+                    { question_id: 1, answer: 'B' },
+                    { question_id: 2, answer: 'D' },
+                    { question_id: 3, answer: 'A' }
+                ]
+            },
+            methods: {
+                attempt(){
+                    axios.post('http://api.ceredinas.id/api/cereouts/1/attempts/3/valuation', {
+                        my_time: 90,
+                        answered: this.answers
+                    },
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImVlNWMxZjg4NDM0MWY4NGMyNmQ1MjZlNjJjMDZiMDNjZWJlYjliY2IzOThhYzZkMGFmYjI2MzVjYmZiZjBjNTFhNmFmNzA0N2M0NTgzNTIyIn0.eyJhdWQiOiIxIiwianRpIjoiZWU1YzFmODg0MzQxZjg0YzI2ZDUyNmU2MmMwNmIwM2NlYmViOWJjYjM5OGFjNmQwYWZiMjYzNWNiZmJmMGM1MWE2YWY3MDQ3YzQ1ODM1MjIiLCJpYXQiOjE1NTg5ODYyNzcsIm5iZiI6MTU1ODk4NjI3NywiZXhwIjoxNTkwNjA4Njc3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.gMl5nQYBP55w7ibwoJ8PjEYlP0vo1Wsd8xuABbGxfooMdFKxUgXLwHRFPdM69pRhiP6RklFkKA_35-IIyp9fY75OqF6MMfroG3oUATlBVBwy8TPP8Vm1X96gK9LdKJJ8u3XTCVDKEa6Tdr6k8-uQ8XLXECkhqltrj5dNMit0b2Xx4aArPFdWYYlzAs1ZSGpPHM8Dq9lWKiwP8MGnbtLYHjrujtg6KYReuQKSMNCup-N_24fTizRfIjYmnSZgwk6wIfUZqRs0-xFB6nzm0ZA8h4LrWDw94GTZnvHlJJEXSZR0Z920naH073wv7HkQJw1C9Fxr9OH0kVXKhR6oL_PfFA_as1GJKCUbSP2EcwK0zWMePUVjai8CpkccEZuptW-vI45Yo1Tmpakq8L7SUzG4Ug2qoPWQ_H6Gc06h6UbtQP6qVnObgqd9a7sqjwT3ClKrqOQYJUc6xUQUDV0i4n8chjAXlJdmZ2DYRXA2lmpdS0boY2r7yGZQddQiDsKI5co8VA8-ddRul9X6ggbdS4JzOtgIlmavgh5sB0X94f9uKeIiDnGja1Sz3CULaXuPxsiwzCKemWrVmng27Z42wleKsd3H9nbrvz_qPutzVKnSw3iqe4VBkGyZppBRp4ES8zZtgqmP2vIag23TualO8YspQuWVupeZyvOJVPCk6u3zT5o'
+                        }
+                    }).then(response => {
+                        this.items.push(response.data)
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+</html>
