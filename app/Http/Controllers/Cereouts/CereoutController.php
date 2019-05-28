@@ -62,14 +62,15 @@ class CereoutController extends Controller
             $check_attempted = AttemptTryout::where('tryout_id', $tryout_id)
                         ->where('user_id', $req->user_id)
                         ->first();
-            if($check_attempted->left_attempt > 0 || $attempted_count==0){
-                if($attempted_count==0){
+            if($attempted_count==0){
                     $data = new AttemptTryout;
                     $data->tryout_id = $tryout_id;
                     $data->user_id = $req->user_id;
                     $data->left_attempt = $available_attempts-1;
                     $data->save();
                 }
+            if($check_attempted->left_attempt > 0 ){
+                
                 $result = $this->cereout->create([
                         'tryout_id' => $tryout_id,
                         'user_id' => $req->user_id
