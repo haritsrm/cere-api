@@ -53,7 +53,7 @@ class CereoutController extends Controller
         $price = $this->tryout->find($tryout_id)->price;
         $user = User::where('id',$req->user_id)->first();
         
-        if($user->membership==0 ){
+        if($user->membership==false ){
             return response()->json([
                         'status' => false,
                         'message' => 'You are not member'
@@ -148,8 +148,9 @@ class CereoutController extends Controller
             $this->answer->create([
                 'cereout_id' => $id,
                 'question_id' => $answer['question_id'],
-                'answer' => $answer['answer'],
-                'mark' => $answer['mark']
+                'mark' => $answer['mark'],
+                'answer' => $answer['answer']
+                
             ]);
         }
 
@@ -197,7 +198,13 @@ class CereoutController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $result,
+            'data' => [
+                'score' => $score,
+                'correct_answered' => $correct_answered,
+                'incorrect_answered' => $incorrect_answered,
+                'left_answered' => $left_answered,
+                'result_status' => $result_status
+            ],
         ], 201);
     }
 
