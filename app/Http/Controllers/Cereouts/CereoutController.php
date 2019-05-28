@@ -53,7 +53,7 @@ class CereoutController extends Controller
         $price = $this->tryout->find($tryout_id)->price;
         $user = User::where('id',$req->user_id)->first();
         
-        if($user->membership==false ){
+        if($user->membership==0 ){
             return response()->json([
                         'status' => false,
                         'message' => 'You are not member'
