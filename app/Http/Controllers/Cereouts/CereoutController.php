@@ -62,7 +62,14 @@ class CereoutController extends Controller
             $check_attempted = AttemptTryout::where('tryout_id', $tryout_id)
                         ->where('user_id', $req->user_id)
                         ->first();
-            if($check_attempted->left_attempt > 0){
+            if($check_attempted->left_attempt > 0 || $attempted_count==0){
+                if($attempted_count==0){
+                    $data = new AttemptTryout;
+                    $data->tryout_id => $tryout_id;
+                    $data->user_id => $req->user_id;
+                    $data->left_attempt => $available_attempts-1;
+                    $data->save();
+                }
                 $result = $this->cereout->create([
                         'tryout_id' => $tryout_id,
                         'user_id' => $req->user_id
@@ -136,11 +143,12 @@ class CereoutController extends Controller
 
     public function valuation($tryout_id, $id, Request $req)
     {
-        foreach($req->answered as $answer){
+        foreach($req->answers as $answer){
             $this->answer->create([
                 'cereout_id' => $id,
                 'question_id' => $answer['question_id'],
-                'answer' => $answer['answer']
+                'answer' => $answer['answer'],
+                'mark' => $answer['mark']
             ]);
         }
 
@@ -150,8 +158,8 @@ class CereoutController extends Controller
         $score = 0;
         $answers = $this->answer->findCereout($id);
         foreach($answers as $answer){
-            $correct_score = $answer->correct_score;
-            $incorrect_score = $answer->incorrect_score;
+            $correct_score = $this->question->find($answer->question_id)->correct_score;
+            $incorrect_score = $this->question->find($answer->question_id)->incorrect_score;
             if(!is_null($answer->answer)){
                 if($answer->answer == $this->question->find($answer->question_id)->correct_answer){
                     $correct_answered++;
@@ -159,7 +167,7 @@ class CereoutController extends Controller
                 }
                 else{
                     $incorrect_answered++;
-                    $score -= $incorrect_score;
+                    $score += $incorrect_score;
                 }
             }
             else{
@@ -179,7 +187,7 @@ class CereoutController extends Controller
         $result = $this->cereout->update($id, [
             'my_time' => $req->my_time,
             'score' => $score,
-            'total_answered' => count($req->answered),
+            'total_answer' => count($req->answers),
             'correct_answered' => $correct_answered,
             'incorrect_answered' => $incorrect_answered,
             'left_answered' => $left_answered,

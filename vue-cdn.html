@@ -23,20 +23,19 @@
                 items: [],
                 answers: [
                     { question_id: 1, answer: 'B' },
-                    { question_id: 2, answer: 'D' },
-                    { question_id: 3, answer: 'A' }
+                    { question_id: 2, answer: 'D' }
                 ]
             },
             methods: {
                 attempt(){
-                    axios.post('http://api.ceredinas.id/api/cereouts/1/attempts/3/valuation', {
+                    axios.post('localhost:8000/api/cereouts/1/attempts/3/valuation', {
                         my_time: 90,
                         answered: this.answers
                     },
                     {
                         headers: {
                             Accept: 'application/json',
-                            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImVlNWMxZjg4NDM0MWY4NGMyNmQ1MjZlNjJjMDZiMDNjZWJlYjliY2IzOThhYzZkMGFmYjI2MzVjYmZiZjBjNTFhNmFmNzA0N2M0NTgzNTIyIn0.eyJhdWQiOiIxIiwianRpIjoiZWU1YzFmODg0MzQxZjg0YzI2ZDUyNmU2MmMwNmIwM2NlYmViOWJjYjM5OGFjNmQwYWZiMjYzNWNiZmJmMGM1MWE2YWY3MDQ3YzQ1ODM1MjIiLCJpYXQiOjE1NTg5ODYyNzcsIm5iZiI6MTU1ODk4NjI3NywiZXhwIjoxNTkwNjA4Njc3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.gMl5nQYBP55w7ibwoJ8PjEYlP0vo1Wsd8xuABbGxfooMdFKxUgXLwHRFPdM69pRhiP6RklFkKA_35-IIyp9fY75OqF6MMfroG3oUATlBVBwy8TPP8Vm1X96gK9LdKJJ8u3XTCVDKEa6Tdr6k8-uQ8XLXECkhqltrj5dNMit0b2Xx4aArPFdWYYlzAs1ZSGpPHM8Dq9lWKiwP8MGnbtLYHjrujtg6KYReuQKSMNCup-N_24fTizRfIjYmnSZgwk6wIfUZqRs0-xFB6nzm0ZA8h4LrWDw94GTZnvHlJJEXSZR0Z920naH073wv7HkQJw1C9Fxr9OH0kVXKhR6oL_PfFA_as1GJKCUbSP2EcwK0zWMePUVjai8CpkccEZuptW-vI45Yo1Tmpakq8L7SUzG4Ug2qoPWQ_H6Gc06h6UbtQP6qVnObgqd9a7sqjwT3ClKrqOQYJUc6xUQUDV0i4n8chjAXlJdmZ2DYRXA2lmpdS0boY2r7yGZQddQiDsKI5co8VA8-ddRul9X6ggbdS4JzOtgIlmavgh5sB0X94f9uKeIiDnGja1Sz3CULaXuPxsiwzCKemWrVmng27Z42wleKsd3H9nbrvz_qPutzVKnSw3iqe4VBkGyZppBRp4ES8zZtgqmP2vIag23TualO8YspQuWVupeZyvOJVPCk6u3zT5o'
+                            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjBkN2UyMWZlMjYwY2M4YTVhMzA0Y2NiOTQyNWM5YmQ2NDIwNThkMjgzM2VmZGQ3MTc5ZDE2YWJkZTEzODI0NGFlMTM2OWVhMmI0ZTY3ZjE0In0.eyJhdWQiOiIxIiwianRpIjoiMGQ3ZTIxZmUyNjBjYzhhNWEzMDRjY2I5NDI1YzliZDY0MjA1OGQyODMzZWZkZDcxNzlkMTZhYmRlMTM4MjQ0YWUxMzY5ZWEyYjRlNjdmMTQiLCJpYXQiOjE1NTkwNDc2NjEsIm5iZiI6MTU1OTA0NzY2MSwiZXhwIjoxNTkwNjcwMDYwLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.l1hY6tuCuM8fv9iK8oWaUjzkERHqimHFhxahhifAlfmw31Dvwys_3cOqvpQOoqRugoi5k3msLFZSh-8-LifeL0j1Z4X98TheuUFrz2dPy-JGt2pp6UkZNqnm7wiDqotYZZZBUItzD_T1qOg0HczEsX3s7uS4e3VSzbQMLAHUufBB6IkQoV1HeZi368xg68gE2U13x-pgyATexu6Ar56RVC85aZybgJqp-BpvTbYKym0xQozovPzbvduLHV76gbLFdHI7oq_V_RPfeSo7fLgpbBvwWivnW7p_620k_9QS7KoMU8FQ0TBh2e0QxYyXzRwu5RLzR4M5YGQ9jLEiEGNVrk2laAjVoblFQpvl0OOXWHgdMqGltsPlba_MaoFN1ZXUn8DfBVC7_vafChXg2JOaUOOwLbOTfVChAXl-eHm3AHFY0XlIciT5ECLwi6UNArPmb-3_rQhkwF05H3Md2mMnB67-Zc-L3txz8E9VokfDkQG9wBnoooauE2WFUjpY0Hxd_FUHq9ljhR-Uqf9ma3z6lQDuiqVzg0hLT8riTnB_brBZXebf6mCfn2ayWJnZDtNh76yWWpcrfOJA9xXfGU1QrXb4Wz_4W3iU4Byszzd3mcF_w8k46P5pO6zt0BWiboHTuR9K-oBo4ca-2KOJNWWEmteQU2EwK_Z67dqRDI3e9Pw'
                         }
                     }).then(response => {
                         this.items.push(response.data)
