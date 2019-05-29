@@ -80,11 +80,16 @@ class CereoutController extends Controller
                 $check_attempted->left_attempt -= 1;
                 $check_attempted->save();
 
-                return (new CereoutResource($result))
-                            ->additional([
-                                'status' => true,
-                                'message' => 'Succesfully attempt a tryout'
-                            ]);
+                // return (new CereoutResource($result))
+                //             ->additional([
+                //                 'status' => true,
+                //                 'message' => 'Succesfully attempt a tryout'
+                //             ]);
+                return response()->json([
+                        'status' => true,
+                        'message' => 'Succesfully attempt a tryout',
+                        'data' => $result
+                    ]);
             }else{
                 return response()->json([
                         'status' => false,
