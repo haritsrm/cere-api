@@ -10,6 +10,7 @@ use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 use App\User;
 use App\Models\Question;
+use App\Models\Cereout;
 use App\Models\AttemptTryout;
 
 class CereoutController extends Controller
@@ -94,46 +95,7 @@ class CereoutController extends Controller
         }
     }
 
-    public function PaymentTryout($tryout_id, Request $req){
-        $available_attempts = $this->tryout->find($tryout_id)->attempt_count;
-        $price = $this->tryout->find($tryout_id)->price;
-        $user = User::where('id',$req->user_id)->first();
-        $attempted_count = AttemptTryout::where('tryout_id', $tryout_id)
-                        ->where('user_id', $req->user_id)
-                        ->count();
-        if($user->balance >= $price){
-            if($attempted_count==0){
-                $data = new AttemptTryout;
-                $data->user_id = $req->user_id;
-                $data->tryout_id = $tryout_id;
-                $data->left_attempt = $available_attempts;
-                $data->save();
-                $user->balance -= $price;
-                $user->save();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'payment successfull'
-                ]);
-            }else{
-                $attempted_user = AttemptTryout::where('tryout_id', $tryout_id)
-                        ->where('user_id', $req->user_id)
-                        ->first();
-                $attempted_user->left_attempt += $available_attempts;
-                $attempted_user->save();
-                $user->balance -= $price;
-                $user->save();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'payment successfull'
-                ]);
-            }
-        }else{
-            return response()->json([
-                    'status' => false,
-                    'message' => 'insufficient balance'
-                ]);
-        }
-    }
+
 
     public function find($tryout_id, $id)
     {
@@ -173,7 +135,7 @@ class CereoutController extends Controller
                 }
             }
             else{
-                $left_answerd++;
+                $left_answered++;
             }
         }
         $passing_percentage = Question::join('tryouts','tryouts.id','=','questions.tryout_id')
@@ -216,5 +178,10 @@ class CereoutController extends Controller
             'status' => 'success',
             'message'=> 'Succesfully remove attempt',
         ], 201);
+    }
+
+    public function getCerereoutByUser($id){
+        $data = Cereout::where('user_id','=',$id)->get();
+        return CereoutResource::collection($data);        
     }
 }
