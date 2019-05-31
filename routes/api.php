@@ -141,7 +141,8 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::delete('/{id}', 'Cereouts\TryoutController@delete')->name('tryout/delete');
     Route::get('/attempttryout/{id}', 'Cereouts\AttemptTryoutController@getTryoutUser');
     Route::get('/attempttryout/{id}/expire', 'Cereouts\AttemptTryoutController@getExpireTryoutUser');
-    Route::get('/result/{id}', 'Cereouts\CereoutController@getCerereoutByUser');
+    Route::get('/result/{id}', 'Cereouts\CereoutController@getCereoutByUser');
+    Route::get('/result/detail/{id}', 'Cereouts\CereoutController@getDetailCereoutByUser');
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
         Route::get('/', 'Cereouts\CereoutController@index')->name('cereouts');

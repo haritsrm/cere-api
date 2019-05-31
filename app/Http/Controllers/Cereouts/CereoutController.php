@@ -8,9 +8,11 @@ use App\Http\Controllers\Services\Cereouts\CereoutService;
 use App\Http\Controllers\Services\Cereouts\AnswerService;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
+use App\Http\Resources\Cereout\DetailCereoutResource;
 use App\User;
 use App\Models\Question;
 use App\Models\Cereout;
+use App\Models\Answer;
 use App\Models\AttemptTryout;
 
 class CereoutController extends Controller
@@ -64,7 +66,7 @@ class CereoutController extends Controller
                 $data = new AttemptTryout;
                 $data->tryout_id = $tryout_id;
                 $data->user_id = $req->user_id;
-                $data->left_attempt = $available_attempts-1;
+                $data->left_attempt = $available_attempts;
                 $data->save();
             }
             $check_attempted = AttemptTryout::where('tryout_id', $tryout_id)
@@ -128,19 +130,39 @@ class CereoutController extends Controller
         $answers = $this->answer->findCereout($id);
         foreach($answers as $answer){
             $correct_score = $this->question->find($answer->question_id)->correct_score;
+            $score_question_true = $this->question->find($answer->question_id)->correct_score;
             $incorrect_score = $this->question->find($answer->question_id)->incorrect_score;
+            $score_question_false = $this->question->find($answer->question_id)->incorrect_score;
             if(!is_null($answer->answer)){
                 if($answer->answer == $this->question->find($answer->question_id)->correct_answer){
                     $correct_answered++;
                     $score += $correct_score;
+                    $check_answer = Answer::where('cereout_id','=',$id)
+                        ->where('question_id','=',$answer->question_id)
+                        ->first();
+                    $check_answer->check_answer = 1;
+                    $check_answer->score = $score_question_true;
+                    $check_answer->save();
                 }
                 else{
                     $incorrect_answered++;
                     $score += $incorrect_score;
+                    $check_answer = Answer::where('cereout_id','=',$id)
+                        ->where('question_id','=',$answer->question_id)
+                        ->first();
+                    $check_answer->check_answer = 0;
+                    $check_answer->score = $score_question_false;
+                    $check_answer->save();
                 }
             }
             else{
                 $left_answered++;
+                $check_answer = Answer::where('cereout_id','=',$id)
+                        ->where('question_id','=',$answer->question_id)
+                        ->first();
+                    $check_answer->check_answer = 0;
+                    $check_answer->score = 0;
+                    $check_answer->save();
             }
         }
         $passing_percentage = Question::join('tryouts','tryouts.id','=','questions.tryout_id')
@@ -185,8 +207,16 @@ class CereoutController extends Controller
         ], 201);
     }
 
-    public function getCerereoutByUser($id){
+    public function getCereoutByUser($id){
         $data = Cereout::where('user_id','=',$id)->get();
         return CereoutResource::collection($data);        
+    }
+
+    public function getDetailCereoutByUser($id){
+        $data = Answer::join('questions','questions.id','=','answers.question_id')
+            ->select('answers.*','questions.explanation as explanation', 'questions.question as question','questions.url_explanation as url_explanation')
+            ->where('answers.cereout_id','=',$id)
+            ->get();
+        return DetailCereoutResource::collection($data);    
     }
 }
