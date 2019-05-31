@@ -14,16 +14,19 @@ class CereoutResource extends JsonResource
      */
     public function toArray($request)
     {
-        $tryout = Tryout::where('id','=',$this->tryout_id)->get();
+        $tryout = Tryout::where('id','=',$this->tryout_id)->first();
         return [
             'id' => $this->id,
-            'tryout' => $tryout,
+            'tryout' => [
+                'tryout_id' => $this->tryout_id,
+                'name' => $tryout->name,
+            ],
             'my_time' => $this->my_time, 
             'score' => $this->score,
             'total_answer' => $this->total_answer,
             'correct_answered' => $this->correct_answered,
             'incorrect_answered' => $this->incorrect_answered,
-            'left_attempt' => $this->left_attempt,
+            'left_answered' => $this->left_answered,
             'result_status' => $this->result_status
         ];
     }
