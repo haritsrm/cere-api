@@ -59,7 +59,8 @@ class CourseResource extends JsonResource
             'forums' => ForumCollection::collection($this->forums),
             'reviews' => ReviewResource::collection($this->reviews),
             'rating' => round($this->reviews()->avg('star')),
-            'created' => $this->created_at->diffForHumans()
+            'created' => $this->created_at->diffForHumans(),
+            'last_seen' => ($this->lastSeen()->where('user_id', $request->user()->id)->first()->updated_at->diffForHumans() ? $this->lastSeen()->where('user_id', $request->user()->id)->first()->updated_at->diffForHumans() : null),
         ];
     }
 }

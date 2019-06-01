@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Favorite');
     }
+
+    function lastSeen()
+    {
+        return $this->hasMany('App\Models\LastSeen');
+    }
 }
