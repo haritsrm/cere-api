@@ -28,6 +28,11 @@ class CourseService extends Controller
         return $this->newCourse->find($id);
     }
 
+    public function findLastSeen($user_id, $id)
+    {
+        return $this->find($id)->lastSeen()->where('user_id', $user_id)->first();
+    }
+
     public function update($id, Array $req)
     {
         $this->find($id)->update($req);

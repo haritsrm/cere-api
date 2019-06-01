@@ -12,6 +12,7 @@ use App\Http\Resources\Course\CourseResource;
 use App\Models\Lesson;
 use App\Models\Course;
 use App\Models\Kelas;
+use App\Models\LastSeen;
 
 class CourseController extends Controller
 {
@@ -59,9 +60,15 @@ class CourseController extends Controller
                 ]);
     }
 
-    public function find($id)
+    public function lastSeen($id, $user_id)
+    {
+        LastSeen::where('course_id', $id)->where('user_id', $user_id)->first()->touch();
+    }
+
+    public function find($id, Request $req)
     {
         $course = $this->course->find($id);
+        $this->LastSeen($id, $req->user()->id);
 
         return new CourseResource($course);
     }
@@ -83,6 +90,7 @@ class CourseController extends Controller
             'message' => 'Succesfully add '.$result->title
         ]);
     }
+
 
     public function delete($id)
     {
