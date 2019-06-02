@@ -51,7 +51,8 @@ class SectionController extends Controller
         }
 
         return response()->json([
-            'status' => true
+            'status' => true,
+            $req->user()->id
         ]);
     }
 
