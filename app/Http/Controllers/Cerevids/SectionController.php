@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\SectionService;
 use App\Http\Resources\Section\SectionResource;
+use App\Models\LastSeen;
 
 class SectionController extends Controller
 {
@@ -52,7 +53,7 @@ class SectionController extends Controller
 
         return response()->json([
             'status' => true,
-            $req->user()->id
+            $req->user()
         ]);
     }
 
