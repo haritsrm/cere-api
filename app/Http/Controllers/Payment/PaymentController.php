@@ -40,7 +40,7 @@ class PaymentController extends Controller
                 'transaction_details' => [
                     'order_id'      => $payment->id,
                     'gross_amount'  => $payment->nominal,
-                    'name'  => 'Membership',
+                    'name'  => 'membership'
                 ],
                 'customer_details' => [
                     'first_name'    => $user->name,
