@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\QuizService;
 use App\Http\Resources\Quiz\QuizResource;
+use App\Models\LastSeen;
 
 class QuizController extends Controller
 {
@@ -49,6 +50,10 @@ class QuizController extends Controller
                 'user_id' => $user_id
             ]);
         }
+
+        return response()->json([
+            'status' => true
+        ]);
     }
 
     public function find($section_id, $quiz_id, Request $req)

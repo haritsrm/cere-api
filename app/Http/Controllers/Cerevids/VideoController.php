@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Cerevids;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\VideoService;
+use App\Models\LastSeen;
 use App\Http\Resources\Video\VideoResource;
 
 class VideoController extends Controller
@@ -47,6 +48,10 @@ class VideoController extends Controller
                 'user_id' => $user_id
             ]);
         }
+
+        return response()->json([
+            'status' => true
+        ]);
     }
 
     public function find($section_id, $video_id, Request $req)

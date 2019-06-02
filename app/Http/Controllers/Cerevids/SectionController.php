@@ -34,6 +34,27 @@ class SectionController extends Controller
         ]);
     }
 
+    public function lastSeen($id, Request $req)
+    {
+        $user_id = $req->user()->id;
+        $type = $req->type;
+
+        $lastSeen = LastSeen::where($type.'_id', $id)->where('user_id', $user_id)->first();
+        if (!is_null($lastSeen)) {
+            $lastSeen->touch();
+        }
+        else {
+            LastSeen::create([
+                $type.'_id' => $id,
+                'user_id' => $user_id
+            ]);
+        }
+
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
     public function find($course_id, $section_id)
     {
         $section = $this->section->find($section_id);
