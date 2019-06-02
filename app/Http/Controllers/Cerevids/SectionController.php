@@ -36,7 +36,7 @@ class SectionController extends Controller
 
     public function lastSeen($id, Request $req)
     {
-        $user_id = $req->user()->id;
+        $user_id = 2;
         $type = $req->type;
 
         $lastSeen = LastSeen::where($type.'_id', $id)->where('user_id', $user_id)->first();
