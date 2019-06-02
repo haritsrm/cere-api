@@ -39,9 +39,4 @@ class Course extends Model
     {
         return $this->belongsTo(Lesson::class);
     }
-
-    function lastSeen()
-    {
-        return $this->hasMany(LastSeen::class);
-    }
 }

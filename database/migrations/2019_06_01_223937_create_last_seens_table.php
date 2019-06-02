@@ -15,7 +15,9 @@ class CreateLastSeensTable extends Migration
     {
         Schema::create('last_seens', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('course_id');
+            $table->bigInteger('video_id')->nullable();
+            $table->bigInteger('quiz_id')->nullable();
+            $table->bigInteger('text_id')->nullable();
             $table->bigInteger('user_id');
             $table->timestamps();
         });

@@ -35,9 +35,24 @@ class VideoController extends Controller
         ]);
     }
 
-    public function find($section_id, $video_id)
+    public function lastSeen($id, $user_id)
+    {
+        $lastSeen = LastSeen::where('video_id', $id)->where('user_id', $user_id)->first();
+        if (!is_null($lastSeen)) {
+            $lastSeen->touch();
+        }
+        else {
+            LastSeen::create([
+                'video_id' => $id,
+                'user_id' => $user_id
+            ]);
+        }
+    }
+
+    public function find($section_id, $video_id, Request $req)
     {
         $video = $this->video->find($video_id);
+        $this->lastSeen($video_id, $req->user()->id);
 
         return new VideoResource($video);
     }
