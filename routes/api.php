@@ -163,7 +163,7 @@ Route::group([
     'prefix' => 'payment',
     'middleware' => 'auth:api'
 ], function(){
-    Route::post('/', 'Payment\PaymentController@submitPayment');
+    Route::post('/create', 'Payment\PaymentController@submitPayment');
 });
 
 //master data Routes
