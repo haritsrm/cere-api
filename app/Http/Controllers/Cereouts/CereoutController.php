@@ -10,6 +10,7 @@ use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 use App\Http\Resources\Cereout\DetailCereoutResource;
 use App\User;
+use DB;
 use App\Models\Question;
 use App\Models\Cereout;
 use App\Models\Answer;
@@ -208,7 +209,9 @@ class CereoutController extends Controller
     }
 
     public function getCereoutByUser($id){
-        $data = Cereout::where('user_id','=',$id)->get();
+        $data = Cereout::where('user_id','=',$id)
+                ->orderBy('created_at','DESC')
+                ->get();
         return CereoutResource::collection($data);        
     }
 
@@ -219,4 +222,24 @@ class CereoutController extends Controller
             ->get();
         return DetailCereoutResource::collection($data);    
     }
+
+    public function getSummaryTryout($id){
+        $rankingNasional = Cereout::select('user_id',DB::raw('max(score) as score_user'))
+                ->orderBy('score_user', 'DESC')
+                ->groupBy('user_id')
+                ->get();
+        $rankNasional=0;
+        foreach ($rankingNasional as $rankingNasional ) {
+            $rankNasional++;
+            if($rankingNasional->user_id==$id){
+                break;
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'national_ranking' => $rankNasional,
+            'national_user' => count($rankingNasional),
+        ],201);
+    }    
 }

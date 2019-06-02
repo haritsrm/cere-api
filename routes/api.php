@@ -22,6 +22,8 @@ Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
 Route::get('/lessons/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
 
+Route::post('/notification/handler', 'PaymentController@notificationHandler')->name('notification.handler');
+
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -142,6 +144,7 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/attempttryout/{id}', 'Cereouts\AttemptTryoutController@getTryoutUser');
     Route::get('/attempttryout/{id}/expire', 'Cereouts\AttemptTryoutController@getExpireTryoutUser');
     Route::get('/result/{id}', 'Cereouts\CereoutController@getCereoutByUser');
+    Route::get('/result/summary/{id}', 'Cereouts\CereoutController@getSummaryTryout');
     Route::get('/result/detail/{id}', 'Cereouts\CereoutController@getDetailCereoutByUser');
 
     Route::group(['prefix' => '/{tryout_id}/attempts'], function(){
@@ -155,6 +158,13 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     });
 });
 //Cereout's Routes --end
+
+Route::group([
+    'prefix' => 'payment',
+    'middleware' => 'auth:api'
+], function(){
+    Route::post('/', 'Payment\PaymentController@submitPayment');
+});
 
 //master data Routes
 Route::group(['prefix' => 'master'], function(){
