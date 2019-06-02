@@ -62,7 +62,16 @@ class CourseController extends Controller
 
     public function lastSeen($id, $user_id)
     {
-        LastSeen::where('course_id', $id)->where('user_id', $user_id)->first()->touch();
+        $lastSeen = LastSeen::where('course_id', $id)->where('user_id', $user_id)->first();
+        if (!is_null($lastSeen)) {
+            $lastSeen->touch();
+        }
+        else {
+            LastSeen::create([
+                'course_id' => $id,
+                'user_id' => $user_id
+            ]);
+        }
     }
 
     public function find($id, Request $req)
