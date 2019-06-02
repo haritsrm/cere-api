@@ -37,9 +37,24 @@ class QuizController extends Controller
         return new QuizResource($result);
     }
 
-    public function find($section_id, $quiz_id)
+    public function lastSeen($id, $user_id)
+    {
+        $lastSeen = LastSeen::where('quiz_id', $id)->where('user_id', $user_id)->first();
+        if (!is_null($lastSeen)) {
+            $lastSeen->touch();
+        }
+        else {
+            LastSeen::create([
+                'quiz_id' => $id,
+                'user_id' => $user_id
+            ]);
+        }
+    }
+
+    public function find($section_id, $quiz_id, Request $req)
     {
         $quiz = $this->quiz->find($quiz_id);
+        $this->lastSeen($quiz_id, $req->user()->id);
 
         return new QuizResource($quiz);
     }

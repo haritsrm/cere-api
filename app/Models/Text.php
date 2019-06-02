@@ -14,4 +14,9 @@ class Text extends Model
     {
         $this->belongsTo(Section::class);
     }
+
+    function lastSeen()
+    {
+        return $this->hasMany(LastSeen::class);
+    }
 }

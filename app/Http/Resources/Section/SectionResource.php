@@ -3,6 +3,9 @@
 namespace App\Http\Resources\Section;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Video\VideoResource;
+use App\Http\Resources\Text\TextResource;
+use App\Http\Resources\Quiz\QuizResource;
 use App\Models\Course;
 use App\User;
 use App\Models\QuestionQuiz;
@@ -34,9 +37,9 @@ class SectionResource extends JsonResource
                 'rating' => round($course->reviews()->avg('star')),
             ],
             'title' => $this->title,
-            'videos' => $videos->get(),
-            'texts' => $texts->get(),
-            'quiz' => $quiz->get(),
+            'videos' => VideoResource::collection($videos->get()),
+            'texts' => TextResource::collection($texts->get()),
+            'quiz' => QuizResource::collection($quiz->get()),
             'href' => [
                 'link' => route('section/detail', [$course->id, $this->id]),
             ],

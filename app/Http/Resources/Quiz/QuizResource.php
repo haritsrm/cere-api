@@ -20,6 +20,7 @@ class QuizResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'section_id' => $this->section_id,
+            'last_seen' => (!is_null($this->lastSeen()->where('user_id', $request->user()->id)->first()) ? $this->lastSeen()->where('user_id', $request->user()->id)->first()->updated_at->diffForHumans() : null),
             'question' => $question
         ];
     }

@@ -36,7 +36,6 @@ class CourseCollection extends JsonResource
                 'link' => route('course/detail', $this->id),
             ],
             'rating' => round($this->reviews()->avg('star')),
-            'last_seen' => (!is_null($this->lastSeen()->where('user_id', $request->user()->id)->first()) ? $this->lastSeen()->where('user_id', $request->user()->id)->first()->updated_at->diffForHumans() : null),
         ];
     }
 }
