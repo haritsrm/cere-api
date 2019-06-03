@@ -9,6 +9,7 @@ use Veritrans_Snap;
 use Veritrans_Notification;
 use App\Models\Transaksi;
 use App\User;
+use Carbon\Carbon;
 use App\Models\Membership;
 use Veritrans_Config;
 use App\Http\Resources\Membership\MembershipResource;
@@ -32,17 +33,18 @@ class PaymentController extends Controller
             // Save transaksi ke database
             $payment = Transaksi::create([
                 'user_id' => $this->request->user_id,
-                'nominal' => $this->request->nominal
+                'nominal' => $this->request->nominal,
+                'membership_id' => $this->request->membership_id
             ]);
 
-            $user = User::where('id','=',$this->request->user_id)->first();
+            $user = User::where('id','=',$payment->user_id)->first();
  			
             // Buat transaksi ke midtrans kemudian save snap tokennya.
             $payload = [
                 'transaction_details' => [
                     'order_id'      => $payment->id,
                     'gross_amount'  => $payment->nominal,
-                    'name'  => 'membership'
+                    'name'  => $payment->membership_id
                 ],
                 'customer_details' => [
                     'first_name'    => $user->name,
@@ -129,7 +131,7 @@ class PaymentController extends Controller
     }
 
     public function getMembership(){
-        $data = Membership::all();
+        $data = Membership::whereMonth('start_date', '=', Carbon::today()->format('m'))->get();
         return MembershipResource::collection($data);
     }
 }
