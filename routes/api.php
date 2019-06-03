@@ -21,7 +21,6 @@ Route::get('/test','TeacherController@index');
 Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
 Route::get('/lessons/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
-Route::post('/materi/{id}/seen', 'Cerevids\SectionController@lastSeen')->name('sections/seen');
 
 Route::post('/notification/handler', 'PaymentController@notificationHandler')->name('notification.handler');
 
@@ -108,6 +107,13 @@ Route::group([
         Route::get('/{favorite_id}', 'Cerevids\FavoriteController@find')->name('favorite/detail');
         Route::delete('/{favorite_id}', 'Cerevids\FavoriteController@delete')->name('favorite/delete');
     });
+});
+
+Route::group([
+    'prefix' => 'materi/{id}',
+    'middleware' => 'auth:api'
+], function() {
+    Route::post('/seen', 'Cerevids\SectionController@lastSeen')->name('sections/seen');
 });
 
 Route::group([
