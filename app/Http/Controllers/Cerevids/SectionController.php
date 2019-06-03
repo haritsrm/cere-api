@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\SectionService;
 use App\Http\Resources\Section\SectionResource;
+use App\Models\LastSeen;
 
 class SectionController extends Controller
 {
@@ -30,7 +31,28 @@ class SectionController extends Controller
 
         return (new SectionResource($result))->additional([
             'status' => true,
-            'message' => 'Succesfully add favorite'
+            'message' => 'Succesfully add section'
+        ]);
+    }
+
+    public function lastSeen($id, Request $req)
+    {
+        $user_id = $req->user()->id;
+        $type = $req->type;
+
+        $lastSeen = LastSeen::where($type.'_id', $id)->where('user_id', $user_id)->first();
+        if (!is_null($lastSeen)) {
+            $lastSeen->touch();
+        }
+        else {
+            LastSeen::create([
+                $type.'_id' => $id,
+                'user_id' => $user_id
+            ]);
+        }
+
+        return response()->json([
+            'status' => true
         ]);
     }
 

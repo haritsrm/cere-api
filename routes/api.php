@@ -110,6 +110,13 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'materi/{id}',
+    'middleware' => 'auth:api'
+], function() {
+    Route::post('/seen', 'Cerevids\SectionController@lastSeen')->name('sections/seen');
+});
+
+Route::group([
     'prefix' => 'sections/{section_id}',
     'middleware' => 'auth:api'
 ], function(){

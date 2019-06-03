@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\TextService;
 use App\Http\Resources\Text\TextResource;
+use App\Models\LastSeen;
 
 class TextController extends Controller
 {
@@ -35,9 +36,28 @@ class TextController extends Controller
         ]);
     }
 
-    public function find($section_id, $text_id)
+    public function lastSeen($id, $user_id)
+    {
+        $lastSeen = LastSeen::where('text_id', $id)->where('user_id', $user_id)->first();
+        if (!is_null($lastSeen)) {
+            $lastSeen->touch();
+        }
+        else {
+            LastSeen::create([
+                'text_id' => $id,
+                'user_id' => $user_id
+            ]);
+        }
+
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+    public function find($section_id, $text_id, Request $req)
     {
         $text = $this->text->find($text_id);
+        $this->lastSeen($text_id, $req->user()->id);
 
         return new TextResource($text);
     }

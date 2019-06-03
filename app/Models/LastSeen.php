@@ -7,11 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class LastSeen extends Model
 {
     protected $fillable = [
-        'course_id', 'user_id'
+        'video_id', 'quiz_id', 'text_id', 'user_id'
     ];
 
-    function course()
+    function video()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Video::class);
+    }
+
+    function quiz()
+    {
+        return $this->belongsTo(Quiz::class);
+    }
+
+    function text()
+    {
+        return $this->belongsTo(Text::class);
     }
 }
