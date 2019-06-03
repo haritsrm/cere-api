@@ -131,7 +131,10 @@ class PaymentController extends Controller
     }
 
     public function getMembership(){
-        $data = Membership::whereMonth('start_date', '=', Carbon::today()->format('m'))->get();
+        $today =  Carbon::now()->todatestring();
+        $data = Membership::where('start_date', '>=', $today)
+                ->where('end_date', '<=', $today)
+                ->get();
         return MembershipResource::collection($data);
     }
 }
