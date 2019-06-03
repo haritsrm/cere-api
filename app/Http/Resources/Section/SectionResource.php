@@ -26,7 +26,7 @@ class SectionResource extends JsonResource
         $texts  = $this->texts()->get();
         $quiz   = $this->quiz()->get();
 
-        $last_seen = LastSeen::where('user_id', $req->user()->id)->get();
+        $last_seen = LastSeen::where('user_id', $request->user()->id)->get();
         $i = 0;
 
         foreach ($videos as $key => $video) {
