@@ -9,7 +9,9 @@ use Veritrans_Snap;
 use Veritrans_Notification;
 use App\Models\Transaksi;
 use App\User;
+use App\Models\Membership;
 use Veritrans_Config;
+use App\Http\Resources\Membership\MembershipResource;
 
 class PaymentController extends Controller
 {
@@ -124,5 +126,10 @@ class PaymentController extends Controller
         });
  
         return;
+    }
+
+    public function getMembership(){
+        $data = Membership::all();
+        return MembershipResource::collection($data);
     }
 }
