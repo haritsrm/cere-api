@@ -54,7 +54,12 @@ class SectionResource extends JsonResource
         }
 
         $materialCounts = count($videos) + count($texts) + count($quiz);
-        $progress = ($i/$materialCounts)*100;
+        if ($materialCounts > 0) {
+            $progress = ($i/$materialCounts)*100;
+        }
+        else {
+            $progress = 0;
+        }
 
         return [
             'id' => $this->id,
@@ -74,6 +79,7 @@ class SectionResource extends JsonResource
             'href' => [
                 'link' => route('section/detail', [$course->id, $this->id]),
             ],
+            'progress' => $progress,
             'posted' => $this->created_at->diffForHumans(),
         ];
     }
