@@ -163,12 +163,13 @@ Route::group([
     'prefix' => 'payment',
     'middleware' => 'auth:api'
 ], function(){
-    Route::post('/', 'Payment\PaymentController@submitPayment');
+    Route::post('/create', 'Payment\PaymentController@submitPayment');
 });
 
 //master data Routes
 Route::group(['prefix' => 'master'], function(){
     Route::get('/class', 'Master\ClassController@index');
+    Route::get('/membership', 'Payment\PaymentController@getMembership');
     Route::get('/lesson', 'Cerevids\EnvironmentController@lessons');
     Route::get('/university', 'Master\UniversityController@index');
     Route::get('/department', 'Master\DepartmentController@index');
