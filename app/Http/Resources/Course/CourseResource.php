@@ -40,7 +40,7 @@ class CourseResource extends JsonResource
 
         $sum = 0;
         $sectionsResponse = SectionResource::collection($this->sections);
-        foreach ($sectionResponse as $key => $sec) {
+        foreach ($sectionsResponse as $key => $sec) {
             $sum += $sec['progress'];
         }
         $progress = $sum / count($this->sections);
