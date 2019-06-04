@@ -24,7 +24,12 @@ class CourseCollection extends JsonResource
         foreach ($sectionsResponse as $key => $sec) {
             $sum += $sec['progress'];
         }
-        $progress = $sum / count($this->sections);
+        if ($sum > 0 || count($this->sections) > 0) {
+            $progress = $sum / count($this->sections);
+        }
+        else {
+            $progress = 0;
+        }
 
         return [
             'id' => $this->id,
