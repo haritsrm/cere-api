@@ -8,6 +8,7 @@ use App\User;
 use App\Models\Favorite;
 use App\Models\Learned;
 use App\Http\Resources\Section\SectionCollection;
+use App\Http\Resources\Section\SectionResource;
 use App\Http\Resources\Forum\ForumCollection;
 use App\Http\Resources\Review\ReviewResource;
 
