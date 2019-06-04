@@ -12,8 +12,8 @@ return [
     |
     */
    
-    'supportsCredentials' => false,
-    'allowedOrigins' => ['*', 'localhost:8080'],
+    'supportsCredentials' => true,
+    'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],

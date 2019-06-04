@@ -7,8 +7,9 @@ use App\Http\Resources\Video\VideoResource;
 use App\Http\Resources\Text\TextResource;
 use App\Http\Resources\Quiz\QuizResource;
 use App\Models\Course;
-use App\User;
+use App\Models\LastSeen;
 use App\Models\QuestionQuiz;
+use App\User;
 
 class SectionResource extends JsonResource
 {
@@ -21,9 +22,44 @@ class SectionResource extends JsonResource
     public function toArray($request)
     {
         $course = Course::findOrFail($this->course_id);
-        $videos = $this->videos();
-        $texts  = $this->texts();
-        $quiz   = $this->quiz();
+        $videos = $this->videos()->get();
+        $texts  = $this->texts()->get();
+        $quiz   = $this->quiz()->get();
+
+        $last_seen = LastSeen::where('user_id', $request->user()->id)->get();
+        $i = 0;
+
+        foreach ($videos as $key => $video) {
+            foreach ($last_seen as $key => $ls) {
+                if ($video->id == $ls->video_id) {
+                    $i++;
+                }
+            }
+        }
+
+        foreach ($texts as $key => $text) {
+            foreach ($last_seen as $key => $ls) {
+                if ($text->id == $ls->text_id) {
+                    $i++;
+                }
+            }
+        }
+
+        foreach ($quiz as $key => $q) {
+            foreach ($last_seen as $key => $ls) {
+                if ($q->id == $ls->quiz_id) {
+                    $i++;
+                }
+            }
+        }
+
+        $materialCounts = count($videos) + count($texts) + count($quiz);
+        if ($materialCounts > 0) {
+            $progress = ($i/$materialCounts)*100;
+        }
+        else {
+            $progress = 0;
+        }
 
         return [
             'id' => $this->id,
@@ -37,12 +73,13 @@ class SectionResource extends JsonResource
                 'rating' => round($course->reviews()->avg('star')),
             ],
             'title' => $this->title,
-            'videos' => VideoResource::collection($videos->get()),
-            'texts' => TextResource::collection($texts->get()),
-            'quiz' => QuizResource::collection($quiz->get()),
+            'videos' => VideoResource::collection($videos),
+            'texts' => TextResource::collection($texts),
+            'quiz' => QuizResource::collection($quiz),
             'href' => [
                 'link' => route('section/detail', [$course->id, $this->id]),
             ],
+            'progress' => $progress,
             'posted' => $this->created_at->diffForHumans(),
         ];
     }

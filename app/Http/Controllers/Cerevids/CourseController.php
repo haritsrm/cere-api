@@ -44,9 +44,19 @@ class CourseController extends Controller
 
     public function create(Request $req)
     {
+        $req->validate([
+            'cover' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
+          ]);
+        $image = $req->file('cover');
+        if(empty($image)){
+            $namaFile = "null";
+        }else{
+            $namaFile = $req->title;
+            $req->file('cover')->move('images/cerevid/', $namaFile);
+        }
         $result = $this->course->create([
             'title' => $req->title,
-            'cover' => $req->cover,
+            'cover' => $namaFile,
             'description' => $req->description,
             'curriculum' => $req->curriculum,
             'lesson_id' => $req->lesson_id,
@@ -69,20 +79,29 @@ class CourseController extends Controller
 
     public function update($id, Request $req)
     {
+        $req->validate([
+            'cover' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
+          ]);
+        $image = $req->file('cover');
+        if(empty($image)){
+            $namaFile = "null";
+        }else{
+            $namaFile = $req->title;
+            $req->file('cover')->move('images/cerevid/', $namaFile);
+        }
         $result = $this->course->update($id, [
             'title' => $req->title,
-            'cover' => $req->cover,
+            'cover' => $namaFile,
             'description' => $req->description,
             'curriculum' => $req->curriculum,
             'lesson_id' => $req->lesson_id,
             'user_id' => $req->user_id
         ]);
 
-        return (new CourseResource($result))
-        ->additional([
+        return response()->json([
             'status' => true,
             'message' => 'Succesfully update '.$req->title
-        ]);
+        ],201);
     }
 
 

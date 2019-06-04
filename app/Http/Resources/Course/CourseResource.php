@@ -6,8 +6,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\User;
 use App\Models\Favorite;
+use App\Models\LastSeen;
 use App\Models\Learned;
 use App\Http\Resources\Section\SectionCollection;
+use App\Http\Resources\Section\SectionResource;
 use App\Http\Resources\Forum\ForumCollection;
 use App\Http\Resources\Review\ReviewResource;
 
@@ -36,6 +38,57 @@ class CourseResource extends JsonResource
         else{
             $learned_result = true;
         }
+        
+        $index = 0;
+        $progress = [];
+        foreach ($this->sections as $sec) {
+            $videos = $sec->videos()->get();
+            $texts  = $sec->texts()->get();
+            $quiz   = $sec->quiz()->get();
+    
+            $last_seen = LastSeen::where('user_id', $request->user()->id)->get();
+            $i = 0;
+    
+            foreach ($videos as $key => $video) {
+                foreach ($last_seen as $key => $ls) {
+                    if ($video->id == $ls->video_id) {
+                        $i++;
+                    }
+                }
+            }
+    
+            foreach ($texts as $key => $text) {
+                foreach ($last_seen as $key => $ls) {
+                    if ($text->id == $ls->text_id) {
+                        $i++;
+                    }
+                }
+            }
+    
+            foreach ($quiz as $key => $q) {
+                foreach ($last_seen as $key => $ls) {
+                    if ($q->id == $ls->quiz_id) {
+                        $i++;
+                    }
+                }
+            }
+    
+            $materialCounts = count($videos) + count($texts) + count($quiz);
+            if ($materialCounts > 0) {
+                $progress[$index] = ($i/$materialCounts)*100;
+            }
+            else {
+                $progress[$index] = 0;
+            }
+            $index++;
+        }
+        
+        if (array_sum($progress) > 0 || count($progress) > 0) {
+            $progress_total = array_sum($progress)/count($progress);
+        }
+        else {
+            $progress_total = 0;
+        }
 
         return [
             'id' => $this->id,
@@ -59,6 +112,7 @@ class CourseResource extends JsonResource
             'forums' => ForumCollection::collection($this->forums),
             'reviews' => ReviewResource::collection($this->reviews),
             'rating' => round($this->reviews()->avg('star')),
+            'progress' => round($progress_total),
             'created' => $this->created_at->diffForHumans(),
         ];
     }
