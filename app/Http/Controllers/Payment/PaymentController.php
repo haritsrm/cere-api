@@ -135,6 +135,7 @@ class PaymentController extends Controller
         $data = Membership::where('start_date', '<=', $today)
                 ->where('end_date', '>=', $today)
                 ->get();
+
         return MembershipResource::collection($data);
     }
 }
