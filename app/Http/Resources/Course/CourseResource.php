@@ -37,6 +37,13 @@ class CourseResource extends JsonResource
             $learned_result = true;
         }
 
+        $sum = 0;
+        $sectionsResponse = SectionResource::collection($this->sections);
+        foreach ($sectionResponse as $key => $sec) {
+            $sum += $sec['progress'];
+        }
+        $progress = $sum / count($this->sections);
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -59,6 +66,7 @@ class CourseResource extends JsonResource
             'forums' => ForumCollection::collection($this->forums),
             'reviews' => ReviewResource::collection($this->reviews),
             'rating' => round($this->reviews()->avg('star')),
+            'progress' => $progress,
             'created' => $this->created_at->diffForHumans(),
         ];
     }

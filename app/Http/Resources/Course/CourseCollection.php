@@ -18,6 +18,13 @@ class CourseCollection extends JsonResource
     {
         $lesson = Lesson::find($this->lesson_id);
 
+        $sum = 0;
+        $sectionsResponse = SectionResource::collection($this->sections);
+        foreach ($sectionResponse as $key => $sec) {
+            $sum += $sec['progress'];
+        }
+        $progress = $sum / count($this->sections);
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -35,6 +42,7 @@ class CourseCollection extends JsonResource
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],
+            'progress' => $progress,
             'rating' => round($this->reviews()->avg('star')),
         ];
     }
