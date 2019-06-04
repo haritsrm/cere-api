@@ -81,7 +81,7 @@ class CourseController extends Controller
         return (new CourseResource($result))
         ->additional([
             'status' => true,
-            'message' => 'Succesfully add '.$req->title
+            'message' => 'Succesfully update '.$req->title
         ]);
     }
 
