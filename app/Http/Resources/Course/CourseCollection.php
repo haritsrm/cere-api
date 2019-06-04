@@ -4,6 +4,7 @@ namespace App\Http\Resources\Course;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
+use App\Models\LastSeen;
 use App\User;
 use App\Http\Resources\Section\SectionResource;
 
@@ -19,16 +20,55 @@ class CourseCollection extends JsonResource
     {
         $lesson = Lesson::find($this->lesson_id);
 
-        $sum = 0;
-        $sectionsResponse = SectionResource::collection($this->sections);
-        foreach ($sectionsResponse as $key => $sec) {
-            $sum += $sec['progress'];
+        $index = 0;
+        $progress = [];
+        foreach ($this->sections as $sec) {
+            $videos = $sec->videos()->get();
+            $texts  = $sec->texts()->get();
+            $quiz   = $sec->quiz()->get();
+    
+            $last_seen = LastSeen::where('user_id', $request->user()->id)->get();
+            $i = 0;
+    
+            foreach ($videos as $key => $video) {
+                foreach ($last_seen as $key => $ls) {
+                    if ($video->id == $ls->video_id) {
+                        $i++;
+                    }
+                }
+            }
+    
+            foreach ($texts as $key => $text) {
+                foreach ($last_seen as $key => $ls) {
+                    if ($text->id == $ls->text_id) {
+                        $i++;
+                    }
+                }
+            }
+    
+            foreach ($quiz as $key => $q) {
+                foreach ($last_seen as $key => $ls) {
+                    if ($q->id == $ls->quiz_id) {
+                        $i++;
+                    }
+                }
+            }
+    
+            $materialCounts = count($videos) + count($texts) + count($quiz);
+            if ($materialCounts > 0) {
+                $progress[$index] = ($i/$materialCounts)*100;
+            }
+            else {
+                $progress[$index] = 0;
+            }
+            $index++;
         }
-        if ($sum > 0 || count($this->sections) > 0) {
-            $progress = $sum / count($this->sections);
+        
+        if (array_sum($progress) > 0 || count($progress) > 0) {
+            $progress_total = array_sum($progress)/count($progress);
         }
         else {
-            $progress = 0;
+            $progress_total = 0;
         }
 
         return [
@@ -48,7 +88,7 @@ class CourseCollection extends JsonResource
             'href' => [
                 'link' => route('course/detail', $this->id),
             ],
-            'progress' => $progress,
+            'progress' => round($progress_total),
             'rating' => round($this->reviews()->avg('star')),
         ];
     }
