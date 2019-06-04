@@ -5,6 +5,7 @@ namespace App\Http\Resources\Course;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\User;
+use App\Http\Resources\Section\SectionResource;
 
 class CourseCollection extends JsonResource
 {
