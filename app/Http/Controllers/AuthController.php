@@ -199,7 +199,7 @@ class AuthController extends Controller
 
     public function getPhotoProfile($id){
         $data =  User::where('id',$id)->first();
-        $pathToFile = public_path().'/images/'.$data->photo_url;
+        $pathToFile = public_path().'/images/student/'.$data->photo_url;
         return response()->download($pathToFile);        
     }
 
