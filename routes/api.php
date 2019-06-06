@@ -171,6 +171,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::post('/create', 'Payment\PaymentController@submitPayment');
+    Route::get('/{id}', 'Payment\PaymentController@getTransactionByUser');
 });
 
 //master data Routes

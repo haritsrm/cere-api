@@ -130,6 +130,14 @@ class PaymentController extends Controller
         return;
     }
 
+    public function getTransactionByUser($id){
+        $data = Transaksi::where('user_id','=',$id)->get();
+        return response()->json([
+                'status' => true,
+                'data' => $data,
+            ], 201);
+    }
+
     public function getMembership(){
         $today =  Carbon::now()->todatestring();
         $data = Membership::where('start_date', '<=', $today)
