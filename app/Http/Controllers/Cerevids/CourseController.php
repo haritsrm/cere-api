@@ -51,7 +51,8 @@ class CourseController extends Controller
         if(empty($image)){
             $namaFile = "null";
         }else{
-            $namaFile = $req->title;
+            $extension = $image->getClientOriginalExtension();
+            $namaFile = public_path().'/images/cerevid/'.$req->title.'.'.$extension;
             $req->file('cover')->move('images/cerevid/', $namaFile);
         }
         $result = $this->course->create([
@@ -86,7 +87,8 @@ class CourseController extends Controller
         if(empty($image)){
             $namaFile = "null";
         }else{
-            $namaFile = $req->title;
+            $extension = $image->getClientOriginalExtension();
+            $namaFile = public_path().'/images/cerevid/'.$req->title.'.'.$extension;
             $req->file('cover')->move('images/cerevid/', $namaFile);
         }
         $result = $this->course->update($id, [
