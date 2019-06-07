@@ -14,6 +14,7 @@ use App\Models\Membership;
 use App\Models\NominalTopup;
 use Veritrans_Config;
 use App\Http\Resources\Membership\MembershipResource;
+use App\Http\Resources\Transaction\TransactionResource;
 
 class PaymentController extends Controller
 {
@@ -86,12 +87,20 @@ class PaymentController extends Controller
                 // TODO set payment status in merchant's database to 'Challenge by FDS'
                 // TODO merchant should decide whether this transaction is authorized or not in MAP
                 // $donation->addUpdate("Transaction order_id: " . $orderId ." is challenged by FDS");
-                $transactions->setPending($type);
+                // $transactions->setPending($type);
+                $data = Transaksi::where('id',$orderId)->first();
+                $data->status="2";
+                $data->payment_method=$payment_type;
+                $data->save();
               } else {
                 // TODO set payment status in merchant's database to 'Success'
                 // $donation->addUpdate("Transaction order_id: " . $orderId ." successfully captured using " . $type);
-                $transactions->setSuccess($type);
-                if($transactions->type==1){
+                // $transactions->setSuccess($type);
+                $data = Transaksi::where('id',$orderId)->first();
+                $data->status="1";
+                $data->payment_method=$payment_type;
+                $data->save();
+                if($data->type==1){
                     $user=User::where('id','=',$transactions->user_id)->first();
                     $user->membership=true;
                     $user->save();    
@@ -108,8 +117,12 @@ class PaymentController extends Controller
  
             // TODO set payment status in merchant's database to 'Settlement'
             // $donation->addUpdate("Transaction order_id: " . $orderId ." successfully transfered using " . $type);
-            $transactions->setSuccess($type);
-            if($transactions->type==1){
+            // $transactions->setSuccess($type);
+            $data = Transaksi::where('id',$orderId)->first();
+                $data->status="1";
+                $data->payment_method=$payment_type;
+                $data->save();
+            if($data->type==1){
                 $user=User::where('id','=',$transactions->user_id)->first();
                 $user->membership=true;
                 $user->save();    
@@ -123,25 +136,41 @@ class PaymentController extends Controller
  
             // TODO set payment status in merchant's database to 'Pending'
             // $donation->addUpdate("Waiting customer to finish transaction order_id: " . $orderId . " using " . $type);
-            $transactions->setPending($type);
+            // $transactions->setPending($type);
+            $data = Transaksi::where('id',$orderId)->first();
+            $data->status="2";
+            $data->payment_method=$payment_type;
+            $data->save();
  
           } elseif ($transaction == 'deny') {
  
             // TODO set payment status in merchant's database to 'Failed'
             // $donation->addUpdate("Payment using " . $type . " for transaction order_id: " . $orderId . " is Failed.");
-            $transactions->setFailed($type);
+            // $transactions->setFailed($type);
+            $data = Transaksi::where('id',$orderId)->first();
+            $data->status="3";
+            $data->payment_method=$payment_type;
+            $data->save();
  
           } elseif ($transaction == 'expire') {
  
             // TODO set payment status in merchant's database to 'expire'
             // $donation->addUpdate("Payment using " . $type . " for transaction order_id: " . $orderId . " is expired.");
-            $transactions->setExpired($type);
+            // $transactions->setExpired($type);
+            $data = Transaksi::where('id',$orderId)->first();
+            $data->status="4";
+            $data->payment_method=$payment_type;
+            $data->save();
  
           } elseif ($transaction == 'cancel') {
  
             // TODO set payment status in merchant's database to 'Failed'
             // $donation->addUpdate("Payment using " . $type . " for transaction order_id: " . $orderId . " is canceled.");
-            $transactions->setFailed($type);
+            // $transactions->setFailed($type);
+            $data = Transaksi::where('id',$orderId)->first();
+            $data->status="3";
+            $data->payment_method=$payment_type;
+            $data->save();
  
           }
  
@@ -151,11 +180,11 @@ class PaymentController extends Controller
     }
 
     public function getTransactionByUser($id){
-        $data = Transaksi::where('user_id','=',$id)->get();
-        return response()->json([
-                'status' => true,
-                'data' => $data,
-            ], 201);
+        $data = Transaksi::join('membership','membership.id','=','transactions.membership_id')
+                ->select('transactions.*','membership.name as membership_name')
+                ->where('transactions.user_id','=',$id)->get();
+
+        return TransactionResource::collection($data);
     }
 
     public function getMembership(){
