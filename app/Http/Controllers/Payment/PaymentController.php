@@ -90,7 +90,7 @@ class PaymentController extends Controller
                 // $transactions->setPending($type);
                 $data = Transaksi::where('id',$orderId)->first();
                 $data->status="2";
-                $data->payment_method=$payment_type;
+                $data->payment_method=$type;
                 $data->save();
               } else {
                 // TODO set payment status in merchant's database to 'Success'
@@ -98,7 +98,7 @@ class PaymentController extends Controller
                 // $transactions->setSuccess($type);
                 $data = Transaksi::where('id',$orderId)->first();
                 $data->status="1";
-                $data->payment_method=$payment_type;
+                $data->payment_method=$type;
                 $data->save();
                 if($data->type==1){
                     $user=User::where('id','=',$transactions->user_id)->first();
@@ -120,7 +120,7 @@ class PaymentController extends Controller
             // $transactions->setSuccess($type);
             $data = Transaksi::where('id',$orderId)->first();
                 $data->status="1";
-                $data->payment_method=$payment_type;
+                $data->payment_method=$type;
                 $data->save();
             if($data->type==1){
                 $user=User::where('id','=',$transactions->user_id)->first();
@@ -139,7 +139,7 @@ class PaymentController extends Controller
             // $transactions->setPending($type);
             $data = Transaksi::where('id',$orderId)->first();
             $data->status="2";
-            $data->payment_method=$payment_type;
+            $data->payment_method=$type;
             $data->save();
  
           } elseif ($transaction == 'deny') {
@@ -149,7 +149,7 @@ class PaymentController extends Controller
             // $transactions->setFailed($type);
             $data = Transaksi::where('id',$orderId)->first();
             $data->status="3";
-            $data->payment_method=$payment_type;
+            $data->payment_method=$type;
             $data->save();
  
           } elseif ($transaction == 'expire') {
@@ -159,7 +159,7 @@ class PaymentController extends Controller
             // $transactions->setExpired($type);
             $data = Transaksi::where('id',$orderId)->first();
             $data->status="4";
-            $data->payment_method=$payment_type;
+            $data->payment_method=$type;
             $data->save();
  
           } elseif ($transaction == 'cancel') {
@@ -169,7 +169,7 @@ class PaymentController extends Controller
             // $transactions->setFailed($type);
             $data = Transaksi::where('id',$orderId)->first();
             $data->status="3";
-            $data->payment_method=$payment_type;
+            $data->payment_method=$type;
             $data->save();
  
           }
