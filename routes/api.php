@@ -172,7 +172,6 @@ Route::group([
 ], function(){
     Route::post('/create', 'Payment\PaymentController@submitPayment');
     Route::get('/{id}', 'Payment\PaymentController@getTransactionByUser');
-    Route::get('/nominal', 'Payment\PaymentController@getNominalTopUp');
 });
 
 //master data Routes
@@ -186,4 +185,5 @@ Route::group(['prefix' => 'master'], function(){
     Route::get('/information', 'Master\InformationController@index');
     Route::get('/generalInformation', 'Master\GeneralInformationController@index');
     Route::get('/getAllDataUniversity', 'Master\UniversityController@getAlldata');
+    Route::get('/nominal', 'Master\GeneralInformationController@getNominalTopUp');
 });

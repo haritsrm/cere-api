@@ -158,14 +158,6 @@ class PaymentController extends Controller
             ], 201);
     }
 
-    public function getNominalTopUp(){
-        $data = NominalTopup::all();
-        return response()->json([
-                'status' => true,
-                'data' => $data,
-            ], 201);
-    }
-
     public function getMembership(){
         $today =  Carbon::now()->todatestring();
         $data = Membership::where('start_date', '<=', $today)
