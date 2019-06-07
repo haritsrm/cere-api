@@ -11,7 +11,7 @@ use App\Models\Transaksi;
 use App\User;
 use Carbon\Carbon;
 use App\Models\Membership;
-use App\Models\NominalTopUp;
+use App\Models\NominalTopup;
 use Veritrans_Config;
 use App\Http\Resources\Membership\MembershipResource;
 
@@ -35,7 +35,8 @@ class PaymentController extends Controller
             $payment = Transaksi::create([
                 'user_id' => $this->request->user_id,
                 'nominal' => $this->request->nominal,
-                'membership_id' => $this->request->membership_id
+                'membership_id' => $this->request->membership_id,
+                'type' => $this->request->type
             ]);
 
             $user = User::where('id','=',$payment->user_id)->first();
@@ -90,6 +91,15 @@ class PaymentController extends Controller
                 // TODO set payment status in merchant's database to 'Success'
                 // $donation->addUpdate("Transaction order_id: " . $orderId ." successfully captured using " . $type);
                 $transactions->setSuccess($type);
+                if($transactions->type==1){
+                    $user=User::where('id','=',$transactions->user_id)->first();
+                    $user->membership=true;
+                    $user->save();    
+                }else{
+                    $user=User::where('id','=',$transactions->user_id)->first();
+                    $user->balance+=$transactions->nominal;
+                    $user->save();
+                }
               }
  
             }
@@ -99,6 +109,15 @@ class PaymentController extends Controller
             // TODO set payment status in merchant's database to 'Settlement'
             // $donation->addUpdate("Transaction order_id: " . $orderId ." successfully transfered using " . $type);
             $transactions->setSuccess($type);
+            if($transactions->type==1){
+                $user=User::where('id','=',$transactions->user_id)->first();
+                $user->membership=true;
+                $user->save();    
+            }else{
+                $user=User::where('id','=',$transactions->user_id)->first();
+                $user->balance+=$transactions->nominal;
+                $user->save();
+            }
  
           } elseif($transaction == 'pending'){
  
@@ -140,7 +159,7 @@ class PaymentController extends Controller
     }
 
     public function getNominalTopUp(){
-        $data = NominalTopUp::all();
+        $data = NominalTopup::all();
         return response()->json([
                 'status' => true,
                 'data' => $data,
