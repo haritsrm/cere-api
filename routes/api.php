@@ -172,6 +172,7 @@ Route::group([
 ], function(){
     Route::post('/create', 'Payment\PaymentController@submitPayment');
     Route::get('/{id}', 'Payment\PaymentController@getTransactionByUser');
+    Route::get('/nominal', 'Payment\PaymentController@getNominalTopUp');
 });
 
 //master data Routes

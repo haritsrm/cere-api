@@ -11,6 +11,7 @@ use App\Models\Transaksi;
 use App\User;
 use Carbon\Carbon;
 use App\Models\Membership;
+use App\Models\NominalTopUp;
 use Veritrans_Config;
 use App\Http\Resources\Membership\MembershipResource;
 
@@ -132,6 +133,14 @@ class PaymentController extends Controller
 
     public function getTransactionByUser($id){
         $data = Transaksi::where('user_id','=',$id)->get();
+        return response()->json([
+                'status' => true,
+                'data' => $data,
+            ], 201);
+    }
+
+    public function getNominalTopUp(){
+        $data = NominalTopUp::all();
         return response()->json([
                 'status' => true,
                 'data' => $data,
