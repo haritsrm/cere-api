@@ -22,7 +22,7 @@ Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
 Route::get('/lessons/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
 
-Route::post('/notification/handler', 'PaymentController@notificationHandler')->name('notification.handler');
+Route::post('/notification/handler', 'Payment\PaymentController@notificationHandler')->name('notification.handler');
 
 Route::group([
     'prefix' => 'auth'
