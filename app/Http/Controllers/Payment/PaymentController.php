@@ -180,9 +180,10 @@ class PaymentController extends Controller
     }
 
     public function getTransactionByUser($id){
-        $data = Transaksi::join('membership','membership.id','=','transactions.membership_id')
-                ->select('transactions.*','membership.name as membership_name')
-                ->where('transactions.user_id','=',$id)->get();
+        $data = Transaksi::where('user_id','=',$id)->get();
+                // join('membership','membership.id','=','transactions.membership_id')
+                // ->select('transactions.*','membership.name as membership_name')
+                
 
         return TransactionResource::collection($data);
     }
