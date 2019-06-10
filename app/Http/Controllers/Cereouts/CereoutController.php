@@ -9,6 +9,7 @@ use App\Http\Controllers\Services\Cereouts\AnswerService;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
 use App\Http\Resources\Cereout\DetailCereoutResource;
+use App\Http\Resources\Cereout\SummaryCereoutResource;
 use App\User;
 use DB;
 use App\Models\Question;
@@ -223,23 +224,39 @@ class CereoutController extends Controller
         return DetailCereoutResource::collection($data);    
     }
 
-    public function getSummaryTryout($id){
-        $rankingNasional = Cereout::select('user_id',DB::raw('max(score) as score_user'))
+    public function getSummaryTryout($id,$tryout_id,$user_id){
+        $ranking = Cereout::select('user_id','score','tryout_id',DB::raw('max(score) as score_user'))
                 ->orderBy('score_user', 'DESC')
                 ->groupBy('user_id')
+                ->where('tryout_id','=',$tryout_id)
                 ->get();
-        $rankNasional=0;
-        foreach ($rankingNasional as $rankingNasional ) {
-            $rankNasional++;
-            if($rankingNasional->user_id==$id){
+        $userTryout = Cereout::select('user_id','score','tryout_id',DB::raw('max(score) as score_user'))
+                ->orderBy('score_user', 'DESC')
+                ->groupBy('user_id')
+                ->where('tryout_id','=',$tryout_id)
+                ->count();
+        $cereout = Cereout::where('user_id','=',$user_id)
+                ->where('tryout_id','=',$tryout_id)
+                ->where('id','=',$id)
+                ->first();
+        $rank=0;
+        foreach ($ranking as $ranking ) {
+            $rank++;
+            if($ranking->user_id==$user_id){
                 break;
             }
         }
 
         return response()->json([
             'status' => true,
-            'national_ranking' => $rankNasional,
-            'national_user' => count($rankingNasional),
+            'time' => $cereout->my_time,
+            'score' => $cereout->score,
+            'correct_answered' => $cereout->correct_answered,
+            'incorrect_answered' => $cereout->incorrect_answered,
+            'left_answered' => $cereout->left_answered,
+            'result_status' => $cereout->result_status,
+            'tryout_ranking' => $rank,
+            'tryout_user' => $userTryout,
         ],201);
     }    
 }
