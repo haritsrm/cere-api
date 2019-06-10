@@ -226,13 +226,11 @@ class CereoutController extends Controller
 
     public function getSummaryTryout($id,$tryout_id,$user_id){
         $ranking = Cereout::select('user_id','score','tryout_id',DB::raw('max(score) as score'))
-                ->orderBy('score', 'DESC')
+                ->orderBy('score_user', 'DESC')
                 ->groupBy('user_id')
                 ->where('tryout_id','=',$tryout_id)
                 ->get();
-        $userTryout = Cereout::select('user_id','score','tryout_id',DB::raw('max(score) as score'))
-                ->orderBy('score', 'DESC')
-                ->groupBy('user_id')
+        $userTryout = Cereout::groupBy('user_id')
                 ->where('tryout_id','=',$tryout_id)
                 ->count();
         $cereout = Cereout::where('user_id','=',$user_id)
