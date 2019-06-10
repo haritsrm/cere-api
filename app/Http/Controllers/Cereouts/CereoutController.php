@@ -232,7 +232,7 @@ class CereoutController extends Controller
                 ->get();
         $userTryout = Cereout::groupBy('user_id')
                 ->where('tryout_id','=',$tryout_id)
-                ->count();
+                ->get();
         $cereout = Cereout::where('user_id','=',$user_id)
                 ->where('tryout_id','=',$tryout_id)
                 ->where('id','=',$id)
@@ -254,7 +254,7 @@ class CereoutController extends Controller
             'left_answered' => $cereout->left_answered,
             'result_status' => $cereout->result_status,
             'tryout_ranking' => $rank,
-            'tryout_user' => count($rank),
+            'tryout_user' => count($userTryout)
         ],201);
     }    
 }
