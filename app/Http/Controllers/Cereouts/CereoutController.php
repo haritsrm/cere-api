@@ -256,7 +256,7 @@ class CereoutController extends Controller
             'left_answered' => $cereout->left_answered,
             'result_status' => $cereout->result_status,
             'tryout_ranking' => $rank,
-            'tryout_user' => $userTryout,
+            'tryout_user' => count($rank),
         ],201);
     }    
 }
