@@ -9,7 +9,7 @@ class Transaksi extends Model
     protected $table = 'transactions';
 
     protected $fillable = [
-        'user_id', 'nominal', 'payment_method', 'status', 'snap_token'
+        'user_id', 'nominal', 'payment_method', 'status', 'snap_token', 'membership_id','type'
     ];
 
     public function setPending($type)
