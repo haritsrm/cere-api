@@ -163,6 +163,11 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
         Route::post('/{id}/valuation', 'Cereouts\CereoutController@valuation')->name('cereout/valuation');
         Route::delete('/{id}', 'Cereouts\CereoutController@delete')->name('cereout/delete');
     });
+
+    Route::group(['prefix' => '/leaderboard'], function(){
+        Route::get('/{id}', 'Cereouts\LeaderboardController@getLeaderboardByClass');
+        Route::get('/lesson/{id}', 'Cereouts\LeaderboardController@getLeaderboardByLesson');
+    });
 });
 //Cereout's Routes --end
 

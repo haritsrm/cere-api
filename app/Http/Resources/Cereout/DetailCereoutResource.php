@@ -40,6 +40,8 @@ class DetailCereoutResource extends JsonResource
                 'option_b' => $this->option_b,
                 'option_c' => $this->option_c,
                 'option_d' => $this->option_d,
+                'option_e' => $this->option_e,
+                'option_f' => $this->option_f,
                 'correct_answer' => $this->correct_answer,
                 'explanation' => $this->explanation,
                 'url_explanation' => $this->url_explanation

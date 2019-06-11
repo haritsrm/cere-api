@@ -218,7 +218,7 @@ class CereoutController extends Controller
 
     public function getDetailCereoutByUser($id){
         $data = Answer::join('questions','questions.id','=','answers.question_id')
-            ->select('answers.*','questions.explanation as explanation', 'questions.question as question','questions.url_explanation as url_explanation', 'questions.option_a as option_a' , 'questions.option_b as option_b', 'questions.option_c as option_c', 'questions.option_d as option_d', 'questions.correct_answer as correct_answer')
+            ->select('answers.*','questions.explanation as explanation', 'questions.question as question','questions.url_explanation as url_explanation', 'questions.option_a as option_a' , 'questions.option_b as option_b', 'questions.option_c as option_c', 'questions.option_d as option_d', 'questions.option_e as option_e', 'questions.option_f as option_f', 'questions.correct_answer as correct_answer')
             ->where('answers.cereout_id','=',$id)
             ->get();
         return DetailCereoutResource::collection($data);    
