@@ -14,21 +14,21 @@ class LeaderboardController extends Controller
     //
     public function getLeaderboardByClass($id){
     	$data = Cereout::join('tryouts','tryouts.id','=','cereouts.tryout_id')
-    			->select('tryouts.class_id','cereouts.score as score','cereouts.user_id as user_id',DB::raw('avg(cereouts.score) as scores'))		
+    			->select('tryouts.class_id','cereouts.score as score','cereouts.user_id as user_id')		
     			->where('tryouts.class_id','=',$id)
-    			->orderBy('scores', 'DESC')
+    			->orderBy('score', 'DESC')
     			->groupBy('cereouts.user_id')
     			->get();
-    	return LeaderboardResource::collection($data);			
+    	return LeaderboardClassResource::collection($data);			
     }
 
     public function getLeaderboardByLesson($id){
     	$data = Cereout::join('tryouts','tryouts.id','=','cereouts.tryout_id')
-    			->select('tryouts.class_id','cereouts.score as score','cereouts.user_id as user_id',DB::raw('avg(cereouts.scores) as scores'))
+    			->select('tryouts.lesson_id','cereouts.score as score','cereouts.user_id as user_id')
     			->where('tryouts.lesson_id','=',$id)
-    			->orderBy('scores', 'DESC')
+    			->orderBy('score', 'DESC')
     			->groupBy('cereouts.user_id')
     			->get();
-    	return LeaderboardResource::collection($data);			
+    	return LeaderboardLessonResource::collection($data);			
     }
 }
