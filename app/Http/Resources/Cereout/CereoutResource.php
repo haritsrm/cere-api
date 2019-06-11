@@ -27,7 +27,8 @@ class CereoutResource extends JsonResource
             'correct_answered' => $this->correct_answered,
             'incorrect_answered' => $this->incorrect_answered,
             'left_answered' => $this->left_answered,
-            'result_status' => $this->result_status
+            'result_status' => $this->result_status,
+            'created_at' => $this->created_at
         ];
     }
 }
