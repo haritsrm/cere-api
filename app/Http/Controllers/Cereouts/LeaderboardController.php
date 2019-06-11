@@ -8,7 +8,7 @@ use App\Models\Cereout;
 use App\Models\Tryout;
 use DB;
 use App\Http\Resources\Leaderboard\LeaderboardClassResource;
-use App\Http\Resources\Leaderboard\LeaderboardResourceResource;
+use App\Http\Resources\Leaderboard\LeaderboardLessonResourceResource;
 
 class LeaderboardController extends Controller
 {
