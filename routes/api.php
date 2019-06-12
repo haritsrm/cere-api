@@ -178,6 +178,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::post('/create', 'Payment\PaymentController@submitPayment');
+    Route::put('/update/{id}', 'Payment\PaymentController@UpdatePayment');
     Route::get('/{id}', 'Payment\PaymentController@getTransactionByUser');
 });
 

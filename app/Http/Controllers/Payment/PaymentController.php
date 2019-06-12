@@ -196,4 +196,32 @@ class PaymentController extends Controller
 
         return MembershipResource::collection($data);
     }
+
+    public function UpdatePayment($id)
+    {
+        $payment = Transaksi::where('id','=',$id)->first();
+        $user = User::where('id','=',$payment->user_id)->first();
+        // Buat transaksi ke midtrans kemudian save snap tokennya.
+        $payload = [
+            'transaction_details' => [
+                'order_id'      => $payment->id,
+                'gross_amount'  => $payment->nominal,
+                'name'  => $payment->membership_id
+            ],
+            'customer_details' => [
+                'first_name'    => $user->name,
+                'email'         => $user->email,
+                'phone'         => $user->phone,
+                // 'address'       => '',
+            ]
+        ];
+        $snapToken = Veritrans_Snap::getSnapToken($payload);
+        $payment->snap_token = $snapToken;
+        $payment->save();
+
+        // Beri response snap token
+        $this->response['snap_token'] = $snapToken;
+ 
+        return response()->json($this->response);
+    }
 }
