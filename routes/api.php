@@ -170,6 +170,11 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
         Route::get('/ranking/{id}', 'Cereouts\LeaderboardController@getRanking');
         Route::get('/toptryout/{id}', 'Cereouts\LeaderboardController@getTopTryout');
     });
+
+    Route::group(['prefix' => '/chart'], function(){
+        Route::get('/lesson/{id}', 'Cereouts\LeaderboardController@getChartByLesson');
+        Route::get('/class/{id}', 'Cereouts\LeaderboardController@getChartByClass');
+    });
 });
 //Cereout's Routes --end
 
