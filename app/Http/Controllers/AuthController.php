@@ -142,7 +142,7 @@ class AuthController extends Controller
            $namaFile = "null";
         }else{
             $namaFile = $id;
-            $request->file('photo')->move('images/student/', $namaFile);
+            $request->file('photo')->move('images/student', $namaFile);
         }
         $data->photo_url = $namaFile;
         $data->save();
@@ -199,8 +199,15 @@ class AuthController extends Controller
 
     public function getPhotoProfile($id){
         $data =  User::where('id',$id)->first();
-        $pathToFile = public_path().'/images/student/'.$data->photo_url;
-        return response()->download($pathToFile);        
+        if($data->photo_url!=null){
+            $pathToFile = public_path().'/images/student/'.$data->photo_url;
+            return response()->download($pathToFile);        
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Photo does not exist!'
+            ], 201);
+        }
     }
 
     public function redirectToProvider($service)
