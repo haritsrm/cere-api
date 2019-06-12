@@ -16,12 +16,12 @@ class LeaderboardClassResource extends JsonResource
     public function toArray($request)
     {
         $user = User::where('id','=',$this->user_id)->first();
-        $score = Cereout::where('user_id','=',$this->user_id)
-                ->where('class_id','=',$this->class_id)
-                ->avg('score');
+        // $score = Cereout::where('user_id','=',$this->user_id)
+        //         ->where('class_id','=',$this->class_id)
+        //         ->avg('score');
         return [
             'name' => $user->name,
-            'score' => $score
+            'score' => $this->scores
         ];
     }
 }
