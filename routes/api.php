@@ -187,6 +187,17 @@ Route::group([
     Route::get('/{id}', 'Payment\PaymentController@getTransactionByUser');
 });
 
+//cerecall routes
+Route::group([
+    'prefix' => 'cerecall',
+    'middleware' => 'auth:api'
+], function(){
+    Route::post('/history', 'Cerecalls\CerecallController@postHistoryCall');
+    Route::get('/history', 'Cerecalls\CerecallController@getHistoryTeacher');
+    Route::post('/report', 'Cerecalls\CerecallController@postReportTeacher');
+    Route::put('/status', 'Cerecalls\CerecallController@changeStatus');
+});
+
 //master data Routes
 Route::group(['prefix' => 'master'], function(){
     Route::get('/class', 'Master\ClassController@index');
