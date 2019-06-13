@@ -11,6 +11,7 @@ use DB;
 use App\Http\Resources\Leaderboard\LeaderboardClassResource;
 use App\Http\Resources\Leaderboard\LeaderboardLessonResource;
 use App\Http\Resources\Leaderboard\LeaderboardTryoutResource;
+use App\Http\Resources\Leaderboard\ChartResource;
 
 class LeaderboardController extends Controller
 {
@@ -67,5 +68,19 @@ class LeaderboardController extends Controller
                 ->take(5)
     			->get();
     	return LeaderboardTryoutResource::collection($data);
+    }
+
+    public function getChartByClass($id){
+    	$data = Tryout::where('class_id','=',$id)
+    		->get();
+
+    	return ChartResource::collection($data);
+    }
+
+    public function getChartByLesson($id){
+    	$data = Tryout::where('lesson_id','=',$id)
+    		->get();
+
+    	return ChartResource::collection($data);
     }
 }
