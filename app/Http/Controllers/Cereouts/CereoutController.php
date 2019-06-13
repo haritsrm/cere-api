@@ -129,31 +129,29 @@ class CereoutController extends Controller
         $incorrect_answered = 0;
         $left_answered = 0;
         $score = 0;
-        $answers = $this->answer->findCereout($id);
+        $answers = Answer::where('cereout_id','=',$id)->get();
         foreach($answers as $answer){
-            $correct_score = $this->question->find($answer->question_id)->correct_score;
-            $score_question_true = $this->question->find($answer->question_id)->correct_score;
-            $incorrect_score = $this->question->find($answer->question_id)->incorrect_score;
-            $score_question_false = $this->question->find($answer->question_id)->incorrect_score;
+            // $score_question_true = $this->question->find($answer->question_id)->correct_score;
+            $score_question = Question::where('id','=',$answer->question_id)->first();
             if(!is_null($answer->answer)){
-                if($answer->answer == $this->question->find($answer->question_id)->correct_answer){
+                if($answer->answer == $score_question->correct_answer){
                     $correct_answered++;
-                    $score += $correct_score;
+                    $score += $score_question->correct_score;
                     $check_answer = Answer::where('cereout_id','=',$id)
                         ->where('question_id','=',$answer->question_id)
                         ->first();
                     $check_answer->check_answer = 1;
-                    $check_answer->score = $score_question_true;
+                    $check_answer->score = $score_question->correct_score;
                     $check_answer->save();
                 }
                 else{
                     $incorrect_answered++;
-                    $score += $incorrect_score;
+                    $score += $score_question->incorrect_score;
                     $check_answer = Answer::where('cereout_id','=',$id)
                         ->where('question_id','=',$answer->question_id)
                         ->first();
                     $check_answer->check_answer = 0;
-                    $check_answer->score = $score_question_false;
+                    $check_answer->score = $score_question->incorrect_score;
                     $check_answer->save();
                 }
             }
