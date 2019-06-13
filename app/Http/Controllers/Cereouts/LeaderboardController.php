@@ -8,6 +8,7 @@ use App\Models\Cereout;
 use App\Models\Tryout;
 use App\User;
 use DB;
+use Carbon\Carbon;
 use App\Http\Resources\Leaderboard\LeaderboardClassResource;
 use App\Http\Resources\Leaderboard\LeaderboardLessonResource;
 use App\Http\Resources\Leaderboard\LeaderboardTryoutResource;
@@ -71,14 +72,18 @@ class LeaderboardController extends Controller
     }
 
     public function getChartByClass($id){
+    	$today =  Carbon::now()->todatestring();
     	$data = Tryout::where('class_id','=',$id)
+    		->whereMonth('created_at', '=', Carbon::today()->format('m'))
     		->get();
 
     	return ChartResource::collection($data);
     }
 
     public function getChartByLesson($id){
+    	$today =  Carbon::now()->todatestring();
     	$data = Tryout::where('lesson_id','=',$id)
+    		->whereMonth('created_at', '=', Carbon::today()->format('m'))
     		->get();
 
     	return ChartResource::collection($data);
