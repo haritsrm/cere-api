@@ -18,6 +18,7 @@ class FavoriteResource extends JsonResource
         return [
             'id' => $this->id,
             'course' => [
+                'course_id' => $this->course->id,
                 'title' => $this->course->title,
                 'cover' => $this->course->cover,
                 'description' => $this->course->description,
