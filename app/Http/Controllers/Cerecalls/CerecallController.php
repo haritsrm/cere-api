@@ -54,7 +54,7 @@ class CerecallController extends Controller
             $namaFile = "null";
         }else{
             $extension = $image->getClientOriginalExtension();
-            $namaFile = 'http://api.ceredinas.id/images/cerecall/'.$report->id.'.'.$extension;
+            $namaFile = url('/images/cerecall/'.$report->id.'.'.$extension);
             $request->file('image_url')->move('images/cerecall/', $namaFile);
         }
 
