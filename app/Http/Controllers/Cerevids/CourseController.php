@@ -52,7 +52,7 @@ class CourseController extends Controller
             $namaFile = "null";
         }else{
             $extension = $image->getClientOriginalExtension();
-            $namaFile = public_path().'/images/cerevid/'.$req->title.'.'.$extension;
+            $namaFile = url('/images/cerevid/'.$req->title.'.'.$extension);
             $req->file('cover')->move('images/cerevid/', $namaFile);
         }
         $result = $this->course->create([
@@ -80,15 +80,15 @@ class CourseController extends Controller
 
     public function update($id, Request $req)
     {
-        $req->validate([
-            'cover' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
-          ]);
+        // $req->validate([
+        //     'cover' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
+        //   ]);
         $image = $req->file('cover');
         if(empty($image)){
             $namaFile = "null";
         }else{
             $extension = $image->getClientOriginalExtension();
-            $namaFile = public_path().'/images/cerevid/'.$req->title.'.'.$extension;
+            $namaFile = url('/images/cerevid/'.$req->title.'.'.$extension);
             $req->file('cover')->move('images/cerevid/', $namaFile);
         }
         $result = $this->course->update($id, [
