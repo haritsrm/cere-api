@@ -74,7 +74,8 @@ class LeaderboardController extends Controller
     public function getChartByClass($id){
     	$today =  Carbon::now()->todatestring();
     	$data = Tryout::where('class_id','=',$id)
-    		->whereMonth('created_at', '=', Carbon::today()->format('m'))
+    		->where('start_date', '<=', $today)
+    		->where('end_date', '>=', $today)
     		->get();
 
     	return ChartResource::collection($data);
@@ -83,7 +84,8 @@ class LeaderboardController extends Controller
     public function getChartByLesson($id){
     	$today =  Carbon::now()->todatestring();
     	$data = Tryout::where('lesson_id','=',$id)
-    		->whereMonth('created_at', '=', Carbon::today()->format('m'))
+    		->where('start_date', '<=', $today)
+    		->where('end_date', '>=', $today)
     		->get();
 
     	return ChartResource::collection($data);

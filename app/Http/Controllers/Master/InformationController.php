@@ -12,7 +12,7 @@ class InformationController extends Controller
     //
     public function index()
     {
-        $data = Information::all();
+        $data = Information::orderBy('created_at', 'DESC')->get();
 
         return InformationResource::collection($data);
     }
