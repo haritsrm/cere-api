@@ -80,9 +80,9 @@ class CourseController extends Controller
 
     public function update($id, Request $req)
     {
-        $req->validate([
-            'cover' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
-          ]);
+        // $req->validate([
+        //     'cover' => 'image|required|mimes:jpeg,png,jpg,gif,svg'
+        //   ]);
         $image = $req->file('cover');
         if(empty($image)){
             $namaFile = "null";
