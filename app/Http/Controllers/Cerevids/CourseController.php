@@ -52,7 +52,7 @@ class CourseController extends Controller
             $namaFile = "null";
         }else{
             $extension = $image->getClientOriginalExtension();
-            $namaFile = public_path().'/images/cerevid/'.$req->title.'.'.$extension;
+            $namaFile = url('/images/cerevid/'.$req->title.'.'.$extension);
             $req->file('cover')->move('images/cerevid/', $namaFile);
         }
         $result = $this->course->create([
@@ -88,7 +88,7 @@ class CourseController extends Controller
             $namaFile = "null";
         }else{
             $extension = $image->getClientOriginalExtension();
-            $namaFile = 'http://api.ceredinas.id/images/cerevid/'.$req->title.'.'.$extension;
+            $namaFile = url('/images/cerevid/'.$req->title.'.'.$extension);
             $req->file('cover')->move('images/cerevid/', $namaFile);
         }
         $result = $this->course->update($id, [
