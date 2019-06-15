@@ -4,6 +4,7 @@ namespace App\Http\Resources\Leaderboard;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Cereout;
+use Carbon\Carbon;
 class ChartResource extends JsonResource
 {
     /**
@@ -14,13 +15,15 @@ class ChartResource extends JsonResource
      */
     public function toArray($request)
     {
+        $today =  Carbon::now()->format('F');
         $student = Cereout::where('tryout_id','=',$this->id)
             ->groupBy('user_id')
             ->get();
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'total_student' => count($student)
+            'total_student' => count($student),
+            'month' => $today
         ];
     }
 }
