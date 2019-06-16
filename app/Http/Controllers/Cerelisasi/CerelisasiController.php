@@ -48,7 +48,7 @@ class CerelisasiController extends Controller
     {
         $i = 1;
         $my_rank = 0;
-        $rankings = Cerelisasi::orderBy('total_point', 'desc');
+        $rankings = Cerelisasi::orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
@@ -64,7 +64,7 @@ class CerelisasiController extends Controller
     {
         $i = 1;
         $my_rank = 0;
-        $rankings = Cerelisasi::where('department_id', $department_id)->orderBy('total_point', 'desc');
+        $rankings = Cerelisasi::where('department_id', $department_id)->orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
