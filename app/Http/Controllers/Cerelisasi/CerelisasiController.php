@@ -32,19 +32,19 @@ class CerelisasiController extends Controller
                 $countable->update(['status' => 'tinggi']);
             }
 
-            array_push($department_ranks, [$department->name => $this->getDepartmentRanking($department->id)]);
+            array_push($department_ranks, [$department->name => $this->getDepartmentRanking($req, $department->id)]);
         }
 
         return response()->json([
             'status' => true,
             'data' => [
-                'national_rank' => $this->getNationalRanking(),
+                'national_rank' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
             ]
         ]);
     }
 
-    public function getNationalRanking()
+    public function getNationalRanking($req)
     {
         $i = 1;
         $my_rank = 0;
@@ -60,7 +60,7 @@ class CerelisasiController extends Controller
         return $my_rank;
     }
 
-    public function getDepartmentRanking($department_id)
+    public function getDepartmentRanking($req, $department_id)
     {
         $i = 1;
         $my_rank = 0;
