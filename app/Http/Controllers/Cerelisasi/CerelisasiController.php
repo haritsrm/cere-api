@@ -11,7 +11,7 @@ class CerelisasiController extends Controller
 {
     public function analyticsResult(Request $req)
     {
-        if ($this->isFoundData()) {
+        if ($this->isFoundData($req)) {
             $this->clearAnalyticsData();
         }
         $this->createUserInfo($req);
@@ -76,7 +76,7 @@ class CerelisasiController extends Controller
         return $my_rank;
     }
 
-    public function isFoundData()
+    public function isFoundData($req)
     {
         if (!is_null(Cerelisasi::where('user_id', $req->user()->id)->get())) {
             return true;
