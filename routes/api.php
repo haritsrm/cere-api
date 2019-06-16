@@ -212,3 +212,11 @@ Route::group(['prefix' => 'master'], function(){
     Route::get('/getAllDataUniversity', 'Master\UniversityController@getAlldata');
     Route::get('/nominal', 'Master\GeneralInformationController@getNominalTopUp');
 });
+
+//Cerelisasi routes --begin
+Route::group([
+    'prefix' => 'cerelisasi',
+    'middleware' => 'auth:api'
+], function() {
+    Route::post('/analysis', 'Cerelisasi\CerelisasiController@analyticsResult')->name('analysis');
+});
