@@ -11,7 +11,7 @@ class CerelisasiController extends Controller
 {
     public function analyticsResult(Request $req)
     {
-        if (isFoundData()) {
+        if ($this->isFoundData()) {
             $this->clearAnalyticsData();
         }
         $this->createUserInfo($req);
