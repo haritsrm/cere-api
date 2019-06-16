@@ -142,6 +142,7 @@ Route::group([
 
 //Cereout's Routes --begin
 Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
+    Route::get('/running', 'Cereouts\CereoutController@getRunningTryout');
     Route::get('/question/{id}', 'Cereouts\QuestionController@index')->name('questions');
     Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
     Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');

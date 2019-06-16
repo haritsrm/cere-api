@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Lesson;
 use App\Models\Kelas;
 use App\Models\Question;
+use App\Models\AttemptTryout;
 
 class TryoutCollection extends JsonResource
 {
@@ -17,6 +18,10 @@ class TryoutCollection extends JsonResource
      */
     public function toArray($request)
     {
+        $attempt = AttemptTryout::where('tryout_id',$this->id)
+                ->where('user_id',$request->user()->id)
+                ->select('left_attempt')
+                ->first();        
         $lesson = Lesson::find($this->lesson_id)->name;
         $passing_percentage = Lesson::find($this->lesson_id)->passing_percentage;
         $class = Kelas::find($this->class_id)->name_class;
@@ -32,6 +37,7 @@ class TryoutCollection extends JsonResource
             'instruction' => $this->instruction,
             'duration' => $this->duration,
             'attempt_count' => $this->attempt_count,
+            'left_attempt' => $attempt,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'price' => $this->price,
