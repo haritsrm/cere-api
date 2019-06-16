@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cerelisasi extends Model
 {
+    protected $table = 'cerelisasi_data';
     protected $fillable = [
         'user_id', 'department_id', 'total_point', 'status'
     ];
