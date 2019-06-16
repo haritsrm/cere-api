@@ -21,7 +21,7 @@ class CerelisasiController extends Controller
         foreach ($countables as $key => $countable) {
             $department = Department::find($countable->department_id);
             $passing_grade = $department->passing_grade;
-            $average_point = Cerelisasi::where('department_id', $countable->department_id)->avg();
+            $average_point = Cerelisasi::where('department_id', $countable->department_id)->avg('total_point');
             if ($countable->total_point < $passing_grade) {
                 $countable->update(['status' => 'rendah']);
             }
