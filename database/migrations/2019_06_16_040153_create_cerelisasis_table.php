@@ -13,7 +13,7 @@ class CreateCerelisasisTable extends Migration
      */
     public function up()
     {
-        Schema::create('cerelisasis', function (Blueprint $table) {
+        Schema::create('cerelisasi_data', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->bigInteger('department_id');
