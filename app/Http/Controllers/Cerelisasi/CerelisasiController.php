@@ -22,6 +22,8 @@ class CerelisasiController extends Controller
             $department = Department::find($countable->department_id);
             $passing_grade = $department->passing_grade;
             $average_point = Cerelisasi::where('department_id', $countable->department_id)->avg('total_point');
+            $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->max('total_point');
+            $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->count();
             if ($countable->total_point < $passing_grade) {
                 $countable->update(['status' => 'rendah']);
             }
@@ -32,7 +34,21 @@ class CerelisasiController extends Controller
                 $countable->update(['status' => 'tinggi']);
             }
 
-            array_push($department_ranks, [$department->name => $this->getDepartmentRanking($req, $department->id)]);
+            array_push($department_ranks, [
+                    'department' => [
+                        'id' => $department->id,
+                        'name' => $department->name,
+                        'interrested_num' => $department->interrested_num,
+                        'capacity' => $department->capacity,
+                        'passing_grade' => $passing_grade,
+                        'average_point' => $average_point,
+                        'maximum_value' => $maximum_value,
+                        'tightness' => $department->interrested_num/$department->capacity,
+                    ],
+                    'accuracy' => ($surveyor_count >= $department->interrested_num ? 0.9 : $surveyor_count/$department->interrested_num),
+                    'my_ranking' => $this->getDepartmentRanking($req, $department->id),
+                    'status' => $countable->status,
+                ]);
         }
 
         return response()->json([
