@@ -182,7 +182,8 @@ class CereoutController extends Controller
             'correct_answered' => $correct_answered,
             'incorrect_answered' => $incorrect_answered,
             'left_answered' => $left_answered,
-            'result_status' => $result_status
+            'result_status' => $result_status,
+            'status' => 1
         ]);
 
         return response()->json([
@@ -219,6 +220,9 @@ class CereoutController extends Controller
             ->select('answers.*','questions.explanation as explanation', 'questions.question as question','questions.url_explanation as url_explanation', 'questions.option_a as option_a' , 'questions.option_b as option_b', 'questions.option_c as option_c', 'questions.option_d as option_d', 'questions.option_e as option_e', 'questions.option_f as option_f', 'questions.correct_answer as correct_answer')
             ->where('answers.cereout_id','=',$id)
             ->get();
+ 
+        // $attempt = AttemptTryout::where('user_id','=',)
+
         return DetailCereoutResource::collection($data);    
     }
 
@@ -255,4 +259,27 @@ class CereoutController extends Controller
             'tryout_user' => count($userTryout)
         ],201);
     }    
+
+    public function getRunningTryout(Request $request){
+        $data = Cereout::where('user_id','=',$request->user()->id)
+                ->where('finished_status','=',0)
+                ->get();
+        if(count($data) > 0){        
+            $res['status'] = true;
+            $res['data'] = $data;
+            return response($res);
+            // response()->json([
+            //     'status' => true,
+            //     'data' => $data
+            // ],201);
+        }else{
+            $res['status'] = false;
+            $res['data'] = $data;
+            return response($res);
+            // response()->json([
+            //     'status' => false,
+            //     'data' => null
+            // ],201);
+        }
+    }
 }
