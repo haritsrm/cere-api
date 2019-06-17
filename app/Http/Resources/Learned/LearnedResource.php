@@ -4,6 +4,7 @@ namespace App\Http\Resources\Learned;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Course;
+use App\Models\LastSeen;
 
 class LearnedResource extends JsonResource
 {

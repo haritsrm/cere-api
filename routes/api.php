@@ -134,9 +134,9 @@ Route::group([
 
     Route::get('/quiz', 'Cerevids\QuizController@index')->name('quiz');
     Route::post('/quiz/create', 'Cerevids\QuizController@create')->name('quiz/create');
-    Route::get('/quiz/{video_id}', 'Cerevids\QuizController@find')->name('quiz/detail');
-    Route::put('/quiz/{video_id}', 'Cerevids\QuizController@update')->name('quiz/update');
-    Route::delete('/quiz/{video_id}', 'Cerevids\QuizController@delete')->name('quiz/delete');
+    Route::get('/quiz/{quiz_id}', 'Cerevids\QuizController@find')->name('quiz/detail');
+    Route::put('/quiz/{quiz_id}', 'Cerevids\QuizController@update')->name('quiz/update');
+    Route::delete('/quiz/{quiz_id}', 'Cerevids\QuizController@delete')->name('quiz/delete');
 });
 //Cerevid's Routes --end
 
