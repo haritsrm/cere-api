@@ -17,6 +17,9 @@ class LearnedResource extends JsonResource
     public function toArray($request)
     {
         $course = Course::find($this->course_id);
+
+        $index = 0;
+        $progress = [];
         foreach ($course->sections as $sec) {
             $videos = $sec->videos()->get();
             $texts  = $sec->texts()->get();
