@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\ForumService;
 use App\Http\Resources\Forum\ForumResource;
+use App\Http\Resources\Forum\ForumCollection;
 
 class ForumController extends Controller
 {
