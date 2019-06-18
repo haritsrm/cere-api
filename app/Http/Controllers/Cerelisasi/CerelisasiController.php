@@ -11,9 +11,7 @@ class CerelisasiController extends Controller
 {
     public function analysis(Request $req)
     {
-        if ($this->isFoundData($req)) {
-            $this->clearAnalyticsData($req);
-        }
+        $this->clearAnalyticsData($req);
         $this->createUserInfo($req);
 
         return $this->analyticsResult($req);
@@ -161,8 +159,10 @@ class CerelisasiController extends Controller
 
     public function clearAnalyticsData($req)
     {
-        $cerelisasi = Cerelisasi::where('user_id', $req->user()->id)->delete();
-        return true;
+        if (isFoundData($req)) {
+            $cerelisasi = Cerelisasi::where('user_id', $req->user()->id)->delete();
+            return true;
+        }
     }
 
     public function createUserInfo($req)
