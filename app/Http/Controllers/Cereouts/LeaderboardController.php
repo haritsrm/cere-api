@@ -71,22 +71,28 @@ class LeaderboardController extends Controller
     	return LeaderboardTryoutResource::collection($data);
     }
 
-    public function getChartByClass($id){
+    public function getChartByClass($id, Request $request){
     	$today =  Carbon::now()->todatestring();
-    	$data = Tryout::where('class_id','=',$id)
-    		->where('start_date', '<=', $today)
-    		->where('end_date', '>=', $today)
+    	$data = Tryout::join('cereouts','cereouts.tryout_id','=','tryouts.id')
+            ->where('cereouts.user_id','=',$request->user()->id)
+            ->where('tryouts.class_id','=',$id)
+    		->where('tryouts.start_date', '<=', $today)
+    		->where('tryouts.end_date', '>=', $today)
+            ->groupBy('cereouts.user_id')
     		->get();
 
     	return ChartResource::collection($data);
     }
 
-    public function getChartByLesson($id){
+    public function getChartByLesson($id, Request $request){
     	$today =  Carbon::now()->todatestring();
-    	$data = Tryout::where('lesson_id','=',$id)
-    		->where('start_date', '<=', $today)
-    		->where('end_date', '>=', $today)
-    		->get();
+    	$data = Tryout::join('cereouts','cereouts.tryout_id','=','tryouts.id')
+            ->where('cereouts.user_id','=',$request->user()->id)
+            ->where('tryouts.lesson_id','=',$id)
+            ->where('tryouts.start_date', '<=', $today)
+            ->where('tryouts.end_date', '>=', $today)
+            ->groupBy('cereouts.user_id')
+            ->get();        
 
     	return ChartResource::collection($data);
     }
