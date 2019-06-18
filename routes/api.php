@@ -195,9 +195,17 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::post('/history', 'Cerecalls\CerecallController@postHistoryCall');
-    Route::get('/history', 'Cerecalls\CerecallController@getHistoryTeacher');
+    Route::put('/history/{id}', 'Cerecalls\CerecallController@updateHistoryCall');
+    Route::put('/history/status/{id}', 'Cerecalls\CerecallController@updateStatusKonsultas');
+    Route::get('/teacher/history', 'Cerecalls\CerecallController@getHistoryTeacher');
+    Route::get('/teacher/history/running', 'Cerecalls\CerecallController@getRunningKonsultasiTeacher');
+    Route::get('/student/history', 'Cerecalls\CerecallController@getHistoryStudent');
+    Route::get('/student/history/running', 'Cerecalls\CerecallController@getRunningKonsultasiStudent');
+    Route::get('/available/teacher/{id}', 'Cerecalls\CerecallController@getAvailableTeacher');
     Route::post('/report', 'Cerecalls\CerecallController@postReportTeacher');
     Route::put('/status', 'Cerecalls\CerecallController@changeStatus');
+    Route::post('/chat/{id}', 'Cerecalls\CerecallController@postChatByKonsultasi');
+    Route::get('/chat/{id}', 'Cerecalls\CerecallController@getChatByKonsultasi');
 });
 
 //master data Routes
