@@ -157,7 +157,7 @@ class CerelisasiController extends Controller
         }
     }
 
-    public function clearAnalyticsData($req)
+    public function clearAnalyticsData(Request $req)
     {
         if ($this->isFoundData($req)) {
             $cerelisasi = Cerelisasi::where('user_id', $req->user()->id)->delete();
