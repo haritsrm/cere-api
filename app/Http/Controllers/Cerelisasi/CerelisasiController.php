@@ -70,11 +70,20 @@ class CerelisasiController extends Controller
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
                 $my_rank = $i;
+                if ($my_rank > 5) {
+                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                }
+                else {
+                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                }
             }
             $i++;
         }
 
-        return $my_rank;
+        return [
+            'my_rank' => $my_rank,
+            'other_ranks' => $array_rank,
+        ];
     }
 
     public function getDepartmentRanking($req, $department_id)
