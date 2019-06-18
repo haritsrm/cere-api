@@ -65,16 +65,31 @@ class CerelisasiController extends Controller
     {
         $i = 1;
         $my_rank = 0;
+        $other_ranks = [];
         $rankings = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
                 $my_rank = $i;
                 if ($my_rank > 5) {
-                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    $j = 1;
+                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                    }
                 }
                 else {
+                    $j = 1;
                     $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                    }
                 }
             }
             $i++;
@@ -82,7 +97,7 @@ class CerelisasiController extends Controller
 
         return [
             'my_rank' => $my_rank,
-            'other_ranks' => $array_rank,
+            'other_ranks' => $other_ranks,
         ];
     }
 
@@ -90,16 +105,29 @@ class CerelisasiController extends Controller
     {
         $i = 1;
         $my_rank = 0;
+        $other_ranks = [];
         $rankings = Cerelisasi::where('department_id', $department_id)->orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
-            if ($ranking->user_id == $req->user()->id) {
-                $my_rank = $i;
                 if ($my_rank > 5) {
-                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    $j = 1;
+                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                    }
                 }
                 else {
+                    $j = 1;
                     $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                    }
                 }
             }
             $i++;
@@ -107,7 +135,7 @@ class CerelisasiController extends Controller
 
         return [
             'my_rank' => $my_rank,
-            'other_ranks' => $array_rank,
+            'other_ranks' => $other_ranks,
         ];
     }
 
