@@ -30,7 +30,7 @@ class QuestionResource extends JsonResource
                 ['option' => $this->option_e],
                 ['option' => $this->option_f]
             ],
-            'weight' => $weight->score,
+            'weight' => $weight ? $weight->score:0,
             'correct_answer' => $this->correct_answer,
             'explanation' => $this->explanation,
             'url_explanation' => $this->url_explanation,

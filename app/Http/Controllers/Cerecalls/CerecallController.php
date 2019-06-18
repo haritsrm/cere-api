@@ -38,10 +38,11 @@ class CerecallController extends Controller
         ], 201);
     }
 
-    public function UpdateHistoryCall(Request $request, $id){
+    public function updateHistoryCall(Request $request, $id){
         $data = HistoryCall::where('id',$id)->first();
         $data->rating = $request->rating;
         $data->review = $request->review;
+        $data->status = 4;
         $data->save();
 
         $price = GeneralInformation::all();
@@ -53,7 +54,7 @@ class CerecallController extends Controller
         return response()->json([
             'status' => true,
             'data' => [
-                'message' => 'succesfully post data',
+                'message' => 'succesfully update data',
             ],
         ], 201);
     }
@@ -105,11 +106,13 @@ class CerecallController extends Controller
 
     public function getHistoryTeacher(Request $request){
     	$data = HistoryCall::where('teacher_id','=',$request->user()->id)->get();
+
     	return new HistoryCallResource($data);
     }
 
     public function getHistoryStudent(Request $request){
         $data = HistoryCall::where('student_id','=',$request->user()->id)->get();
+
         return new HistoryCallResource($data);
     }
 
@@ -119,6 +122,7 @@ class CerecallController extends Controller
             ->where('teacher_lesson.lesson_id',$id)
             ->where('users.status',1)
             ->get();
+            return new AvailTeacherResource($data);
     }
 
     public function postChatByKonsultasi($id){
@@ -134,19 +138,44 @@ class CerecallController extends Controller
         $data->content = $request->content;
         // $data->review = $request->review;
         $data->save();
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'message' => 'succesfully post data',
+            ],
+        ], 201);
     }
 
     public function getChatByKonsultasi($id){
         $data = Chat::where('history_call_id',$id)->get();
+        return new ChatResource($data);
     }
 
-    public function getRunningKonsultasi(Request $request){
-        $data = HistoryCall::where('status',2)->get();
+    public function getRunningKonsultasiStudent(Request $request){
+        $data = HistoryCall::where('status',2)
+                where('student_id',$request->user()->id)
+                ->get();
+
+        return new HistoryCallResource($data);
+    }
+
+    public function getRunningKonsultasiTeacher(Request $request){
+        $data = HistoryCall::where('status',2)
+                where('teacher_id',$request->user()->id)
+                ->get();
+
+        return new HistoryCallResource($data);
     }
 
     public function updateStatusKonsultasi($id, Request $request){
         $data = HistoryCall::where('id',$id)->first();
         $data->status = $request->status;
         $data->save();
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'message' => 'succesfully update status',
+            ],
+        ], 201);
     }
 }
