@@ -45,9 +45,8 @@ class CerelisasiController extends Controller
                         'maximum_value' => $maximum_value,
                         'tightness' => round($department->interrested_num/$department->capacity),
                     ],
-                    'my_point' => $countable->total_point,
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
-                    'my_ranking' => $this->getDepartmentRanking($req, $department->id),
+                    'ranks' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
                 ]);
         }
@@ -55,8 +54,9 @@ class CerelisasiController extends Controller
         return response()->json([
             'status' => true,
             'data' => [
-                'national_rank' => $this->getNationalRanking($req),
+                'national_ranks' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
+                'my_point' => $countable->total_point,
             ]
         ]);
     }
@@ -95,11 +95,20 @@ class CerelisasiController extends Controller
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
                 $my_rank = $i;
+                if ($my_rank > 5) {
+                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                }
+                else {
+                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                }
             }
             $i++;
         }
 
-        return $my_rank;
+        return [
+            'my_rank' => $my_rank,
+            'other_ranks' => $array_rank,
+        ];
     }
 
     public function isFoundData($req)
