@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cerelisasi;
 use App\Models\Department;
 use App\Models\GeneralInformation;
+use App\User;
 
 class CerelisasiController extends Controller
 {
@@ -57,17 +58,11 @@ class CerelisasiController extends Controller
 
         return response()->json([
             'status' => true,
-            ($countables->first() ? 
-            [
-                'data' => [
-                    'national_ranks' => $this->getNationalRanking($req),
-                    'department_ranks' => $department_ranks,
-                    'my_point' => $countables->first()->total_point,
-                ]
+            'data' => [
+                'national_ranks' => $this->getNationalRanking($req),
+                'department_ranks' => $department_ranks,
+                'my_point' => $countables->first()->total_point,
             ]
-            : [
-                'data' => null
-            ])
         ]);
 
     }
@@ -117,17 +112,11 @@ class CerelisasiController extends Controller
         if($this->useBalance($req, $price_total)) {
             return response()->json([
                 'status' => true,
-                ($countables->first() ? 
-                [
-                    'data' => [
-                        'national_ranks' => $this->getNationalRanking($req),
-                        'department_ranks' => $department_ranks,
-                        'my_point' => $countables->first()->total_point,
-                    ]
+                'data' => [
+                    'national_ranks' => $this->getNationalRanking($req),
+                    'department_ranks' => $department_ranks,
+                    'my_point' => $countables->first()->total_point,
                 ]
-                : [
-                    'data' => null
-                ])
             ]);
         }
         else {
