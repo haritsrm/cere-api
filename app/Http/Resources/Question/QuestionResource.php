@@ -4,6 +4,7 @@ namespace App\Http\Resources\Question;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Tryout;
+use App\Models\Answer;
 
 class QuestionResource extends JsonResource
 {
@@ -15,6 +16,7 @@ class QuestionResource extends JsonResource
      */
     public function toArray($request)
     {
+        $weight = Answer::where('question_id',$this->id)->first();
         return [
             'id' => $this->id,
             'tryout_name' => $this->name,
@@ -28,6 +30,7 @@ class QuestionResource extends JsonResource
                 ['option' => $this->option_e],
                 ['option' => $this->option_f]
             ],
+            'weight' => $weight->score,
             'correct_answer' => $this->correct_answer,
             'explanation' => $this->explanation,
             'url_explanation' => $this->url_explanation,
