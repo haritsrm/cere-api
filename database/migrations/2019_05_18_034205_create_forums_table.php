@@ -18,6 +18,7 @@ class CreateForumsTable extends Migration
             $table->integer('course_id');
             $table->integer('user_id');
             $table->text('body');
+            $table->integer('forum_id')->nullable();
             $table->timestamps();
         });
     }

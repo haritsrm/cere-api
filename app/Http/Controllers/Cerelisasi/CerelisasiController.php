@@ -9,13 +9,26 @@ use App\Models\Department;
 
 class CerelisasiController extends Controller
 {
-    public function analyticsResult(Request $req)
+    public function analysis(Request $req)
     {
-        if ($this->isFoundData($req)) {
-            $this->clearAnalyticsData($req);
-        }
+        $this->clearAnalyticsData($req);
         $this->createUserInfo($req);
 
+        return $this->analyticsResult($req);
+    }
+
+    public function resetAnalytics(Request $req)
+    {
+        $this->clearAnalyticsData($req);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Sukses reset data',
+        ]);
+    }
+
+    public function analyticsResult(Request $req)
+    {
         $department_ranks = [];
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
         foreach ($countables as $key => $countable) {
@@ -46,7 +59,7 @@ class CerelisasiController extends Controller
                         'tightness' => round($department->interrested_num/$department->capacity),
                     ],
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
-                    'my_ranking' => $this->getDepartmentRanking($req, $department->id),
+                    'ranks' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
                 ]);
         }
@@ -54,8 +67,9 @@ class CerelisasiController extends Controller
         return response()->json([
             'status' => true,
             'data' => [
-                'national_rank' => $this->getNationalRanking($req),
+                'national_ranks' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
+                'my_point' => $countable->total_point,
             ]
         ]);
     }
@@ -64,32 +78,83 @@ class CerelisasiController extends Controller
     {
         $i = 1;
         $my_rank = 0;
+        $other_ranks = [];
         $rankings = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
                 $my_rank = $i;
+                if ($my_rank > 5) {
+                    $j = $my_rank-5;
+                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                        $j++;
+                    }
+                }
+                else {
+                    $j = 1;
+                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                        $j++;
+                    }
+                }
             }
             $i++;
         }
 
-        return $my_rank;
+        return [
+            'my_rank' => $my_rank,
+            'other_ranks' => $other_ranks,
+        ];
     }
 
     public function getDepartmentRanking($req, $department_id)
     {
         $i = 1;
         $my_rank = 0;
+        $other_ranks = [];
         $rankings = Cerelisasi::where('department_id', $department_id)->orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
-                $my_rank = $i;
+                $my_rank = $i;if ($my_rank > 5) {
+                    $j = $my_rank-5;
+                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                        $j++;
+                    }
+                }
+                else {
+                    $j = 1;
+                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                    foreach ($array_ranks as $key => $array_rank) {
+                        array_push($other_ranks, [
+                            'rank' => $j,
+                            'total_point' => $array_rank->total_point
+                        ]);
+                        $j++;
+                    }
+                }
             }
             $i++;
         }
 
-        return $my_rank;
+        return [
+            'my_rank' => $my_rank,
+            'other_ranks' => $other_ranks,
+        ];
     }
 
     public function isFoundData($req)
@@ -104,8 +169,10 @@ class CerelisasiController extends Controller
 
     public function clearAnalyticsData($req)
     {
-        $cerelisasi = Cerelisasi::where('user_id', $req->user()->id)->delete();
-        return true;
+        if ($this->isFoundData($req)) {
+            $cerelisasi = Cerelisasi::where('user_id', $req->user()->id)->delete();
+            return true;
+        }
     }
 
     public function createUserInfo($req)

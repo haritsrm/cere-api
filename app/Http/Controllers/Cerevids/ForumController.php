@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\ForumService;
 use App\Http\Resources\Forum\ForumResource;
+use App\Http\Resources\Forum\ForumCollection;
 
 class ForumController extends Controller
 {
@@ -18,7 +19,7 @@ class ForumController extends Controller
     {
         $forums = $this->forum->browse($course_id);
 
-        return ForumResource::collection($forums);
+        return ForumCollection::collection($forums);
     }
 
     public function create($course_id, Request $req)
@@ -27,6 +28,7 @@ class ForumController extends Controller
             'course_id' => $course_id,
             'body' => $req->body,
             'user_id' => $req->user()->id,
+            'forum_id' => $req->forum_id,
         ]);
 
         return (new ForumResource($result))

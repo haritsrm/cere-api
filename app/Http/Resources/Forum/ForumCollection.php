@@ -20,6 +20,7 @@ class ForumCollection extends JsonResource
             'id' => $this->id,
             'body' => $this->body,
             'user' => User::find($this->user_id)->name,
+            'comments' => ($this->forums ? ForumCollection::collection($this->forums) : null),
             'posted' => $this->created_at->diffForHumans(),
         ];
     }
