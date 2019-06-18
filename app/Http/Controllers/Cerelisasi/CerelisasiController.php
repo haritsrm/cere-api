@@ -13,10 +13,27 @@ class CerelisasiController extends Controller
 {
     public function analysis(Request $req)
     {
-        $this->clearAnalyticsData($req);
-        $this->createUserInfo($req);
+        $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
+        $price = GeneralInformation::first()->cerelisasi_price;
+        $price_total = $countables->count() * $price;
 
-        return $this->analyticsResult($req);
+        if ($this->isUserHasCerelisasi($req)) {
+            if($this->useBalance($req, $price_total)) {
+                $this->clearAnalyticsData($req);
+                $this->createUserInfo($req);
+
+                return $this->analyticsResult($req);
+            }
+            else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Saldo tidak mencukupi',
+                ]);
+            }
+        }
+        else {
+            return $this->analyticsResult($req);
+        }
     }
 
     public function resetAnalytics(Request $req)
@@ -68,31 +85,6 @@ class CerelisasiController extends Controller
     }
 
     public function analyticsResult($req)
-    {
-        $department_ranks = [];
-
-        $price = GeneralInformation::first()->cerelisasi_price;
-        $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
-
-        $price_total = $countables->count() * $price;
-
-        if ($this->isUserHasCerelisasi($req)) {
-            if($this->useBalance($req, $price_total)) {
-                return $this->addAnalyticsResult($req);
-            }
-            else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Saldo tidak mencukupi',
-                ]);
-            }
-        }
-        else {
-            return $this->addAnalyticsResult($req);
-        }
-    }
-
-    public function addAnalyticsResult($req)
     {
         $department_ranks = [];
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
