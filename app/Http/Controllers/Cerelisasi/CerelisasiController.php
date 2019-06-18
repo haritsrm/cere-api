@@ -72,13 +72,14 @@ class CerelisasiController extends Controller
             if ($ranking->user_id == $req->user()->id) {
                 $my_rank = $i;
                 if ($my_rank > 5) {
-                    $j = 1;
+                    $j = $my_rank-5;
                     $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
                             'total_point' => $array_rank->total_point
                         ]);
+                        $j++;
                     }
                 }
                 else {
@@ -89,6 +90,7 @@ class CerelisasiController extends Controller
                             'rank' => $j,
                             'total_point' => $array_rank->total_point
                         ]);
+                        $j++;
                     }
                 }
             }
@@ -111,13 +113,14 @@ class CerelisasiController extends Controller
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
                 $my_rank = $i;if ($my_rank > 5) {
-                    $j = 1;
+                    $j = $my_rank-5;
                     $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
                             'total_point' => $array_rank->total_point
                         ]);
+                        $j++;
                     }
                 }
                 else {
@@ -128,6 +131,7 @@ class CerelisasiController extends Controller
                             'rank' => $j,
                             'total_point' => $array_rank->total_point
                         ]);
+                        $j++;
                     }
                 }
             }
