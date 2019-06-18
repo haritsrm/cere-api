@@ -61,7 +61,7 @@ class CerelisasiController extends Controller
             'data' => [
                 'national_ranks' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
-                'my_point' => $countables->first()->total_point,
+                'my_point' => $countables->first() ? $countables->first()->total_point : 0,
             ]
         ]);
 
