@@ -17,12 +17,13 @@ class ChartResource extends JsonResource
     {
         $today =  Carbon::now()->format('F');
         $student = Cereout::where('tryout_id','=',$this->id)
-            ->groupBy('user_id')
-            ->get();
+            ->where('user_id','=',$request->user()->id)
+            ->orderBy('created_at','ASC')
+            ->first();
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'total_student' => count($student),
+            'score_student' => $this->score,
             'month' => $today
         ];
     }
