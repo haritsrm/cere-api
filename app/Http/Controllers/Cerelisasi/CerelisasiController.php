@@ -6,15 +6,34 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cerelisasi;
 use App\Models\Department;
+use App\Models\GeneralInformation;
+use App\User;
 
 class CerelisasiController extends Controller
 {
     public function analysis(Request $req)
     {
-        $this->clearAnalyticsData($req);
-        $this->createUserInfo($req);
+        $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
+        $price = GeneralInformation::first()->cerelisasi_price;
+        $price_total = $countables->count() * $price;
 
-        return $this->analyticsResult($req);
+        if ($this->isUserHasCerelisasi($req)) {
+            if($this->useBalance($req, $price_total)) {
+                $this->clearAnalyticsData($req);
+                $this->createUserInfo($req);
+
+                return $this->analyticsResult($req);
+            }
+            else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Saldo tidak mencukupi',
+                ]);
+            }
+        }
+        else {
+            return $this->analyticsResult($req);
+        }
     }
 
     public function resetAnalytics(Request $req)
@@ -27,7 +46,45 @@ class CerelisasiController extends Controller
         ]);
     }
 
-    public function analyticsResult(Request $req)
+    public function analyticsData(Request $req)
+    {
+        $department_ranks = [];
+        $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
+        foreach ($countables as $key => $countable) {
+            $department = Department::find($countable->department_id);
+            $passing_grade = $department->passing_grade;
+            $average_point = Cerelisasi::where('department_id', $countable->department_id)->avg('total_point');
+            $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->max('total_point');
+            $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->count();
+            array_push($department_ranks, [
+                    'department' => [
+                        'id' => $department->id,
+                        'name' => $department->name,
+                        'interrested_num' => $department->interrested_num,
+                        'capacity' => $department->capacity,
+                        'passing_grade' => $passing_grade,
+                        'average_point' => round($average_point),
+                        'maximum_value' => $maximum_value,
+                        'tightness' => round($department->interrested_num/$department->capacity),
+                    ],
+                    'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
+                    'ranks' => $this->getDepartmentRanking($req, $department->id),
+                    'status' => $countable->status,
+                ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'national_ranks' => $this->getNationalRanking($req),
+                'department_ranks' => $department_ranks,
+                'my_point' => $countables->first() ? $countables->first()->total_point : 0,
+            ]
+        ]);
+
+    }
+
+    public function analyticsResult($req)
     {
         $department_ranks = [];
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
@@ -63,13 +120,12 @@ class CerelisasiController extends Controller
                     'status' => $countable->status,
                 ]);
         }
-
         return response()->json([
             'status' => true,
             'data' => [
                 'national_ranks' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
-                'my_point' => ($countables->first() ? $countables->first()->total_point : 0),
+                'my_point' => $countables->first()->total_point,
             ]
         ]);
     }
@@ -164,6 +220,35 @@ class CerelisasiController extends Controller
         }
         else {
             return false;
+        }
+    }
+
+    public function isUserHasCerelisasi($req)
+    {
+        $res = User::find($req->user()->id);
+        if ($res->cerelisasi_status == 1) {
+            return true;
+        }
+        else {
+            $res->cerelisasi_status = 1;
+            $res->save();
+
+            return false;
+        }
+    }
+
+    public function useBalance($req, $price)
+    {
+        $res = User::find($req->user()->id);
+        if ($res->balance < $price) {
+            return false;
+        }
+        else {
+            $res->update([
+                'balance' => $res->balance - $price,
+            ]);
+    
+            return true;
         }
     }
 
