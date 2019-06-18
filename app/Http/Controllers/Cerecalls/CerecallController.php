@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\HistoryCall;
 use App\Models\ReportTeacher;
 use App\Models\TeacherLesson;
+use App\Models\Chat;
 use App\Http\Resources\Cerecall\HistoryCallResource;
+use App\Http\Resources\Cerecall\AvailTeacherResource;
+use App\Http\Resources\Cerecall\ChatResource;
 use App\Models\GeneralInformation;
 use App\User;
 class CerecallController extends Controller
@@ -21,6 +24,7 @@ class CerecallController extends Controller
     	$data = new HistoryCall();
     	$data->student_id = $request->student_id;
     	$data->teacher_id = $request->teacher_id;
+        $data->status = 1;
     	// $data->rating = $request->rating;
     	// $data->review = $request->review;
     	$data->save();
@@ -33,7 +37,7 @@ class CerecallController extends Controller
     	return response()->json([
             'status' => true,
             'data' => [
-                'message' => 'succesfully post data',
+                'history_call' => $data
             ],
         ], 201);
     }
@@ -125,18 +129,30 @@ class CerecallController extends Controller
             return new AvailTeacherResource($data);
     }
 
-    public function postChatByKonsultasi($id){
+    public function postChatByKonsultasi($id, Request $request){
         $request->validate([
-            'history_call_id' => 'required|integer',
-            'sender' => 'required|integer',
-            'content' => 'required|string'
+            'sender' => 'required|integer'
 
         ]);
-        $data = new Chat();
-        $data->history_call_id = $request->history_call_id;
-        $data->sender = $request->sender;
-        $data->content = $request->content;
-        // $data->review = $request->review;
+        $chat = Chat::create([
+            'history_call_id' => $id,
+            'sender' => $request->sender
+        ]);
+
+        if($request->is_image==1){
+            $image = $request->file('content');
+            if(empty($image)){
+                $namaFile = "null";
+            }else{
+                $extension = $image->getClientOriginalExtension();
+                $namaFile = url('/images/chat/'.$chat->id.'.'.$extension);
+                $request->file('content')->move('images/chat/', $namaFile);
+            }
+        }else{
+            $namaFile = $request->content;
+        }
+        $data = Chat::where('id','=',$chat->id)->first();
+        $data->content = $namaFile;
         $data->save();
         return response()->json([
             'status' => true,
@@ -153,7 +169,7 @@ class CerecallController extends Controller
 
     public function getRunningKonsultasiStudent(Request $request){
         $data = HistoryCall::where('status',2)
-                where('student_id',$request->user()->id)
+                ->where('student_id',$request->user()->id)
                 ->get();
 
         return new HistoryCallResource($data);
@@ -161,7 +177,7 @@ class CerecallController extends Controller
 
     public function getRunningKonsultasiTeacher(Request $request){
         $data = HistoryCall::where('status',2)
-                where('teacher_id',$request->user()->id)
+                ->where('teacher_id',$request->user()->id)
                 ->get();
 
         return new HistoryCallResource($data);

@@ -196,7 +196,7 @@ Route::group([
 ], function(){
     Route::post('/history', 'Cerecalls\CerecallController@postHistoryCall');
     Route::put('/history/{id}', 'Cerecalls\CerecallController@updateHistoryCall');
-    Route::put('/history/status/{id}', 'Cerecalls\CerecallController@updateStatusKonsultas');
+    Route::put('/history/status/{id}', 'Cerecalls\CerecallController@updateStatusKonsultasi');
     Route::get('/teacher/history', 'Cerecalls\CerecallController@getHistoryTeacher');
     Route::get('/teacher/history/running', 'Cerecalls\CerecallController@getRunningKonsultasiTeacher');
     Route::get('/student/history', 'Cerecalls\CerecallController@getHistoryStudent');
