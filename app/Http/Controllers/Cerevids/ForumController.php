@@ -18,7 +18,7 @@ class ForumController extends Controller
     {
         $forums = $this->forum->browse($course_id);
 
-        return ForumResource::collection($forums);
+        return ForumCollection::collection($forums);
     }
 
     public function create($course_id, Request $req)
