@@ -45,6 +45,7 @@ class CerelisasiController extends Controller
                         'maximum_value' => $maximum_value,
                         'tightness' => round($department->interrested_num/$department->capacity),
                     ],
+                    'my_point' => $countable->total_point,
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
                     'my_ranking' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
