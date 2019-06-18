@@ -9,13 +9,18 @@ use App\Models\Department;
 
 class CerelisasiController extends Controller
 {
-    public function analyticsResult(Request $req)
+    public function analysis(Request $req)
     {
         if ($this->isFoundData($req)) {
             $this->clearAnalyticsData($req);
         }
         $this->createUserInfo($req);
 
+        return $this->analyticsResult($req);
+    }
+
+    public function analyticsResult(Request $req)
+    {
         $department_ranks = [];
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
         foreach ($countables as $key => $countable) {

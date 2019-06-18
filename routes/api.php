@@ -219,5 +219,6 @@ Route::group([
     'prefix' => 'cerelisasi',
     'middleware' => 'auth:api'
 ], function() {
-    Route::post('/analysis', 'Cerelisasi\CerelisasiController@analyticsResult')->name('analysis');
+    Route::post('/analysis', 'Cerelisasi\CerelisasiController@analysis')->name('analysis');
+    Route::get('/analysis', 'Cerelisasi\CerelisasiController@analyticsResult')->name('analysisResult');
 });
