@@ -73,6 +73,9 @@ class CerelisasiController extends Controller
                 if ($my_rank > 5) {
                     $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
                 }
+                else {
+                    $array_rank = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                }
             }
             $i++;
         }
