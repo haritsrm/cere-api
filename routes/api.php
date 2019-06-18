@@ -220,6 +220,6 @@ Route::group([
     'middleware' => 'auth:api'
 ], function() {
     Route::post('/analysis', 'Cerelisasi\CerelisasiController@analysis')->name('analysis');
-    Route::get('/analysis', 'Cerelisasi\CerelisasiController@analyticsResult')->name('analysisResult');
+    Route::get('/analysis', 'Cerelisasi\CerelisasiController@analyticsData')->name('analysisResult');
     Route::post('/reset_analysis', 'Cerelisasi\CerelisasiController@resetAnalytics')->name('resetAnalytics');
 });
