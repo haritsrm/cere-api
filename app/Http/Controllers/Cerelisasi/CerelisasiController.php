@@ -13,9 +13,8 @@ class CerelisasiController extends Controller
 {
     public function analysis(Request $req)
     {
-        $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
         $price = GeneralInformation::first()->cerelisasi_price;
-        $price_total = $countables->count() * $price;
+        $price_total = count($req->departments) * $price;
 
         if ($this->isUserHasCerelisasi($req)) {
             if($this->useBalance($req, $price_total)) {
