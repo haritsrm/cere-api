@@ -100,13 +100,14 @@ class PaymentController extends Controller
                 $data->status="1";
                 $data->payment_method=$type;
                 $data->save();
+                $price = NominalTopup::where('id',$data->membership_id)->first();
                 if($data->type==1){
                     $user=User::where('id','=',$transactions->user_id)->first();
                     $user->membership=true;
                     $user->save();    
                 }else{
                     $user=User::where('id','=',$transactions->user_id)->first();
-                    $user->balance+=$transactions->nominal;
+                    $user->balance+=$price->nominal;
                     $user->save();
                 }
               }
@@ -119,16 +120,17 @@ class PaymentController extends Controller
             // $donation->addUpdate("Transaction order_id: " . $orderId ." successfully transfered using " . $type);
             // $transactions->setSuccess($type);
             $data = Transaksi::where('id',$orderId)->first();
-                $data->status="1";
-                $data->payment_method=$type;
-                $data->save();
+            $data->status="1";
+            $data->payment_method=$type;
+            $data->save();
+            $price = NominalTopup::where('id',$data->membership_id)->first();
             if($data->type==1){
                 $user=User::where('id','=',$transactions->user_id)->first();
                 $user->membership=true;
                 $user->save();    
             }else{
                 $user=User::where('id','=',$transactions->user_id)->first();
-                $user->balance+=$transactions->nominal;
+                $user->balance+=$price->nominal;
                 $user->save();
             }
  
