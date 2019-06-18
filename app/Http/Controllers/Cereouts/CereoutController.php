@@ -143,22 +143,22 @@ class CereoutController extends Controller
                     //cek jawaban
                     if($answer->answer == $score_question->correct_answer){
                         $correct_answered++;
-                        $score += $score_question->correct_score;
+                        $score += $tryout->correct_score;
                         $check_answer = Answer::where('cereout_id','=',$id)
                             ->where('question_id','=',$answer->question_id)
                             ->first();
                         $check_answer->check_answer = 1;
-                        $check_answer->score = $score_question->correct_score;
+                        $check_answer->score = $tryout->correct_score;
                         $check_answer->save();
                     }
                     else{
                         $incorrect_answered++;
-                        $score += $score_question->incorrect_score;
+                        $score += $tryout->incorrect_score;
                         $check_answer = Answer::where('cereout_id','=',$id)
                             ->where('question_id','=',$answer->question_id)
                             ->first();
                         $check_answer->check_answer = 0;
-                        $check_answer->score = $score_question->incorrect_score;
+                        $check_answer->score = $tryout->incorrect_score;
                         $check_answer->save();
                     }
 
@@ -167,18 +167,24 @@ class CereoutController extends Controller
                     if($answer->answer == $score_question->correct_answer){
                         $correct_answered++;
                         // Jumlah yg jawab salah / (jumlah yg jawab benar + jumlah yg jawab salah) * x
-                        $sum_wrong = Answer::where('question_id',$answer->question_id)
+                        // $sum_wrong = Answer::where('question_id',$answer->question_id)
+                        //     ->where('check_answer',0)
+                        //     ->get();
+                        $wrong = Answer::where('question_id',$answer->question_id)
                             ->where('check_answer',0)
-                            ->get();
+                            ->count();
+                        $right = Answer::where('question_id',$answer->question_id)
+                            ->where('check_answer',1)
+                            ->count();
                         $sum_right = Answer::where('question_id',$answer->question_id)
                             ->where('check_answer',1)
                             ->get();
 
                         //cek jika jumlah jawaban kosong
-                        if(count($sum_wrong) == 0 && count($sum_right) == 0){
+                        if($wrong == 0 && $right == 0){
                             $correct_score = $tryout->x_value;
                         }else{
-                            $correct_score = (count($sum_wrong)/(count($sum_right)+count($sum_wrong)))*$tryout->x_value;
+                            $correct_score =($wrong/($right+$wrong))*$tryout->x_value;
                         }
                         $score += $correct_score;
                         $check_answer = Answer::where('cereout_id','=',$id)
