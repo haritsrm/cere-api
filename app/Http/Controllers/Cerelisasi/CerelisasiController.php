@@ -109,7 +109,8 @@ class CerelisasiController extends Controller
         $rankings = Cerelisasi::where('department_id', $department_id)->orderBy('total_point', 'desc')->get();
 
         foreach ($rankings as $key => $ranking) {
-                if ($my_rank > 5) {
+            if ($ranking->user_id == $req->user()->id) {
+                $my_rank = $i;if ($my_rank > 5) {
                     $j = 1;
                     $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
                     foreach ($array_ranks as $key => $array_rank) {
