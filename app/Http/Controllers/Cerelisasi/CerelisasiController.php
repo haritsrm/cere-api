@@ -17,6 +17,16 @@ class CerelisasiController extends Controller
         return $this->analyticsResult($req);
     }
 
+    public function resetAnalytics(Request $req)
+    {
+        $this->clearAnalyticsData($req);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Sukses reset data',
+        ]);
+    }
+
     public function analyticsResult(Request $req)
     {
         $department_ranks = [];
@@ -157,7 +167,7 @@ class CerelisasiController extends Controller
         }
     }
 
-    public function clearAnalyticsData(Request $req)
+    public function clearAnalyticsData($req)
     {
         if ($this->isFoundData($req)) {
             $cerelisasi = Cerelisasi::where('user_id', $req->user()->id)->delete();
