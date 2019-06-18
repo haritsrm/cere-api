@@ -70,46 +70,45 @@ class CerelisasiController extends Controller
     public function analyticsResult($req)
     {
         $department_ranks = [];
-        $price_total = 0;
 
         $price = GeneralInformation::first()->cerelisasi_price;
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
-        foreach ($countables as $key => $countable) {
-            $department = Department::find($countable->department_id);
-            $passing_grade = $department->passing_grade;
-            $average_point = Cerelisasi::where('department_id', $countable->department_id)->avg('total_point');
-            $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->max('total_point');
-            $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->count();
-            if ($countable->total_point < $passing_grade) {
-                $countable->update(['status' => 'rendah']);
-            }
-            else if ($countable->total_point > $passing_grade && $countable->total_point < $average_point) {
-                $countable->update(['status' => 'sedang']);
-            }
-            else {
-                $countable->update(['status' => 'tinggi']);
-            }
 
-            $price_total += $price;
-
-            array_push($department_ranks, [
-                    'department' => [
-                        'id' => $department->id,
-                        'name' => $department->name,
-                        'interrested_num' => $department->interrested_num,
-                        'capacity' => $department->capacity,
-                        'passing_grade' => $passing_grade,
-                        'average_point' => round($average_point),
-                        'maximum_value' => $maximum_value,
-                        'tightness' => round($department->interrested_num/$department->capacity),
-                    ],
-                    'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
-                    'ranks' => $this->getDepartmentRanking($req, $department->id),
-                    'status' => $countable->status,
-                ]);
-        }
+        $price_total = $countables->count() * $price;
 
         if($this->useBalance($req, $price_total)) {
+            foreach ($countables as $key => $countable) {
+                $department = Department::find($countable->department_id);
+                $passing_grade = $department->passing_grade;
+                $average_point = Cerelisasi::where('department_id', $countable->department_id)->avg('total_point');
+                $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->max('total_point');
+                $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->count();
+                if ($countable->total_point < $passing_grade) {
+                    $countable->update(['status' => 'rendah']);
+                }
+                else if ($countable->total_point > $passing_grade && $countable->total_point < $average_point) {
+                    $countable->update(['status' => 'sedang']);
+                }
+                else {
+                    $countable->update(['status' => 'tinggi']);
+                }
+    
+                array_push($department_ranks, [
+                        'department' => [
+                            'id' => $department->id,
+                            'name' => $department->name,
+                            'interrested_num' => $department->interrested_num,
+                            'capacity' => $department->capacity,
+                            'passing_grade' => $passing_grade,
+                            'average_point' => round($average_point),
+                            'maximum_value' => $maximum_value,
+                            'tightness' => round($department->interrested_num/$department->capacity),
+                        ],
+                        'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
+                        'ranks' => $this->getDepartmentRanking($req, $department->id),
+                        'status' => $countable->status,
+                    ]);
+            }
             return response()->json([
                 'status' => true,
                 'data' => [
