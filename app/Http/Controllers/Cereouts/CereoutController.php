@@ -8,11 +8,14 @@ use App\Http\Controllers\Services\Cereouts\CereoutService;
 use App\Http\Controllers\Services\Cereouts\AnswerService;
 use App\Http\Controllers\Services\Cereouts\TryoutService;
 use App\Http\Resources\Cereout\CereoutResource;
+use App\Http\Resources\Cereout\MyCereoutResource;
+use App\Http\Resources\Cereout\MyTryoutResource;
 use App\Http\Resources\Cereout\DetailCereoutResource;
 use App\Http\Resources\Cereout\SummaryCereoutResource;
 use App\User;
 use DB;
 use App\Models\Question;
+use App\Models\Tryout;
 use App\Models\Cereout;
 use App\Models\Answer;
 use App\Models\AttemptTryout;
@@ -129,30 +132,85 @@ class CereoutController extends Controller
         $incorrect_answered = 0;
         $left_answered = 0;
         $score = 0;
+        $tryout = Tryout::where('id','=',$tryout_id)->first();
         $answers = Answer::where('cereout_id','=',$id)->get();
         foreach($answers as $answer){
-            // $score_question_true = $this->question->find($answer->question_id)->correct_score;
             $score_question = Question::where('id','=',$answer->question_id)->first();
+            //cek jawaban jika kosong
             if(!is_null($answer->answer)){
-                if($answer->answer == $score_question->correct_answer){
-                    $correct_answered++;
-                    $score += $score_question->correct_score;
-                    $check_answer = Answer::where('cereout_id','=',$id)
-                        ->where('question_id','=',$answer->question_id)
-                        ->first();
-                    $check_answer->check_answer = 1;
-                    $check_answer->score = $score_question->correct_score;
-                    $check_answer->save();
-                }
-                else{
-                    $incorrect_answered++;
-                    $score += $score_question->incorrect_score;
-                    $check_answer = Answer::where('cereout_id','=',$id)
-                        ->where('question_id','=',$answer->question_id)
-                        ->first();
-                    $check_answer->check_answer = 0;
-                    $check_answer->score = $score_question->incorrect_score;
-                    $check_answer->save();
+                //cek sistem penilaian 
+                if($tryout->scoring_system == 1){
+                    //cek jawaban
+                    if($answer->answer == $score_question->correct_answer){
+                        $correct_answered++;
+                        $score += $tryout->correct_score;
+                        $check_answer = Answer::where('cereout_id','=',$id)
+                            ->where('question_id','=',$answer->question_id)
+                            ->first();
+                        $check_answer->check_answer = 1;
+                        $check_answer->score = $tryout->correct_score;
+                        $check_answer->save();
+                    }
+                    else{
+                        $incorrect_answered++;
+                        $score += $tryout->incorrect_score;
+                        $check_answer = Answer::where('cereout_id','=',$id)
+                            ->where('question_id','=',$answer->question_id)
+                            ->first();
+                        $check_answer->check_answer = 0;
+                        $check_answer->score = $tryout->incorrect_score;
+                        $check_answer->save();
+                    }
+
+                }elseif($tryout->scoring_system==2){
+                    //cek jawaban
+                    if($answer->answer == $score_question->correct_answer){
+                        $correct_answered++;
+                        // Jumlah yg jawab salah / (jumlah yg jawab benar + jumlah yg jawab salah) * x
+                        // $sum_wrong = Answer::where('question_id',$answer->question_id)
+                        //     ->where('check_answer',0)
+                        //     ->get();
+                        $wrong = Answer::where('question_id',$answer->question_id)
+                            ->where('check_answer',0)
+                            ->count();
+                        $right = Answer::where('question_id',$answer->question_id)
+                            ->where('check_answer',1)
+                            ->count();
+                        $sum_right = Answer::where('question_id',$answer->question_id)
+                            ->where('check_answer',1)
+                            ->get();
+
+                        //cek jika jumlah jawaban kosong
+                        if($wrong == 0 && $right == 0){
+                            $correct_score = $tryout->x_value;
+                        }else{
+                            $correct_score =($wrong/($right+$wrong))*$tryout->x_value;
+                        }
+                        $score += $correct_score;
+                        $check_answer = Answer::where('cereout_id','=',$id)
+                            ->where('question_id','=',$answer->question_id)
+                            ->first();
+                        $check_answer->check_answer = 1;
+                        $check_answer->score = $correct_score;
+                        $check_answer->save();
+
+                        //ubah score semua jawaban dengan sistem penilaian baru
+                        foreach ($sum_right as $sum_right ) {
+                            $sum_right->score = $correct_score;
+                            $sum_right->save();
+                        }
+                    }
+                    else{
+                        $incorrect_answered++;
+                        $score += 0;
+                        $check_answer = Answer::where('cereout_id','=',$id)
+                            ->where('question_id','=',$answer->question_id)
+                            ->first();
+                        $check_answer->check_answer = 0;
+                        $check_answer->score = 0;
+                        $check_answer->save();
+                    }
+
                 }
             }
             else{
@@ -175,6 +233,27 @@ class CereoutController extends Controller
             $result_status = "Tidak Lulus";
         }
 
+        // ubah semua score tryout yang menggunakan sistem penilaian baru
+        if($tryout->scoring_system==2){
+            $new_score_tryout = Cereout::where('tryout_id',$tryout_id)->get();
+            $new_score=0;
+            foreach ($new_score_tryout as $new_score_tryout) {
+                $check_question_right = Answer::where('cereout_id',$new_score_tryout->id)
+                                ->where('check_answer',1)
+                                ->get();
+                foreach ($check_question_right as $check_question_right) {
+                    $new_score +=  $check_question_right->score;
+                }
+                $new_score_tryout->score=$score;
+                if($new_score > $passing_percentage){
+                    $new_score_tryout->result_status = "Lulus";
+                }else{
+                    $new_score_tryout->result_status = "Tidak Lulus";
+                }
+                $new_score_tryout->save();
+            }
+        }
+
         $result = $this->cereout->update($id, [
             'my_time' => $req->my_time,
             'score' => $score,
@@ -183,7 +262,7 @@ class CereoutController extends Controller
             'incorrect_answered' => $incorrect_answered,
             'left_answered' => $left_answered,
             'result_status' => $result_status,
-            'status' => 1
+            'finished_status' => 1
         ]);
 
         return response()->json([
@@ -209,19 +288,34 @@ class CereoutController extends Controller
     }
 
     public function getCereoutByUser($id){
-        $data = Cereout::where('user_id','=',$id)
-                ->orderBy('created_at','DESC')
+        $data = Tryout::join('cereouts','cereouts.tryout_id','=','tryouts.id')
+                ->select('tryouts.id','tryouts.name','cereouts.user_id','cereouts.created_at')
+                ->where('cereouts.user_id','=',$id)
+                ->orderBy('cereouts.created_at','DESC')
+                ->groupBy('cereouts.tryout_id')
                 ->get();
-        return CereoutResource::collection($data);        
+        return MyTryoutResource::collection($data);        
     }
 
-    public function getDetailCereoutByUser($id){
+    public function getCereoutByTryout($id){
+        $data = Cereout::where('tryout_id','=',$id)
+                ->orderBy('created_at','DESC')
+                ->get();
+        return MyCereoutResource::collection($data);        
+    }
+
+    public function getDetailCereoutByUser($id, Request $request){
         $data = Answer::join('questions','questions.id','=','answers.question_id')
             ->select('answers.*','questions.explanation as explanation', 'questions.question as question','questions.url_explanation as url_explanation', 'questions.option_a as option_a' , 'questions.option_b as option_b', 'questions.option_c as option_c', 'questions.option_d as option_d', 'questions.option_e as option_e', 'questions.option_f as option_f', 'questions.correct_answer as correct_answer')
             ->where('answers.cereout_id','=',$id)
             ->get();
- 
-        // $attempt = AttemptTryout::where('user_id','=',)
+        
+        $cereout = Cereout::where('id',$id)->first();    
+        $attempt = AttemptTryout::where('user_id',$request->user()->id)
+                ->where('tryout_id',$cereout->tryout_id)
+                ->first();
+        $attempt->left_attempt =0;
+        $attempt->save();
 
         return DetailCereoutResource::collection($data);    
     }
