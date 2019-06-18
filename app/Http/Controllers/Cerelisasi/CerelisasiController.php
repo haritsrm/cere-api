@@ -65,7 +65,9 @@ class CerelisasiController extends Controller
                     'my_point' => $countables->first()->total_point,
                 ]
             ]
-            : 0)
+            : [
+                'data' => null
+            ])
         ]);
 
     }
@@ -123,7 +125,9 @@ class CerelisasiController extends Controller
                         'my_point' => $countables->first()->total_point,
                     ]
                 ]
-                : 0)
+                : [
+                    'data' => null
+                ])
             ]);
         }
         else {
