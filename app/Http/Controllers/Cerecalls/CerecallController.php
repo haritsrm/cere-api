@@ -236,7 +236,7 @@ class CerecallController extends Controller
     }
 
     public function getPerformanceTeacher(Request $request){
-        $consultation = HistoryCall::where('teacher_id',$request->user()->id)->get();
+        $consultation = HistoryCall::where('teacher_id',$request->user()->id)->where('status',4)->get();
         if($request->user()->photo_url == null){
             $photo = null;
         }else{
@@ -244,6 +244,7 @@ class CerecallController extends Controller
         }
         $rating = HistoryCall::select('rating',DB::raw('avg(rating) as rating'))
             ->where('teacher_id',$request->user()->id)
+            ->where('status',4)
             ->first();
         return response()->json([
             'status' => true,
@@ -251,7 +252,7 @@ class CerecallController extends Controller
                 'photo_url' => $photo,
                 'name' => $request->user()->name,
                 'coin' => $request->user()->balance,
-                'rating' => $rating->rating,
+                'rating' => number_format((float)$rating->rating, 1, '.', ''),
                 'number_consultation' => count($consultation),
             ],
         ], 201);
