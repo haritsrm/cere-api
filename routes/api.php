@@ -215,6 +215,7 @@ Route::group([
     Route::put('/status', 'Cerecalls\CerecallController@changeStatus');
     Route::post('/chat/{id}', 'Cerecalls\CerecallController@postChatByKonsultasi');
     Route::get('/chat/{id}', 'Cerecalls\CerecallController@getChatByKonsultasi');
+    Route::get('/teacher/performance', 'Cerecalls\CerecallController@getPerformanceTeacher');
 });
 
 //master data Routes
