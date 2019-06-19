@@ -48,7 +48,10 @@ class QuizController extends Controller
             'correct_answer' => $req->correct_answer,
         ]);
 
-        return new QuizResource($result);
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil menambahkan soal quiz'
+        ]);
     }
 
     public function lastSeen($id, $user_id)
@@ -89,7 +92,10 @@ class QuizController extends Controller
             'answer' => $req->answer,
         ]);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil update soal quiz'
+        ]);
     }
 
     public function update($section_id, $quiz_id, Request $req)
@@ -101,6 +107,16 @@ class QuizController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Berhasil update detail quiz'
+        ]);
+    }
+
+    public function deleteQuestion($quiz_id, $question_id)
+    {
+        $result = $this->quiz->destroyQuestion($question_id);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil menghapus soal quiz'
         ]);
     }
 
