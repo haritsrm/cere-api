@@ -12,6 +12,7 @@ class QuizService extends Controller
     public function __construct()
     {
         $this->newQuiz = new Quiz;
+        $this->newQuestion = new QuestionQuiz;
         $this->newSection = new Section;
     }
 
@@ -32,11 +33,12 @@ class QuizService extends Controller
 
     public function update($id, Array $req)
     {
-        $this->find($id)->update($req);
+        $this->newQuestion->find($id)->update($req);
     }
 
     public function destroy($id)
     {
         $this->find($id)->delete();
+        $this->newQuestion->where('quiz_id', $id)->delete()
     }
 }
