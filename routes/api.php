@@ -145,6 +145,7 @@ Route::group([
 ], function(){
     Route::post('/create_question', 'Cerevids\QuizController@createQuestion')->name('quiz/createquest');
     Route::put('/update_question/{question_id}', 'Cerevids\QuizController@updateQuestion')->name('quiz/updatequest');
+    Route::delete('/delete_question/{question_id}', 'Cerevids\QuizController@deleteQuestion')->name('quiz/deletequest');
 });
 //Cerevid's Routes --end
 
