@@ -136,9 +136,9 @@ class CerecallController extends Controller
 
     public function getAvailableTeacher($id){
         $data = TeacherLesson::join('users','users.id','=','teacher_lesson.teacher_id')
-            ->select('users.status','users.name','teacher_lesson.teacher_id','teacher_lesson.lesson_id')
-            ->where('teacher_lesson.lesson_id',$id)
-            ->where('users.status',1)
+            ->select('users.status as status','users.name as name','teacher_lesson.teacher_id as teacher_id','teacher_lesson.lesson_id as lesson_id')
+            ->where('lesson_id',$id)
+            ->where('status',1)
             ->get();
             return new AvailTeacherResource($data);
     }
