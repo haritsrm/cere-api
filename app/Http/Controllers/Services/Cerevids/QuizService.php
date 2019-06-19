@@ -39,6 +39,6 @@ class QuizService extends Controller
     public function destroy($id)
     {
         $this->find($id)->delete();
-        $this->newQuestion->where('quiz_id', $id)->delete()
+        $this->newQuestion->where('quiz_id', $id)->delete();
     }
 }
