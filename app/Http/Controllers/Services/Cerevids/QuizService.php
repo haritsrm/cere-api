@@ -37,6 +37,11 @@ class QuizService extends Controller
         $this->newQuestion->find($id)->update($req);
     }
 
+    public function destroyQuestion($id)
+    {
+        $this->newQuestion->find($id)->delete();
+    }
+
     public function destroy($id)
     {
         $this->find($id)->delete();
