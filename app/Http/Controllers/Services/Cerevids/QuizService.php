@@ -24,7 +24,7 @@ class QuizService extends Controller
 
     public function create(Array $req)
     {
-        return $this->newQuiz->create($req);
+        return $this->newQuestion->create($req);
     }
 
     public function find($id)
