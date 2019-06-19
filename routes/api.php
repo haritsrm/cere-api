@@ -138,6 +138,14 @@ Route::group([
     Route::put('/quiz/{quiz_id}', 'Cerevids\QuizController@update')->name('quiz/update');
     Route::delete('/quiz/{quiz_id}', 'Cerevids\QuizController@delete')->name('quiz/delete');
 });
+
+Route::group([
+    'prefix' => 'quiz/{quiz_id}',
+    'middleware' => 'auth:api'
+], function(){
+    Route::post('/create_question', 'Cerevids\QuizController@createQuestion')->name('quiz/createquest');
+    Route::put('/update_question', 'Cerevids\QuizController@updateQuestion')->name('quiz/updatequest');
+});
 //Cerevid's Routes --end
 
 //Cereout's Routes --begin

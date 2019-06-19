@@ -24,15 +24,27 @@ class QuizController extends Controller
 
     public function create($section_id, Request $req)
     {
+        $result = Quiz::create([
+            'title' => $req->title,
+            'section_id' => $section_id
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil tambah quiz'
+        ]);
+    }
+
+    public function createQuestion($quiz_id, Request $req)
+    {
         $result = $this->quiz->create([
-            'section_id' => $section_id,
+            'quiz_id' => $quiz_id,
             'question' => $req->question,
-            'option_1' => $req->option_1,
-            'option_2' => $req->option_2,
-            'option_3' => $req->option_3,
-            'option_4' => $req->option_4,
-            'option_5' => $req->option_5,
-            'answer' => $req->answer,
+            'option_a' => $req->option_1,
+            'option_b' => $req->option_2,
+            'option_c' => $req->option_3,
+            'option_d' => $req->option_4,
+            'correct_answer' => $req->correct_answer,
         ]);
 
         return new QuizResource($result);
@@ -64,7 +76,7 @@ class QuizController extends Controller
         return new QuizResource($quiz);
     }
 
-    public function update($section_id, $quiz_id, Request $req)
+    public function updateQuestion($quiz_id, Request $req)
     {
         $result = $this->quiz->update($quiz_id, [
             'question' => $req->question,
@@ -79,10 +91,25 @@ class QuizController extends Controller
         return $result;
     }
 
+    public function update($section_id, $quiz_id, Request $req)
+    {
+        $result = Quiz::find($quiz_id)->update([
+            'title' => $req->title,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil update detail quiz'
+        ]);
+    }
+
     public function delete($section_id, $quiz_id)
     {
         $result = $this->quiz->destroy($quiz_id);
 
-        return $result;
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil menghapus quiz'
+        ]);
     }
 }
