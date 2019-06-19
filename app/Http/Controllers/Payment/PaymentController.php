@@ -11,7 +11,7 @@ use App\Models\Transaksi;
 use App\User;
 use Carbon\Carbon;
 use App\Models\Membership;
-use App\Models\NominalTopup;
+use App\Models\NominalTopUp;
 use Veritrans_Config;
 use App\Http\Resources\Membership\MembershipResource;
 use App\Http\Resources\Transaction\TransactionResource;
