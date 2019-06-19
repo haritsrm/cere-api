@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\Cerevids\QuizService;
 use App\Http\Resources\Quiz\QuizResource;
 use App\Models\LastSeen;
+use App\Models\Quiz;
 
 class QuizController extends Controller
 {
