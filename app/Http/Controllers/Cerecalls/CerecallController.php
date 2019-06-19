@@ -8,6 +8,7 @@ use App\Models\HistoryCall;
 use App\Models\ReportTeacher;
 use App\Models\TeacherLesson;
 use App\Models\Chat;
+use DB;
 use App\Http\Resources\Cerecall\HistoryCallResource;
 use App\Http\Resources\Cerecall\AvailTeacherResource;
 use App\Http\Resources\Cerecall\ChatResource;
@@ -125,22 +126,22 @@ class CerecallController extends Controller
     public function getHistoryTeacher(Request $request){
     	$data = HistoryCall::where('teacher_id','=',$request->user()->id)->get();
 
-    	return new HistoryCallResource($data);
+    	return HistoryCallResource::collection($data);        
     }
 
     public function getHistoryStudent(Request $request){
         $data = HistoryCall::where('student_id','=',$request->user()->id)->get();
 
-        return new HistoryCallResource($data);
+        return HistoryCallResource::collection($data);        
     }
 
     public function getAvailableTeacher($id){
         $data = TeacherLesson::join('users','users.id','=','teacher_lesson.teacher_id')
-            ->select('users.status as status','users.name as name','teacher_lesson.teacher_id as teacher_id','teacher_lesson.lesson_id as lesson_id')
-            ->where('lesson_id',$id)
-            ->where('status',1)
+            ->select('users.status as status','users.name as name','teacher_lesson.teacher_id as teacher_id','teacher_lesson.lesson_id as lesson_id','users.photo_url as photo_url')
+            ->where('teacher_lesson.lesson_id',$id)
+            ->where('users.status',1)
             ->get();
-            return new AvailTeacherResource($data);
+        return AvailTeacherResource::collection($data);
     }
 
     public function postChatByKonsultasi($id, Request $request){
@@ -184,17 +185,17 @@ class CerecallController extends Controller
     public function getRunningKonsultasiStudent(Request $request){
         $data = HistoryCall::where('status',2)
                 ->where('student_id',$request->user()->id)
+                ->orderBy('created_at','DESC')
                 ->get();
-
-        return new HistoryCallResource($data);
+        return HistoryCallResource::collection($data);        
     }
 
     public function getRunningKonsultasiTeacher(Request $request){
         $data = HistoryCall::where('status',2)
                 ->where('teacher_id',$request->user()->id)
+                ->orderBy('created_at','DESC')
                 ->get();
-
-        return new HistoryCallResource($data);
+        return HistoryCallResource::collection($data);        
     }
 
     public function updateStatusKonsultasi($id, Request $request){
@@ -205,6 +206,28 @@ class CerecallController extends Controller
             'status' => true,
             'data' => [
                 'message' => 'succesfully update status',
+            ],
+        ], 201);
+    }
+
+    public function getPerformanceTeacher(Request $request){
+        $consultation = HistoryCall::where('teacher_id',$request->user()->id)->get();
+        if($request->user()->photo_url == null){
+            $photo = null;
+        }else{
+            $photo = url('/images/student/'.$request->user()->photo_url);               
+        }
+        $rating = HistoryCall::select('rating',DB::raw('avg(rating) as rating'))
+            ->where('teacher_id',$request->user()->id)
+            ->first();
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'photo_url' => $photo,
+                'name' => $request->user()->name,
+                'coin' => $request->user()->balance,
+                'rating' => $rating->rating,
+                'number_consultation' => count($consultation),
             ],
         ], 201);
     }

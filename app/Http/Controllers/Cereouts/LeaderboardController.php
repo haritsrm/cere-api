@@ -74,6 +74,7 @@ class LeaderboardController extends Controller
     public function getChartByClass($id, Request $request){
     	$today =  Carbon::now()->todatestring();
     	$data = Tryout::join('cereouts','cereouts.tryout_id','=','tryouts.id')
+            ->select('cereouts.score', 'cereouts.user_id', 'cereouts.tryout_id', 'tryouts.start_date', 'tryouts.id','tryouts.name', 'tryouts.end_date','tryouts.class_id',DB::raw('max(score) as score'))
             ->where('cereouts.user_id','=',$request->user()->id)
             ->where('tryouts.class_id','=',$id)
     		->where('tryouts.start_date', '<=', $today)
@@ -87,6 +88,7 @@ class LeaderboardController extends Controller
     public function getChartByLesson($id, Request $request){
     	$today =  Carbon::now()->todatestring();
     	$data = Tryout::join('cereouts','cereouts.tryout_id','=','tryouts.id')
+            ->select('cereouts.score', 'cereouts.user_id', 'cereouts.tryout_id', 'tryouts.start_date', 'tryouts.id','tryouts.name', 'tryouts.end_date','tryouts.class_id',DB::raw('max(score) as score'))
             ->where('cereouts.user_id','=',$request->user()->id)
             ->where('tryouts.lesson_id','=',$id)
             ->where('tryouts.start_date', '<=', $today)

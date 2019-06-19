@@ -108,7 +108,12 @@ class AuthController extends Controller
             ->select('faculties.id','faculties.univ_id')
             ->join('universities','universities.id','=','faculties.univ_id')
             ->select('universities.name as university_name','departments.name as department_name','departments.id as department_id' ,'universities.id as univ_id')
-            ->where('departments.id',$request->user()->option3)->first();               
+            ->where('departments.id',$request->user()->option3)->first();
+        if($request->user()->photo_url == null){
+            $photo = null;
+        }else{
+            $photo = url('/images/student/'.$request->user()->photo_url);               
+        }
         return response()->json([
             'status' => true,
             'data' =>[
@@ -125,6 +130,7 @@ class AuthController extends Controller
                 'status' => $request->user()->status,
                 'membership' => $request->user()->membership,
                 'email' => $request->user()->email,
+                'photo_url' => $photo,
                 'class' => $data,
                 'option1' => $option1,
                 'option2' => $option2,
@@ -143,7 +149,8 @@ class AuthController extends Controller
         if(empty($image)){
            $namaFile = "null";
         }else{
-            $namaFile = $id;
+            $extension = $image->getClientOriginalExtension();
+            $namaFile = $id.'.'.$extension;
             $request->file('photo')->move('images/student', $namaFile);
         }
         $data->photo_url = $namaFile;
