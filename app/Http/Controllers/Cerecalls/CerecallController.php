@@ -20,7 +20,8 @@ class CerecallController extends Controller
     public function postHistoryCall(Request $request){
     	$request->validate([
             'student_id' => 'required|integer',
-            'teacher_id' => 'required|integer'
+            'teacher_id' => 'required|integer',
+            'lesson_id' => 'required|integer' 
         ]);
         $price = GeneralInformation::all();
         foreach ($price as $price) {
@@ -38,6 +39,7 @@ class CerecallController extends Controller
         	$data = new HistoryCall();
         	$data->student_id = $request->student_id;
         	$data->teacher_id = $request->teacher_id;
+            $data->lesson_id = $request->lesson_id;
             $data->status = 1;
         	// $data->rating = $request->rating;
         	// $data->review = $request->review;
@@ -65,6 +67,7 @@ class CerecallController extends Controller
         }
         $teacher = User::where('id','=',$request->teacher_id)->first();
         $teacher->balance += $cerecall_price;
+        $teacher->status = 1;
         $teacher->save();
 
         $student = User::where('id','=',$request->student_id)->first();
@@ -211,6 +214,19 @@ class CerecallController extends Controller
         $data = HistoryCall::where('id',$id)->first();
         $data->status = $request->status;
         $data->save();
+        if($request->status == 2){
+            $teacher_status = User::where('id',$request->user()->id)->first();
+            $teacher_status->status = 0;
+            $teacher_status->save();
+        }elseif($request->status == 3) {
+            $teacher_status = User::where('id',$request->user()->id)->first();
+            $teacher_status->status = 1;
+            $teacher_status->save();
+        }elseif($request->status == 4){
+            $teacher_status = User::where('id',$request->user()->id)->first();
+            $teacher_status->status = 1;
+            $teacher_status->save();
+        }
         return response()->json([
             'status' => true,
             'data' => [

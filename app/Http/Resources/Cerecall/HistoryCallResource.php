@@ -4,6 +4,8 @@ namespace App\Http\Resources\Cerecall;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\User;
+use App\Models\Kelas;
+use App\Models\Lesson;
 class HistoryCallResource extends JsonResource
 {
     /**
@@ -26,6 +28,8 @@ class HistoryCallResource extends JsonResource
         }else{
             $student_photo = url('/images/student/'.$student->photo_url);               
         }
+        $kelas=Kelas::where('id',$student->class_id)->first();
+        $lesson=Lesson::where('id',$this->lesson_id)->first();
         return [
             'id' => $this->id,
             'teacher' => [
@@ -36,8 +40,10 @@ class HistoryCallResource extends JsonResource
             'student' => [
                 'student_id' => $student->id,
                 'student_name' => $student->name,
+                'student_class' => $kelas->name_class,
                 'student_photo' => $student_photo,
             ],
+            'lesson' => $lesson->name,
             'rating' => $this->rating,
             'review' => $this->review,
             'status' => $this->status,
