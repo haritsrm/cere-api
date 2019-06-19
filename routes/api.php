@@ -216,6 +216,7 @@ Route::group([
     Route::post('/chat/{id}', 'Cerecalls\CerecallController@postChatByKonsultasi');
     Route::get('/chat/{id}', 'Cerecalls\CerecallController@getChatByKonsultasi');
     Route::get('/teacher/performance', 'Cerecalls\CerecallController@getPerformanceTeacher');
+    Route::get('/teacher/confirm', 'Cerecalls\CerecallController@getConfirmConsultationTeacher');
 });
 
 //master data Routes

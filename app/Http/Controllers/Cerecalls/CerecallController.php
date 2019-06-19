@@ -124,13 +124,13 @@ class CerecallController extends Controller
     }
 
     public function getHistoryTeacher(Request $request){
-    	$data = HistoryCall::where('teacher_id','=',$request->user()->id)->get();
+    	$data = HistoryCall::where('teacher_id','=',$request->user()->id)->orderBy('created_at','DESC')->get();
 
     	return HistoryCallResource::collection($data);        
     }
 
     public function getHistoryStudent(Request $request){
-        $data = HistoryCall::where('student_id','=',$request->user()->id)->get();
+        $data = HistoryCall::where('student_id','=',$request->user()->id)->orderBy('created_at','DESC')->get();
 
         return HistoryCallResource::collection($data);        
     }
@@ -185,7 +185,6 @@ class CerecallController extends Controller
     public function getRunningKonsultasiStudent(Request $request){
         $data = HistoryCall::where('status',2)
                 ->where('student_id',$request->user()->id)
-                ->orderBy('created_at','DESC')
                 ->get();
         return HistoryCallResource::collection($data);        
     }
@@ -193,7 +192,13 @@ class CerecallController extends Controller
     public function getRunningKonsultasiTeacher(Request $request){
         $data = HistoryCall::where('status',2)
                 ->where('teacher_id',$request->user()->id)
-                ->orderBy('created_at','DESC')
+                ->get();
+        return HistoryCallResource::collection($data);        
+    }
+
+    public function getConfirmConsultationTeacher(Request $request){
+        $data = HistoryCall::where('status',1)
+                ->where('teacher_id',$request->user()->id)
                 ->get();
         return HistoryCallResource::collection($data);        
     }
