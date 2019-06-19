@@ -124,13 +124,17 @@ class CerecallController extends Controller
     }
 
     public function getHistoryTeacher(Request $request){
-    	$data = HistoryCall::where('teacher_id','=',$request->user()->id)->orderBy('created_at','DESC')->get();
+    	$data = HistoryCall::where('teacher_id','=',$request->user()->id)
+                ->where('status','!=',2)
+                ->orderBy('created_at','DESC')->get();
 
     	return HistoryCallResource::collection($data);        
     }
 
     public function getHistoryStudent(Request $request){
-        $data = HistoryCall::where('student_id','=',$request->user()->id)->orderBy('created_at','DESC')->get();
+        $data = HistoryCall::where('student_id','=',$request->user()->id)
+                ->where('status','!=',2)
+                ->orderBy('created_at','DESC')->get();
 
         return HistoryCallResource::collection($data);        
     }

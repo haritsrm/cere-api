@@ -27,6 +27,7 @@ class TransactionResource extends JsonResource
             if($this->membership_id!=null){
                 $nominal = NominalTopUp::where('id','=',$this->membership_id)->first();
                 $price = $nominal->harga;
+                $membership_name = $nominal->nominal;
             }
         }
         return [
