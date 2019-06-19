@@ -21,25 +21,33 @@ class CerecallController extends Controller
             'student_id' => 'required|integer',
             'teacher_id' => 'required|integer'
         ]);
-    	$data = new HistoryCall();
-    	$data->student_id = $request->student_id;
-    	$data->teacher_id = $request->teacher_id;
-        $data->status = 1;
-    	// $data->rating = $request->rating;
-    	// $data->review = $request->review;
-    	$data->save();
-
-    	$price = GeneralInformation::where('id','=',1)->first();
-
-    	// $teacher = User::where('id','=',$request->teacher_id)->first();
-    	// $teacher->balance += $price->cerecall_price;
-    	// $teacher->save();
-    	return response()->json([
-            'status' => true,
+        $price = GeneralInformation::all();
+        foreach ($price as $price) {
+            $cerecall_price = $price->cerecall_price;
+        }
+        $student = User::where('id','=',$request->student_id)->first();
+        if($student->balance<$cerecall_price){
+            return response()->json([
+            'status' => false,
             'data' => [
-                'history_call' => $data
+                'message' => 'your money is not enough'
             ],
         ], 201);
+        }else{
+        	$data = new HistoryCall();
+        	$data->student_id = $request->student_id;
+        	$data->teacher_id = $request->teacher_id;
+            $data->status = 1;
+        	// $data->rating = $request->rating;
+        	// $data->review = $request->review;
+        	$data->save();
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'message' => $data
+                ],
+            ], 201);
+        }
     }
 
     public function updateHistoryCall(Request $request, $id){
@@ -50,11 +58,17 @@ class CerecallController extends Controller
         $data->save();
 
         $price = GeneralInformation::all();
+        $cerecall_price=0;
         foreach ($price as $price) {
-            $teacher = User::where('id','=',$data->teacher_id)->first();
-            $teacher->balance += $price->cerecall_price;
-            $teacher->save();
+            $cerecall_price = $price->cerecall_price;
         }
+        $teacher = User::where('id','=',$request->teacher_id)->first();
+        $teacher->balance += $cerecall_price;
+        $teacher->save();
+
+        $student = User::where('id','=',$request->student_id)->first();
+        $student->balance -= $cerecall_price;
+        $student->save();
         return response()->json([
             'status' => true,
             'data' => [
