@@ -223,15 +223,51 @@ class AuthController extends Controller
     {
         return Socialite::driver($service)->redirect();
     }
+    
+    public function handleProviderCallback($service)
+    {
+        $user = Socialite::driver($service)->stateless()->user();
+        $findUser = User::where('email', $user->getEmail())->first();
+
+        if($findUser){
+            $tokenResult = $findUser->createToken($user->token);
+            return response()->json([
+                'status' => true,
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $user->expiresIn
+                )->toDateTimeString()
+            ], 201);
+        }
+        else{
+            $user_local = new User([
+                'name' => $user->getName(),
+                'email' => $user->getEmail()
+            ]);
+            $user_local->save();
+            $user_local->attachRole(2);
+
+            $tokenResult = $user_local->createToken($user->token);
+            return response()->json([
+                'status' => true,
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $user->expiresIn
+                )->toDateTimeString()
+            ], 201);
+        }
+    }
 
     /**
      * Obtain the user information from GitHub.
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback($service)
+    public function handleProviderToken($service, Request $req)
     {
-        $user = Socialite::driver($service)->stateless()->user();
+        $user = Socialite::driver($service)->stateless()->userFromToken($req->token);
         $findUser = User::where('email', $user->getEmail())->first();
 
         if($findUser){

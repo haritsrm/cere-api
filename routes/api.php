@@ -17,6 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('login/{service}', 'AuthController@handleProviderToken');
+
 Route::get('/test','TeacherController@index');
 Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
