@@ -78,7 +78,7 @@ class LeaderboardController extends Controller
             ->where('tryouts.class_id','=',$id)
     		->where('tryouts.start_date', '<=', $today)
     		->where('tryouts.end_date', '>=', $today)
-            ->groupBy('cereouts.user_id')
+            ->groupBy('cereouts.tryout_id')
     		->get();
 
     	return ChartResource::collection($data);
@@ -91,7 +91,7 @@ class LeaderboardController extends Controller
             ->where('tryouts.lesson_id','=',$id)
             ->where('tryouts.start_date', '<=', $today)
             ->where('tryouts.end_date', '>=', $today)
-            ->groupBy('cereouts.user_id')
+            ->groupBy('cereouts.tryout_id')
             ->get();        
 
     	return ChartResource::collection($data);
