@@ -84,11 +84,10 @@ class QuizController extends Controller
     {
         $result = $this->quiz->update($question_id, [
             'question' => $req->question,
-            'option_1' => $req->option_1,
-            'option_2' => $req->option_2,
-            'option_3' => $req->option_3,
-            'option_4' => $req->option_4,
-            'option_5' => $req->option_5,
+            'option_a' => $req->option_a,
+            'option_b' => $req->option_b,
+            'option_c' => $req->option_c,
+            'option_d' => $req->option_d,
             'answer' => $req->answer,
         ]);
 
