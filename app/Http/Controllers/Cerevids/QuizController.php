@@ -41,10 +41,10 @@ class QuizController extends Controller
         $result = $this->quiz->create([
             'quiz_id' => $quiz_id,
             'question' => $req->question,
-            'option_a' => $req->option_1,
-            'option_b' => $req->option_2,
-            'option_c' => $req->option_3,
-            'option_d' => $req->option_4,
+            'option_a' => $req->option_a,
+            'option_b' => $req->option_b,
+            'option_c' => $req->option_c,
+            'option_d' => $req->option_d,
             'correct_answer' => $req->correct_answer,
         ]);
 
@@ -77,9 +77,9 @@ class QuizController extends Controller
         return new QuizResource($quiz);
     }
 
-    public function updateQuestion($quiz_id, Request $req)
+    public function updateQuestion($quiz_id, $question_id, Request $req)
     {
-        $result = $this->quiz->update($quiz_id, [
+        $result = $this->quiz->update($question_id, [
             'question' => $req->question,
             'option_1' => $req->option_1,
             'option_2' => $req->option_2,
