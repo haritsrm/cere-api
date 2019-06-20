@@ -97,6 +97,7 @@ class CourseResource extends JsonResource
             'description' => $this->description,
             'curriculum' => $this->curriculum,
             'lesson' => [
+                'id' => $lesson->id,
                 'class_id' => $this->lesson->class_id,
                 'name' => $this->lesson->name,
                 'passing_percentage' => $this->lesson->passing_percentage
