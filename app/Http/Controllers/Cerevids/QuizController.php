@@ -80,6 +80,14 @@ class QuizController extends Controller
         return new QuizResource($quiz);
     }
 
+
+    public function showQuestion($quiz_id, $question_id, Request $req)
+    {
+        $result = $this->quiz->findQuestion($question_id);
+
+        return $result;
+    }
+
     public function updateQuestion($quiz_id, $question_id, Request $req)
     {
         $result = $this->quiz->update($question_id, [
