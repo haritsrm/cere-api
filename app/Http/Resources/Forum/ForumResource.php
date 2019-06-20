@@ -22,9 +22,7 @@ class ForumResource extends JsonResource
             'id' => $this->id,
             'body' => $this->body,
             'user' => User::find($this->user_id)->name,
-            'href' => [
-                'link' => route('forum/detail', [$course->id, $this->id]),
-            ],
+            'comments' => ($this->forums ? ForumCollection::collection($this->forums) : null),
             'posted' => $this->created_at->diffForHumans(),
         ];
     }
