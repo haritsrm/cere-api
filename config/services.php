@@ -50,6 +50,12 @@ return [
         'redirect' => '/login/google/callback',
     ],
 
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => '/login/facebook/callback',
+    ],
+
     'midtrans' => [
         // Midtrans server key
         'serverKey'     => env('MIDTRANS_SERVERKEY'),
