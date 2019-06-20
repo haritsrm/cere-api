@@ -31,7 +31,24 @@ class CerelisasiController extends Controller
             }
         }
         else {
-            return $this->analyticsResult($req);
+            if (count($req->departments) <= 3){
+                return $this->analyticsResult($req);
+            }
+            else {
+                $first_price = (count($req->departments) - 3) * $price;
+                if($this->useBalance($req, $first_price)) {
+                    $this->clearAnalyticsData($req);
+                    $this->createUserInfo($req);
+    
+                    return $this->analyticsResult($req);
+                }
+                else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Saldo tidak mencukupi',
+                    ]);
+                }
+            }
         }
     }
 
