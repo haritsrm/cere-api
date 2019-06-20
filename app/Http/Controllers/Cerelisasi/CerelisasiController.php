@@ -32,6 +32,9 @@ class CerelisasiController extends Controller
         }
         else {
             if (count($req->departments) <= 3){
+                $this->clearAnalyticsData($req);
+                $this->createUserInfo($req);
+                
                 return $this->analyticsResult($req);
             }
             else {
