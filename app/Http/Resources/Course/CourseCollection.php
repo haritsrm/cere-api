@@ -78,6 +78,7 @@ class CourseCollection extends JsonResource
             'description' => $this->description,
             'curriculum' => $this->curriculum,
             'lesson' => [
+                'id' => $lesson->id,
                 'class_id' => $lesson->class_id,
                 'name' => $lesson->name,
                 'passing_percentage' => $lesson->passing_percentage
