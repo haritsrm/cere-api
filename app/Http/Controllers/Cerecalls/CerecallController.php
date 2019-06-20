@@ -81,7 +81,7 @@ class CerecallController extends Controller
         ], 201);
     }
 
-    public function postReportTeacher(Request $request){
+    public function postReportTeacher(Request $request, $id){
     	$request->validate([
             'student_id' => 'required|integer',
             'teacher_id' => 'required|integer'
@@ -104,6 +104,7 @@ class CerecallController extends Controller
 
         $data = ReportTeacher::where('id','=',$report->id)->first();
     	$data->image_url = $namaFile;
+        $data->history_call_id = $id;
     	$data->save();
 
     	return response()->json([

@@ -213,7 +213,7 @@ Route::group([
     Route::get('/student/history', 'Cerecalls\CerecallController@getHistoryStudent');
     Route::get('/student/history/running', 'Cerecalls\CerecallController@getRunningKonsultasiStudent');
     Route::get('/available/teacher/{id}', 'Cerecalls\CerecallController@getAvailableTeacher');
-    Route::post('/report', 'Cerecalls\CerecallController@postReportTeacher');
+    Route::post('/report/{id}', 'Cerecalls\CerecallController@postReportTeacher');
     Route::put('/status', 'Cerecalls\CerecallController@changeStatus');
     Route::post('/chat/{id}', 'Cerecalls\CerecallController@postChatByKonsultasi');
     Route::get('/chat/{id}', 'Cerecalls\CerecallController@getChatByKonsultasi');
