@@ -34,7 +34,7 @@ class CerelisasiController extends Controller
             if (count($req->departments) <= 3){
                 $this->clearAnalyticsData($req);
                 $this->createUserInfo($req);
-                
+
                 return $this->analyticsResult($req);
             }
             else {
@@ -200,9 +200,10 @@ class CerelisasiController extends Controller
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
-                $my_rank = $i;if ($my_rank > 5) {
+                $my_rank = $i;
+                if ($my_rank > 5) {
                     $j = $my_rank-5;
-                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
+                    $array_ranks = Cerelisasi::where('department_id', $department_id)->groupBy('user_id')->orderBy('total_point', 'desc')->skip($my_rank-5)->take(11)->get();
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
@@ -213,7 +214,7 @@ class CerelisasiController extends Controller
                 }
                 else {
                     $j = 1;
-                    $array_ranks = Cerelisasi::groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
+                    $array_ranks = Cerelisasi::where('department_id', $department_id)->groupBy('user_id')->orderBy('total_point', 'desc')->take($my_rank+5)->get();
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
