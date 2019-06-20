@@ -186,7 +186,7 @@ class CerecallController extends Controller
     }
 
     public function getChatByKonsultasi($id){
-        $data = Chat::where('history_call_id',$id)->get();
+        $data = Chat::where('history_call_id',$id)->orderBy('created_at','ASC')->get();
         return new ChatResource($data);
     }
 
@@ -219,6 +219,13 @@ class CerecallController extends Controller
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 0;
             $teacher_status->save();
+            $history_call = HistoryCall::where('teacher_id',$request->user()->id)
+                        ->where('status',1)
+                        ->get();
+            foreach ($history_call as $history_call) {
+                $history_call->status = 3;
+                $history_call->save();
+            }
         }elseif($request->status == 3) {
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 1;
