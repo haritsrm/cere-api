@@ -32,6 +32,11 @@ class QuizService extends Controller
         return $this->newQuiz->find($id);
     }
 
+    public function findQuestion($id)
+    {
+        return $this->newQuestion->find($id);
+    }
+
     public function update($id, Array $req)
     {
         $this->newQuestion->find($id)->update($req);
