@@ -50,7 +50,8 @@ class QuizController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Berhasil menambahkan soal quiz'
+            'message' => 'Berhasil menambahkan soal quiz',
+            'data' => $result,
         ]);
     }
 
@@ -78,6 +79,14 @@ class QuizController extends Controller
         $this->lastSeen($quiz_id, $req->user()->id);
 
         return new QuizResource($quiz);
+    }
+
+
+    public function showQuestion($quiz_id, $question_id, Request $req)
+    {
+        $result = $this->quiz->findQuestion($question_id);
+
+        return $result;
     }
 
     public function updateQuestion($quiz_id, $question_id, Request $req)

@@ -146,6 +146,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::post('/create_question', 'Cerevids\QuizController@createQuestion')->name('quiz/createquest');
+    Route::get('/show_question/{question_id}', 'Cerevids\QuizController@showQuestion')->name('quiz/showquest');
     Route::put('/update_question/{question_id}', 'Cerevids\QuizController@updateQuestion')->name('quiz/updatequest');
     Route::delete('/delete_question/{question_id}', 'Cerevids\QuizController@deleteQuestion')->name('quiz/deletequest');
 });
