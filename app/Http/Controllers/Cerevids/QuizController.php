@@ -50,7 +50,8 @@ class QuizController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Berhasil menambahkan soal quiz'
+            'message' => 'Berhasil menambahkan soal quiz',
+            'data' => $result,
         ]);
     }
 
