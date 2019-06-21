@@ -14,6 +14,8 @@ use App\Http\Resources\Cerecall\AvailTeacherResource;
 use App\Http\Resources\Cerecall\ChatResource;
 use App\Models\GeneralInformation;
 use App\User;
+use OneSignal;
+
 class CerecallController extends Controller
 {
     //
@@ -177,6 +179,17 @@ class CerecallController extends Controller
         $data = Chat::where('id','=',$chat->id)->first();
         $data->content = $namaFile;
         $data->save();
+
+        $kirim = "testing";
+        OneSignal::sendNotificationToUser(
+            $request->content,
+            $request->user()->device_id,
+            $url = null,
+            $data = $kirim,
+            $buttons = null,
+            $schedule = null
+        );
+
         return response()->json([
             'status' => true,
             'data' => [
