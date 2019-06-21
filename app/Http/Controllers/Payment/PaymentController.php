@@ -33,9 +33,20 @@ class PaymentController extends Controller
     {
         \DB::transaction(function(){
             // Save transaksi ke database
+            if($this->request->type==1){
+                $membership = Membership::where('id',$this->request->membership_id)->first();
+                if ($this->request->coupon_code == $membership->coupon_code && $membership->status == 1) {
+                    $nominal = $membership->price-$membership->coupon_price;
+                }else{
+                    $nominal = $this->request->nominal;    
+                }
+            }else{
+                $nominal = $this->request->nominal;
+            }
+
             $payment = Transaksi::create([
                 'user_id' => $this->request->user_id,
-                'nominal' => $this->request->nominal,
+                'nominal' => $nominal,
                 'membership_id' => $this->request->membership_id,
                 'type' => $this->request->type
             ]);
