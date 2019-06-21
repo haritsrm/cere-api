@@ -14,6 +14,8 @@ use App\Http\Resources\Cerecall\AvailTeacherResource;
 use App\Http\Resources\Cerecall\ChatResource;
 use App\Models\GeneralInformation;
 use App\User;
+use OneSignal;
+
 class CerecallController extends Controller
 {
     //
@@ -43,7 +45,19 @@ class CerecallController extends Controller
             $data->status = 1;
         	// $data->rating = $request->rating;
         	// $data->review = $request->review;
+            $student = User::where('id',$request->student_id)->first();
+            $teacher = User::where('id',$request->teacher_id)->first();
         	$data->save();
+            $kirim = "testing";
+            $content = $student->name." Ingin berkonsultasi dengan anda";
+            OneSignal::sendNotificationToUser(
+                $content,
+                $teacher->device_id,
+                $url = null,
+                $data = $kirim,
+                $buttons = null,
+                $schedule = null
+            );
             return response()->json([
                 'status' => true,
                 'data' => [
@@ -177,6 +191,17 @@ class CerecallController extends Controller
         $data = Chat::where('id','=',$chat->id)->first();
         $data->content = $namaFile;
         $data->save();
+
+        $kirim = "testing";
+        OneSignal::sendNotificationToUser(
+            $request->content,
+            $request->user()->device_id,
+            $url = null,
+            $data = $kirim,
+            $buttons = null,
+            $schedule = null
+        );
+
         return response()->json([
             'status' => true,
             'data' => [
@@ -230,6 +255,17 @@ class CerecallController extends Controller
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 1;
             $teacher_status->save();
+            $student = User::where('id',$request->student_id)->first();
+            $kirim = "testing";
+            $content = $teacher_status->name." Menolak berkonsultasi dengan anda";
+            OneSignal::sendNotificationToUser(
+                $content,
+                $student->device_id,
+                $url = null,
+                $data = $kirim,
+                $buttons = null,
+                $schedule = null
+            );
         }elseif($request->status == 4){
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 1;

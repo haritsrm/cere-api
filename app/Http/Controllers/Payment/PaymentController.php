@@ -106,8 +106,10 @@ class PaymentController extends Controller
                     $user->membership=true;
                     $user->save();    
                 }else{
+                    $today =  Carbon::now();
                     $user=User::where('id','=',$transactions->user_id)->first();
                     $user->balance+=$price->nominal;
+                    $user->last_transaction+=$today;
                     $user->save();
                 }
               }
@@ -119,6 +121,7 @@ class PaymentController extends Controller
             // TODO set payment status in merchant's database to 'Settlement'
             // $donation->addUpdate("Transaction order_id: " . $orderId ." successfully transfered using " . $type);
             // $transactions->setSuccess($type);
+
             $data = Transaksi::where('id',$orderId)->first();
             $data->status="1";
             $data->payment_method=$type;
@@ -131,6 +134,7 @@ class PaymentController extends Controller
             }else{
                 $user=User::where('id','=',$transactions->user_id)->first();
                 $user->balance+=$price->nominal;
+
                 $user->save();
             }
  

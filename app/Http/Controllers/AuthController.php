@@ -57,6 +57,9 @@ class AuthController extends Controller
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
+        $update_device_id = User::where('id',$request->user()->id)->first();
+        $update_device_id->device_id = $request->device_id;
+        $update_device_id->save();
         return response()->json([
             'status' => true,
             'data' => $request->user(),
