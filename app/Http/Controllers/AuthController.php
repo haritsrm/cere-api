@@ -234,6 +234,9 @@ class AuthController extends Controller
 
         if($findUser){
             $tokenResult = $findUser->createToken($user->token);
+            $findUser->update([
+                'device_id' => $req->device_id
+            ]);
             return response()->json([
                 'status' => true,
                 'access_token' => $tokenResult->accessToken,
@@ -246,7 +249,8 @@ class AuthController extends Controller
         else{
             $user_local = new User([
                 'name' => $user->getName(),
-                'email' => $user->getEmail()
+                'email' => $user->getEmail(),
+                'device_id' => $req->device_id
             ]);
             $user_local->save();
             $user_local->attachRole(2);
@@ -275,6 +279,9 @@ class AuthController extends Controller
 
         if($findUser){
             $tokenResult = $findUser->createToken($user->token);
+            $findUser->update([
+                'device_id' => $req->device_id
+            ]);
             return response()->json([
                 'status' => true,
                 'access_token' => $tokenResult->accessToken,
@@ -287,7 +294,8 @@ class AuthController extends Controller
         else{
             $user_local = new User([
                 'name' => $user->getName(),
-                'email' => $user->getEmail()
+                'email' => $user->getEmail(),
+                'device_id' => $req->device_id
             ]);
             $user_local->save();
             $user_local->attachRole(2);
