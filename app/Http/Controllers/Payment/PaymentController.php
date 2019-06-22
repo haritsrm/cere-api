@@ -37,11 +37,14 @@ class PaymentController extends Controller
                 $membership = Membership::where('id',$this->request->membership_id)->first();
                 if ($this->request->coupon_code == $membership->coupon_code && $membership->status == 1) {
                     $nominal = $membership->price-$membership->coupon_price;
+                    $isCoupon = true;
                 }else{
-                    $nominal = $this->request->nominal;    
+                    $nominal = $this->request->nominal;
+                    $isCoupon = false;    
                 }
             }else{
                 $nominal = $this->request->nominal;
+                $isCoupon = false;
             }
 
             $payment = Transaksi::create([
@@ -73,6 +76,7 @@ class PaymentController extends Controller
  
             // Beri response snap token
             $this->response['snap_token'] = $snapToken;
+            $this->response['isCoupon'] = $isCoupon;
         });
  
         return response()->json($this->response);
