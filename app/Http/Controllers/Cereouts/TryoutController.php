@@ -9,6 +9,7 @@ use App\Http\Resources\Tryout\TryoutCollection;
 use App\Http\Resources\Tryout\TryoutResource;
 use App\Models\Question;
 use App\Models\Tryout;
+use App\Models\Kelas;
 use App\Models\Lesson;
 use App\Models\AttemptTryout;
 
@@ -22,6 +23,13 @@ class TryoutController extends Controller
     public function index()
     {
         $tryouts = $this->tryout->browse();
+
+        return TryoutCollection::collection($tryouts);
+    }
+
+    public function indexByClass($class_id)
+    {
+        $tryouts = Tryout::where('class_id',$class_id)->get();
 
         return TryoutCollection::collection($tryouts);
     }

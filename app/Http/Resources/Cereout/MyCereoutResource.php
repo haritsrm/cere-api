@@ -24,6 +24,7 @@ class MyCereoutResource extends JsonResource
             'incorrect_answered' => $this->incorrect_answered,
             'left_answered' => $this->left_answered,
             'result_status' => $this->result_status,
+            'scoring_system' => $this->scoring_system,
             'created_at' => $this->created_at
         ];
     }

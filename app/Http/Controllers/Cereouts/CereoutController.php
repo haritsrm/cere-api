@@ -297,6 +297,17 @@ class CereoutController extends Controller
         return MyTryoutResource::collection($data);        
     }
 
+    public function getCereoutByUserClass($id, Request $req){
+        $data = Tryout::join('cereouts','cereouts.tryout_id','=','tryouts.id')
+                ->select('tryouts.id','tryouts.name','cereouts.user_id','cereouts.created_at')
+                ->where('cereouts.user_id','=',$req->user()->id)
+                ->where('tryouts.class_id','=',$id)
+                ->orderBy('cereouts.created_at','DESC')
+                ->groupBy('cereouts.tryout_id')
+                ->get();
+        return MyTryoutResource::collection($data);        
+    }
+
     public function getCereoutByTryout($id){
         $data = Cereout::where('tryout_id','=',$id)
                 ->orderBy('created_at','DESC')

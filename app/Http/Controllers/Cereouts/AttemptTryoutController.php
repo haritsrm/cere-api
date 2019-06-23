@@ -23,6 +23,17 @@ class AttemptTryoutController extends Controller
     	return TryoutUserCollection::collection($data);	
     }
 
+    public function getTryoutUserClass($id, Request $req){
+        $today =  Carbon::now()->todatestring();
+        $data = AttemptTryout::join('tryouts','tryouts.id','=','attempt_tryouts.tryout_id')
+            ->select('tryouts.*', 'attempt_tryouts.user_id as user_id', 'attempt_tryouts.left_attempt')
+            ->where('attempt_tryouts.user_id','=',$req->user()->id)
+            ->where('tryouts.class_id','=',$id)
+            ->where('tryouts.end_date','>=',$today)
+            ->get();
+        return TryoutUserCollection::collection($data); 
+    }
+
     public function getExpireTryoutUser($id){
     	$today =  Carbon::now()->todatestring();
     	$data = AttemptTryout::join('tryouts','tryouts.id','=','attempt_tryouts.tryout_id')
@@ -31,6 +42,17 @@ class AttemptTryoutController extends Controller
     		->where('tryouts.end_date','<=',$today)
     		->get();
     	return TryoutCollection::collection($data);	
+    }
+
+    public function getExpireTryoutUser($id, Request $req){
+        $today =  Carbon::now()->todatestring();
+        $data = AttemptTryout::join('tryouts','tryouts.id','=','attempt_tryouts.tryout_id')
+            ->select('tryouts.*', 'attempt_tryouts.user_id as user_id')
+            ->where('attempt_tryouts.user_id','=',$req->user()->id)
+            ->where('tryouts.class_id','=',$id)
+            ->where('tryouts.end_date','<=',$today)
+            ->get();
+        return TryoutCollection::collection($data); 
     }
 
 }
