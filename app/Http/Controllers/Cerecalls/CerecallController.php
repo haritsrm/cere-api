@@ -48,13 +48,14 @@ class CerecallController extends Controller
             $student = User::where('id',$request->student_id)->first();
             $teacher = User::where('id',$request->teacher_id)->first();
         	$data->save();
-            $kirim = "testing";
-            $content = $student->name." Ingin berkonsultasi dengan anda";
+            // $kirim = "cerebrum";
+
+            $content = $student->name. "ingin berkonsultasi dengan anda";
             OneSignal::sendNotificationToUser(
                 $content,
                 $teacher->device_id,
                 $url = null,
-                $data = $kirim,
+                $data = $data,
                 $buttons = null,
                 $schedule = null
             );
@@ -192,12 +193,11 @@ class CerecallController extends Controller
         $data->content = $namaFile;
         $data->save();
 
-        $kirim = "testing";
         OneSignal::sendNotificationToUser(
             $request->content,
             $request->user()->device_id,
             $url = null,
-            $data = $kirim,
+            $data = $data,
             $buttons = null,
             $schedule = null
         );
@@ -255,14 +255,13 @@ class CerecallController extends Controller
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 1;
             $teacher_status->save();
-            $student = User::where('id',$request->student_id)->first();
-            $kirim = "testing";
+            $student = User::where('id',$data->student_id)->first();
             $content = $teacher_status->name." Menolak berkonsultasi dengan anda";
             OneSignal::sendNotificationToUser(
                 $content,
                 $student->device_id,
                 $url = null,
-                $data = $kirim,
+                $data = $data,
                 $buttons = null,
                 $schedule = null
             );
