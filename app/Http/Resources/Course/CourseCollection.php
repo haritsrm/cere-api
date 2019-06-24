@@ -19,56 +19,59 @@ class CourseCollection extends JsonResource
     public function toArray($request)
     {
         $lesson = Lesson::find($this->lesson_id);
+        $progress_total = 0;
+        if(!is_null($request->user())){
+            $index = 0;
+            $progress = [];
 
-        $index = 0;
-        $progress = [];
-        foreach ($this->sections as $sec) {
-            $videos = $sec->videos()->get();
-            $texts  = $sec->texts()->get();
-            $quiz   = $sec->quiz()->get();
-    
-            $last_seen = LastSeen::where('user_id', $request->user()->id)->get();
-            $i = 0;
-    
-            foreach ($videos as $key => $video) {
-                foreach ($last_seen as $key => $ls) {
-                    if ($video->id == $ls->video_id) {
-                        $i++;
+            foreach ($this->sections as $sec) {
+                $videos = $sec->videos()->get();
+                $texts  = $sec->texts()->get();
+                $quiz   = $sec->quiz()->get();
+        
+                $last_seen = LastSeen::where('user_id', $request->user()->id)->get();
+                $i = 0;
+        
+                foreach ($videos as $key => $video) {
+                    foreach ($last_seen as $key => $ls) {
+                        if ($video->id == $ls->video_id) {
+                            $i++;
+                        }
                     }
                 }
-            }
-    
-            foreach ($texts as $key => $text) {
-                foreach ($last_seen as $key => $ls) {
-                    if ($text->id == $ls->text_id) {
-                        $i++;
+        
+                foreach ($texts as $key => $text) {
+                    foreach ($last_seen as $key => $ls) {
+                        if ($text->id == $ls->text_id) {
+                            $i++;
+                        }
                     }
                 }
-            }
-    
-            foreach ($quiz as $key => $q) {
-                foreach ($last_seen as $key => $ls) {
-                    if ($q->id == $ls->quiz_id) {
-                        $i++;
+        
+                foreach ($quiz as $key => $q) {
+                    foreach ($last_seen as $key => $ls) {
+                        if ($q->id == $ls->quiz_id) {
+                            $i++;
+                        }
                     }
                 }
+        
+                $materialCounts = count($videos) + count($texts) + count($quiz);
+                if ($materialCounts > 0) {
+                    $progress[$index] = ($i/$materialCounts)*100;
+                }
+                else {
+                    $progress[$index] = 0;
+                }
+                $index++;
             }
-    
-            $materialCounts = count($videos) + count($texts) + count($quiz);
-            if ($materialCounts > 0) {
-                $progress[$index] = ($i/$materialCounts)*100;
+            
+            if (array_sum($progress) > 0 || count($progress) > 0) {
+                $progress_total = array_sum($progress)/count($progress);
             }
             else {
-                $progress[$index] = 0;
+                $progress_total = 0;
             }
-            $index++;
-        }
-        
-        if (array_sum($progress) > 0 || count($progress) > 0) {
-            $progress_total = array_sum($progress)/count($progress);
-        }
-        else {
-            $progress_total = 0;
         }
 
         return [
