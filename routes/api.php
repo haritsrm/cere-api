@@ -23,6 +23,8 @@ Route::get('/test','TeacherController@index');
 Route::get('/testCreate','TeacherController@create');
 Route::get('/testDestroy','TeacherController@destroy');
 Route::get('/lessons/{class_id}', 'Cerevids\CourseController@lessonByClass')->name('coursesByClass');
+Route::get('/cereouts/leaderboard/toptryout/{id}', 'Cereouts\LeaderboardController@getTopTryout');
+Route::get('courses/', 'Cerevids\CourseController@index')->name('courses');
 
 Route::post('/notification/handler', 'Payment\PaymentController@notificationHandler')->name('notification.handler');
 
@@ -66,7 +68,6 @@ Route::group([
     'middleware' => 'auth:api'
 ], function(){
     Route::get('/favorites', 'Cerevids\FavoriteController@index')->name('favorites');
-    Route::get('/', 'Cerevids\CourseController@index')->name('courses');
     Route::get('/lesson/{lesson_id}', 'Cerevids\CourseController@indexByLesson')->name('coursesByLesson');
     Route::post('/create', 'Cerevids\CourseController@create')->name('course/create');
     Route::get('/{id}', 'Cerevids\CourseController@find')->name('course/detail');
@@ -185,7 +186,6 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
         Route::get('/{id}', 'Cereouts\LeaderboardController@getLeaderboardByClass');
         Route::get('/lesson/{id}', 'Cereouts\LeaderboardController@getLeaderboardByLesson');
         Route::get('/ranking/{id}', 'Cereouts\LeaderboardController@getRanking');
-        Route::get('/toptryout/{id}', 'Cereouts\LeaderboardController@getTopTryout');
     });
 
     Route::group(['prefix' => '/chart'], function(){
