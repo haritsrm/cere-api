@@ -22,7 +22,8 @@ class CereoutResource extends JsonResource
                 'name' => $tryout->name,
             ],
             'my_time' => $this->my_time, 
-            'score' => $this->score,
+            'score' => number_format($this->score, 2),
+
             'total_answer' => $this->total_answer,
             'correct_answered' => $this->correct_answered,
             'incorrect_answered' => $this->incorrect_answered,

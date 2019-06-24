@@ -32,7 +32,7 @@ class DetailCereoutResource extends JsonResource
             'check_answer' => $this->check_answer,
             'user_right' => $sum_right,
             'user_wrong' => $sum_wrong,
-            'score' => $this->score,
+            'score' => number_format($this->score, 2),
             'discussion' => [
                 'question_id' => $this->question_id,
                 'question' => $this->question,
