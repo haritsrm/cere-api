@@ -49,14 +49,15 @@ class CerecallController extends Controller
             $teacher = User::where('id',$request->teacher_id)->first();
         	$data->save();
             // $kirim = "cerebrum";
-
-            $content = $student->name. "ingin berkonsultasi dengan anda";
+            $title = "Halo ".$teacher->name;
+            $content = $student->name. " ingin berkonsultasi dengan anda";
             OneSignal::sendNotificationToUser(
                 $content,
                 $teacher->device_id,
                 $url = null,
                 $data = $data,
                 $buttons = null,
+                $headings = $title,
                 $schedule = null
             );
             return response()->json([
@@ -193,12 +194,14 @@ class CerecallController extends Controller
         $data->content = $namaFile;
         $data->save();
 
+        $title = $request->user()->name;
         OneSignal::sendNotificationToUser(
             $request->content,
             $request->user()->device_id,
             $url = null,
             $data = $data,
             $buttons = null,
+            $headings = $title,
             $schedule = null
         );
 
@@ -251,18 +254,31 @@ class CerecallController extends Controller
                 $history_call->status = 3;
                 $history_call->save();
             }
-        }elseif($request->status == 3) {
-            $teacher_status = User::where('id',$request->user()->id)->first();
-            $teacher_status->status = 1;
-            $teacher_status->save();
-            $student = User::where('id',$data->student_id)->first();
-            $content = $teacher_status->name." Menolak berkonsultasi dengan anda";
+            $title = "Selamat ".$student->name;
+            $content = $teacher_status->name." telah menerima konsultasi anda";
             OneSignal::sendNotificationToUser(
                 $content,
                 $student->device_id,
                 $url = null,
                 $data = $data,
                 $buttons = null,
+                $headings = $title,
+                $schedule = null
+            );
+        }elseif($request->status == 3) {
+            $teacher_status = User::where('id',$request->user()->id)->first();
+            $teacher_status->status = 1;
+            $teacher_status->save();
+            $student = User::where('id',$data->student_id)->first();
+            $title = "Mohon maaf ".$student->name;
+            $content = $teacher_status->name." sudah menerima konsultasi lain";
+            OneSignal::sendNotificationToUser(
+                $content,
+                $student->device_id,
+                $url = null, 
+                $data = $data,
+                $buttons = null,
+                $headings = $title,
                 $schedule = null
             );
         }elseif($request->status == 4){

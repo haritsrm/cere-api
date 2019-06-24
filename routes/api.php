@@ -157,12 +157,15 @@ Route::group(['prefix' => 'cereouts', 'middleware' => 'auth:api'], function(){
     Route::get('/running', 'Cereouts\CereoutController@getRunningTryout');
     Route::get('/question/{id}', 'Cereouts\QuestionController@index')->name('questions');
     Route::get('/', 'Cereouts\TryoutController@index')->name('tryouts');
+    Route::get('/class/{id}', 'Cereouts\TryoutController@indexByClass');
     Route::post('/create', 'Cereouts\TryoutController@create')->name('tryout/create');
     Route::get('/{id}', 'Cereouts\TryoutController@find')->name('tryout/detail');
     Route::put('/{id}', 'Cereouts\TryoutController@update')->name('tryout/update');
     Route::delete('/{id}', 'Cereouts\TryoutController@delete')->name('tryout/delete');
     Route::get('/attempttryout/{id}', 'Cereouts\AttemptTryoutController@getTryoutUser');
+    Route::get('/attempttryout/class/{id}', 'Cereouts\AttemptTryoutController@getTryoutUserClass');
     Route::get('/attempttryout/{id}/expire', 'Cereouts\AttemptTryoutController@getExpireTryoutUser');
+    Route::get('/attempttryout/class/{id}/expire', 'Cereouts\AttemptTryoutController@getExpireTryoutUserClass');
     Route::get('/result/{id}', 'Cereouts\CereoutController@getCereoutByUser');
     Route::get('/tryout/{id}/result', 'Cereouts\CereoutController@getCereoutByTryout');
     Route::get('/result/{id}/tryout/{tryout_id}/summary/{user_id}', 'Cereouts\CereoutController@getSummaryTryout');
