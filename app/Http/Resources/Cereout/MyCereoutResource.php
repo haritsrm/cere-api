@@ -14,6 +14,7 @@ class MyCereoutResource extends JsonResource
      */
     public function toArray($request)
     {
+        $tryout = Tryout::where('id',$this->tryout_id)->first();
         return [
             'id' => $this->id,
             'tryout_id' => $this->tryout_id,      
@@ -24,7 +25,7 @@ class MyCereoutResource extends JsonResource
             'incorrect_answered' => $this->incorrect_answered,
             'left_answered' => $this->left_answered,
             'result_status' => $this->result_status,
-            'scoring_system' => $this->scoring_system,
+            'scoring_system' => $tryout->scoring_system,
             'created_at' => $this->created_at
         ];
     }
