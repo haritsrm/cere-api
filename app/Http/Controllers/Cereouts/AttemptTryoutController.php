@@ -44,7 +44,7 @@ class AttemptTryoutController extends Controller
     	return TryoutCollection::collection($data);	
     }
 
-    public function getExpireTryoutUser($id, Request $req){
+    public function getExpireTryoutUserClass($id, Request $req){
         $today =  Carbon::now()->todatestring();
         $data = AttemptTryout::join('tryouts','tryouts.id','=','attempt_tryouts.tryout_id')
             ->select('tryouts.*', 'attempt_tryouts.user_id as user_id')
