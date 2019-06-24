@@ -355,7 +355,7 @@ class CereoutController extends Controller
         return response()->json([
             'status' => true,
             'time' => $cereout->my_time,
-            'score' => $cereout->score,
+            'score' => number_format($cereout->score, 2),
             'correct_answered' => $cereout->correct_answered,
             'incorrect_answered' => $cereout->incorrect_answered,
             'left_answered' => $cereout->left_answered,

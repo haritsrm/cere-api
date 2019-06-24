@@ -36,7 +36,7 @@ class SummaryCereoutResource extends JsonResource
 
         return [
             'time' => $this->my_time,
-            'score' => $this->score,
+            'score' => number_format($this->score, 2),
             'correct_answered' => $this->correct_answered,
             'incorrect_answered' => $this->incorrect_answered,
             'left_answered' => $this->left_answered,
