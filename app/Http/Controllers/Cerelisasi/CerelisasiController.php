@@ -76,7 +76,7 @@ class CerelisasiController extends Controller
             $passing_grade = $department->passing_grade;
             $average_point = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->avg('total_point');
             $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->max('total_point');
-            $surveyor_count = Cerelisasi::where('department_id', $countable->department_id->where('type', $type))->count();
+            $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->count();
             array_push($department_ranks, [
                     'department' => [
                         'id' => $department->id,
