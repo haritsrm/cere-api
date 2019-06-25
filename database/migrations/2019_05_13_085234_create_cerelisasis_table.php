@@ -14,11 +14,16 @@ class CreateCerelisasisTable extends Migration
     public function up()
     {
         Schema::create('cerelisasis', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('student_id');
-            $table->integer('teacher_id');
+            $table->bigIncrements('id');
+            $table->bigInteger('student_id');
+            $table->bigInteger('teacher_id');
             $table->double('score');
             $table->timestamps();
+        });
+
+        Schema::table('cerelisasis', function(Blueprint $column) {
+            $column->foreign('student_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

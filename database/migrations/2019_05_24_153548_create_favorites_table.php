@@ -19,6 +19,11 @@ class CreateFavoritesTable extends Migration
             $table->bigInteger('user_id');
             $table->timestamps();
         });
+
+        Schema::table('favorites', function(Blueprint $column) {
+            $column->foreign('course_id')->references('id')->on('courses')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        });
     }
 
     /**

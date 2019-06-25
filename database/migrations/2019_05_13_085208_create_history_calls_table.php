@@ -14,10 +14,15 @@ class CreateHistoryCallsTable extends Migration
     public function up()
     {
         Schema::create('history_calls', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('student_id');
-            $table->integer('teacher_id');
+            $table->bigIncrements('id');
+            $table->bigInteger('student_id');
+            $table->bigInteger('teacher_id');
             $table->timestamps();
+        });
+
+        Schema::table('history_calls', function(Blueprint $column) {
+            $column->foreign('student_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

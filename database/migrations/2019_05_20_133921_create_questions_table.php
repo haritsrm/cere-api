@@ -15,7 +15,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('tryout_id');
+            $table->bigInteger('tryout_id');
             $table->string('question');
             $table->string('option_a');
             $table->string('option_b');
@@ -29,6 +29,10 @@ class CreateQuestionsTable extends Migration
             $table->integer('correct_score');
             $table->integer('incorrect_score');
             $table->timestamps();
+        });
+
+        Schema::table('questions', function(Blueprint $column) {
+            $column->foreign('tryout_id')->references('id')->on('tryouts')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

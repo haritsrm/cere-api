@@ -14,10 +14,14 @@ class CreateQuizzesTable extends Migration
     public function up()
     {
         Schema::create('quizzes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
-            $table->string('section_id');
+            $table->bigInteger('section_id');
             $table->timestamps();
+        });
+
+        Schema::table('quizzes', function(Blueprint $column) {
+            $column->foreign('section_id')->references('id')->on('sections')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

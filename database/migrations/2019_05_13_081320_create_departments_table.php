@@ -14,13 +14,17 @@ class CreateDepartmentsTable extends Migration
     public function up()
     {
         Schema::create('departments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('faculty_id');
+            $table->bigInteger('faculty_id');
             $table->double('passing_grade');
             $table->integer('interrested_num');
             $table->integer('capacity');
             $table->timestamps();
+        });
+
+        Schema::table('departments', function(Blueprint $column) {
+            $column->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

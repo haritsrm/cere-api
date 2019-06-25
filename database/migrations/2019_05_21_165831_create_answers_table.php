@@ -20,6 +20,11 @@ class CreateAnswersTable extends Migration
             $table->bigInteger('answer')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('answers', function(Blueprint $column) {
+            $column->foreign('cereout_id')->references('id')->on('cereouts')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('question_id')->references('id')->on('questions')->onDelete('cascade')->onUpdate('cascade');
+        });
     }
 
     /**

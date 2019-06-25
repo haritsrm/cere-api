@@ -14,7 +14,7 @@ class CreateGeneralInformationsTable extends Migration
     public function up()
     {
         Schema::create('general_information', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('phone', 14);
             $table->string('whatsapp', 14);
             $table->string('email');
