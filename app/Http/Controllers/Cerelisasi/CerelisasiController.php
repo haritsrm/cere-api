@@ -164,6 +164,7 @@ class CerelisasiController extends Controller
         $other_ranks = [];
         $type = Cerelisasi::where('user_id', $req->user()->id)->first()->type;
         $rankings = Cerelisasi::where('type', $type)->groupBy('user_id')->orderBy('total_point', 'desc')->get();
+        $maximum_value = Cerelisasi::where('type', $type)->max('total_point');
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
@@ -174,7 +175,7 @@ class CerelisasiController extends Controller
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
-                            'total_point' => $array_rank->total_point
+                            'total_point' => $array_rank->total_point ? round(($array_rank->total_point/$maximum_value)*100) : 0
                         ]);
                         $j++;
                     }
@@ -185,7 +186,7 @@ class CerelisasiController extends Controller
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
-                            'total_point' => $array_rank->total_point
+                            'total_point' => $array_rank->total_point ? round(($array_rank->total_point/$maximum_value)*100) : 0
                         ]);
                         $j++;
                     }
@@ -208,6 +209,7 @@ class CerelisasiController extends Controller
         $other_ranks = [];
         $type = Cerelisasi::where('user_id', $req->user()->id)->first()->type;
         $rankings = Cerelisasi::where('type', $type)->where('department_id', $department_id)->orderBy('total_point', 'desc')->get();
+        $maximum_value = Cerelisasi::where('type', $type)->where('department_id', $department_id)->max('total_point');
 
         foreach ($rankings as $key => $ranking) {
             if ($ranking->user_id == $req->user()->id) {
@@ -218,7 +220,7 @@ class CerelisasiController extends Controller
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
-                            'total_point' => $array_rank->total_point
+                            'total_point' => $array_rank->total_point ? round(($array_rank->total_point/$maximum_value)*100) : 0
                         ]);
                         $j++;
                     }
@@ -229,7 +231,7 @@ class CerelisasiController extends Controller
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
-                            'total_point' => $array_rank->total_point
+                            'total_point' => $array_rank->total_point ? round(($array_rank->total_point/$maximum_value)*100) : 0
                         ]);
                         $j++;
                     }
