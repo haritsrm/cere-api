@@ -180,12 +180,9 @@ class CereoutController extends Controller
                             ->where('check_answer',1)
                             ->get();
 
-                        //cek jika jumlah jawaban kosong
-                        if($wrong == 0 && $right == 0){
-                            $correct_score = $tryout->x_value;
-                        }else{
-                            $correct_score =($wrong/($right+$wrong))*$tryout->x_value;
-                        }
+                        //cek bobot soal
+                        $correct_score =(($wrong/($right+$wrong))*$tryout->x_value)+$tryout->x_value;
+
                         $score += $correct_score;
                         $check_answer = Answer::where('cereout_id','=',$id)
                             ->where('question_id','=',$answer->question_id)
