@@ -20,6 +20,11 @@ class CreateAttemptTryoutsTable extends Migration
             $table->bigInteger('left_attempt');
             $table->timestamps();
         });
+
+        Schema::table('attempt_tryouts', function(Blueprint $column) {
+            $column->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('tryout_id')->references('id')->on('tryouts')->onDelete('cascade')->onUpdate('cascade');
+        });
     }
 
     /**

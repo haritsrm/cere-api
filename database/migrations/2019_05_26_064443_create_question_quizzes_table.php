@@ -24,6 +24,10 @@ class CreateQuestionQuizzesTable extends Migration
             $table->string('correct_answer');
             $table->timestamps();
         });
+
+        Schema::table('question_quizzes', function(Blueprint $column) {
+            $column->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade')->onUpdate('cascade');
+        });
     }
 
     /**

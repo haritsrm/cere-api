@@ -14,10 +14,14 @@ class CreateFacultiesTable extends Migration
     public function up()
     {
         Schema::create('faculties', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('univ_id');
+            $table->bigInteger('univ_id');
             $table->timestamps();
+        });
+
+        Schema::table('faculties', function(Blueprint $column) {
+            $column->foreign('univ_id')->references('id')->on('universities')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

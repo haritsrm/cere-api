@@ -26,6 +26,11 @@ class CreateCereoutsTable extends Migration
             $table->string('result_status')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('cereouts', function(Blueprint $column) {
+            $column->foreign('tryout_id')->references('id')->on('tryouts')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        });
     }
 
     /**

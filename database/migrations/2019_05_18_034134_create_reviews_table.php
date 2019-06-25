@@ -14,12 +14,17 @@ class CreateReviewsTable extends Migration
     public function up()
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('course_id');
-            $table->integer('user_id');
+            $table->bigIncrements('id');
+            $table->bigInteger('course_id');
+            $table->bigInteger('user_id');
             $table->integer('star');
             $table->text('body');
             $table->timestamps();
+        });
+
+        Schema::table('reviews', function(Blueprint $column) {
+            $column->foreign('course_id')->references('id')->on('courses')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

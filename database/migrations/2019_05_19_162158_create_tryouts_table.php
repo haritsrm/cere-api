@@ -15,8 +15,8 @@ class CreateTryoutsTable extends Migration
     {
         Schema::create('tryouts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('lesson_id');
-            $table->integer('class_id');
+            $table->bigInteger('lesson_id');
+            $table->bigInteger('class_id');
             $table->string('name');
             $table->string('instruction');
             $table->integer('duration');
@@ -26,6 +26,11 @@ class CreateTryoutsTable extends Migration
             $table->integer('price');
             $table->string('scoring_system');
             $table->timestamps();
+        });
+
+        Schema::table('tryouts', function(Blueprint $column) {
+            $column->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade')->onUpdate('cascade');
+            $column->foreign('class_id')->references('id')->on('classes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
