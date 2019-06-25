@@ -268,7 +268,7 @@ class CereoutController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => [
-                'score' => $score,
+                'score' => number_format($score, 2),
                 'correct_answered' => $correct_answered,
                 'incorrect_answered' => $incorrect_answered,
                 'left_answered' => $left_answered,
