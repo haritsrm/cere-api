@@ -32,8 +32,8 @@ class TryoutController extends Controller
     {
         $today =  Carbon::now()->todatestring();
         $tryouts = Tryout::where('class_id',$class_id)
-            ->where('start_date','>=',$today)
-            ->where('end_date','<=',$today)
+            ->where('start_date','<=',$today)
+            ->where('end_date','>=',$today)
             ->get();
 
         return TryoutCollection::collection($tryouts);
