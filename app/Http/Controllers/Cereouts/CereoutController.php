@@ -367,7 +367,9 @@ class CereoutController extends Controller
         $data = Cereout::where('user_id','=',$request->user()->id)
                 ->where('finished_status','=',0)
                 ->first();
-        $tryout = Tryout::where('id',$data->tryout_id)->first();
+        if(is_null($data)){
+            $tryout = Tryout::where('id',$data->tryout_id)->first();
+        }   
         if(count($data) > 0){        
             return response()->json([
                 'status' => true,
