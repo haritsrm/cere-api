@@ -174,7 +174,6 @@ class CerelisasiController extends Controller
                     foreach ($array_ranks as $key => $array_rank) {
                         array_push($other_ranks, [
                             'rank' => $j,
-                            'user_id' => $array_rank->user_id,
                             'total_point' => $array_rank->total_point
                         ]);
                         $j++;
