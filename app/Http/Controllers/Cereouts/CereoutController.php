@@ -366,23 +366,33 @@ class CereoutController extends Controller
     public function getRunningTryout(Request $request){
         $data = Cereout::where('user_id','=',$request->user()->id)
                 ->where('finished_status','=',0)
-                ->get();
+                ->first();
+        $tryout = Tryout('id',$data->tryout_id)->first();
         if(count($data) > 0){        
-            $res['status'] = true;
-            $res['data'] = $data;
-            return response($res);
-            // response()->json([
-            //     'status' => true,
-            //     'data' => $data
-            // ],201);
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'id' => $data->id,
+                    'tryout_id' => $data->tryout_id,
+                    'user_id' => $data->user_id,
+                    'my_time' => $data->my_time,
+                    'score' => $data->score,
+                    'total_answer' => $data->total_answer,
+                    'correct_answered' => $data->correct_answered,
+                    'incorrect_answered' => $data->incorrect_answered,
+                    'left_answered' => $data->left_answered,
+                    'result_status' => $data->result_status,
+                    'finished_status' => $data->finished_status,
+                    'scoring_system' => $tryout->scoring_system,
+                    'created_at' => $data->created_at,
+                    'updated_at' => $data->updated_at
+                ]
+            ],201);
         }else{
-            $res['status'] = false;
-            $res['data'] = $data;
-            return response($res);
-            // response()->json([
-            //     'status' => false,
-            //     'data' => null
-            // ],201);
+            return response()->json([
+                'status' => false,
+                'data' => null
+            ],201);
         }
     }
 }
