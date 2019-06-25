@@ -248,3 +248,23 @@ Route::group([
     Route::get('/analysis', 'Cerelisasi\CerelisasiController@analyticsData')->name('analysisResult');
     Route::post('/reset_analysis', 'Cerelisasi\CerelisasiController@resetAnalytics')->name('resetAnalytics');
 });
+
+Route::group([
+    'prefix' => 'cerepost',
+    'middleware' => 'auth:api'
+], function() {
+    Route::get('/', 'Cerepost\CerepostController@index');
+    Route::get('/post', 'Cerepost\PostController@index');
+    Route::get('/post/{id}', 'Cerepost\PostController@indexByCerepost');
+    Route::get('/post/show/{id}', 'Cerepost\PostController@show');
+    Route::post('/post/{id}', 'Cerepost\PostController@store');
+    Route::delete('/post/{id}', 'Cerepost\PostController@destroy');
+    Route::get('/post/like/{id}', 'Cerepost\LikeController@index');
+    Route::post('/post/like/{id}', 'Cerepost\LikeController@store');
+    Route::delete('/post/unlike/{id}', 'Cerepost\LikeController@destroy');
+    Route::get('/post/comment/{id}', 'Cerepost\CommentController@index');
+    Route::post('/post/comment/{id}', 'Cerepost\CommentController@store');
+    Route::delete('/post/comment/{id}', 'Cerepost\CommentController@destroy');
+});
+
+

@@ -14,7 +14,7 @@ class MyTryoutResource extends JsonResource
      */
     public function toArray($request)
     {
-        $cereout = Cereout::where('tryout_id',$this->id)->count();
+        $cereout = Cereout::where('tryout_id',$this->id)->where('user_id',$request->user()->id)->count();
         return [       
             'tryout_id' => $this->id,
             'name' => $this->name,

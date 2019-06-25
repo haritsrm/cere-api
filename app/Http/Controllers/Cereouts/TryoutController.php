@@ -12,6 +12,7 @@ use App\Models\Tryout;
 use App\Models\Kelas;
 use App\Models\Lesson;
 use App\Models\AttemptTryout;
+use Carbon\Carbon;
 
 class TryoutController extends Controller
 {
@@ -29,7 +30,11 @@ class TryoutController extends Controller
 
     public function indexByClass($class_id)
     {
-        $tryouts = Tryout::where('class_id',$class_id)->get();
+        $today =  Carbon::now()->todatestring();
+        $tryouts = Tryout::where('class_id',$class_id)
+            ->where('start_date','>=',$today)
+            ->where('end_date','<=',$today)
+            ->get();
 
         return TryoutCollection::collection($tryouts);
     }

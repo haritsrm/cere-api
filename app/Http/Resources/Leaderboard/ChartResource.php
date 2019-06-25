@@ -23,7 +23,7 @@ class ChartResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'score_student' => $this->score,
+            'score_student' => number_format($this->score, 2),
             'month' => $today
         ];
     }

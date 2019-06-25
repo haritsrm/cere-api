@@ -21,7 +21,7 @@ class LeaderboardClassResource extends JsonResource
         //         ->avg('score');
         return [
             'name' => $user->name,
-            'score' => $this->scores
+            'score' => number_format($this->score, 2)
         ];
     }
 }

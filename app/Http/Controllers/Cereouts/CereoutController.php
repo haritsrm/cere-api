@@ -308,8 +308,9 @@ class CereoutController extends Controller
         return MyTryoutResource::collection($data);        
     }
 
-    public function getCereoutByTryout($id){
+    public function getCereoutByTryout($id, Request $req){
         $data = Cereout::where('tryout_id','=',$id)
+                ->where('user_id','=',$req->user()->id)
                 ->orderBy('created_at','DESC')
                 ->get();
         return MyCereoutResource::collection($data);        
