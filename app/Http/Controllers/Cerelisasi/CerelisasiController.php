@@ -91,7 +91,7 @@ class CerelisasiController extends Controller
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
                     'ranks' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
-                    'department_point' => ($countable->total_point/$maximum_value)*100
+                    'my_department_point' => round(($countable->total_point/$maximum_value)*100, 2)
                 ]);
         }
 
@@ -101,7 +101,7 @@ class CerelisasiController extends Controller
                 'type' => $type,
                 'national_ranks' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
-                'my_point' => $countables->first() ? ($countables->first()->total_point/$national_max_value)*100 : 0,
+                'my_point' => $countables->first() ? round(($countables->first()->total_point/$national_max_value)*100, 2) : 0,
             ]
         ]);
 
@@ -143,7 +143,7 @@ class CerelisasiController extends Controller
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
                     'ranks' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
-                    'department_point' => ($countable->total_point/$maximum_value)*100
+                    'my_department_point' => round(($countable->total_point/$maximum_value)*100, 2)
                 ]);
         }
         return response()->json([
@@ -152,7 +152,7 @@ class CerelisasiController extends Controller
                 'type' => $type,
                 'national_ranks' => $this->getNationalRanking($req),
                 'department_ranks' => $department_ranks,
-                'my_point' => $countables->first() ? ($countables->first()->total_point/$national_max_value)*100 : 0,
+                'my_point' => $countables->first() ? round(($countables->first()->total_point/$national_max_value)*100, 2) : 0,
             ]
         ]);
     }
