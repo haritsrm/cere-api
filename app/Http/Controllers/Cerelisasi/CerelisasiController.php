@@ -91,7 +91,7 @@ class CerelisasiController extends Controller
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
                     'ranks' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
-                    'department_point' => ($countables->total_point/$maximum_value)*100
+                    'department_point' => ($countable->total_point/$maximum_value)*100
                 ]);
         }
 
@@ -143,7 +143,7 @@ class CerelisasiController extends Controller
                     'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
                     'ranks' => $this->getDepartmentRanking($req, $department->id),
                     'status' => $countable->status,
-                    'department_point' => ($countables->total_point/$maximum_value)*100
+                    'department_point' => ($countable->total_point/$maximum_value)*100
                 ]);
         }
         return response()->json([
