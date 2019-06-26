@@ -69,42 +69,50 @@ class CerelisasiController extends Controller
     {
         $department_ranks = [];
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
-        $type = Cerelisasi::where('user_id', $req->user()->id)->first()->type;
-        $national_max_value = Cerelisasi::where('type', $type)->max('total_point');
-        foreach ($countables as $key => $countable) {
-            $department = Department::find($countable->department_id);
-            $passing_grade = $department->passing_grade;
-            $average_point = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->avg('total_point');
-            $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->max('total_point');
-            $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->count();
-            array_push($department_ranks, [
-                    'department' => [
-                        'id' => $department->id,
-                        'name' => $department->name,
-                        'interrested_num' => $department->interrested_num,
-                        'capacity' => $department->capacity,
-                        'passing_grade' => $passing_grade,
-                        'average_point' => round(($average_point/$maximum_value)*100),
-                        'maximum_value' => $maximum_value,
-                        'tightness' => round($department->interrested_num/$department->capacity),
-                    ],
-                    'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
-                    'ranks' => $this->getDepartmentRanking($req, $department->id),
-                    'status' => $countable->status,
-                    'my_department_point' => round(($countable->total_point/$maximum_value)*100)
-                ]);
+        $type_data = Cerelisasi::where('user_id', $req->user()->id)->first();
+        $type = $type_data ? $type_data->type : 0;
+        if ($type !== 0) {
+            $national_max_value = Cerelisasi::where('type', $type)->max('total_point');
+            foreach ($countables as $key => $countable) {
+                $department = Department::find($countable->department_id);
+                $passing_grade = $department->passing_grade;
+                $average_point = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->avg('total_point');
+                $maximum_value = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->max('total_point');
+                $surveyor_count = Cerelisasi::where('department_id', $countable->department_id)->where('type', $type)->count();
+                array_push($department_ranks, [
+                        'department' => [
+                            'id' => $department->id,
+                            'name' => $department->name,
+                            'interrested_num' => $department->interrested_num,
+                            'capacity' => $department->capacity,
+                            'passing_grade' => $passing_grade,
+                            'average_point' => round(($average_point/$maximum_value)*100),
+                            'maximum_value' => $maximum_value,
+                            'tightness' => round($department->interrested_num/$department->capacity),
+                        ],
+                        'accuracy' => ($surveyor_count >= $department->interrested_num ? 90 : round($surveyor_count/$department->interrested_num)),
+                        'ranks' => $this->getDepartmentRanking($req, $department->id),
+                        'status' => $countable->status,
+                        'my_department_point' => round(($countable->total_point/$maximum_value)*100)
+                    ]);
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'type' => $type,
+                    'national_ranks' => $this->getNationalRanking($req),
+                    'department_ranks' => $department_ranks,
+                    'my_point' => $countables->first() ? round(($countables->first()->total_point/$national_max_value)*100) : 0,
+                ]
+            ]);
         }
-
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'type' => $type,
-                'national_ranks' => $this->getNationalRanking($req),
-                'department_ranks' => $department_ranks,
-                'my_point' => $countables->first() ? round(($countables->first()->total_point/$national_max_value)*100) : 0,
-            ]
-        ]);
-
+        else {
+            return response()->json([
+                'status' => true,
+                'data' => null
+            ]);
+        }
     }
 
     public function analyticsResult($req)

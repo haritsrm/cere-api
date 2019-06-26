@@ -227,7 +227,7 @@ class AuthController extends Controller
         return Socialite::driver($service)->redirect();
     }
     
-    public function handleProviderCallback($service)
+    public function handleProviderCallback($service, Request $req)
     {
         $user = Socialite::driver($service)->stateless()->user();
         $findUser = User::where('email', $user->getEmail())->first();
