@@ -181,7 +181,11 @@ class CereoutController extends Controller
                             ->get();
 
                         //cek bobot soal
-                        $correct_score =(($wrong/($right+$wrong))*$tryout->x_value)+$tryout->x_value;
+                        if($wrong==0 && $right==0){
+                            $correct_score = $tryout->x_value;
+                        }else{
+                            $correct_score =(($wrong/($right+$wrong))*$tryout->x_value)+$tryout->x_value;
+                        }
 
                         $score += $correct_score;
                         $check_answer = Answer::where('cereout_id','=',$id)
