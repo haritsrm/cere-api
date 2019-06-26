@@ -18,7 +18,11 @@ use OneSignal;
 
 class CerecallController extends Controller
 {
-    //
+    //1 post to teacher
+    //2 reject to student
+    //3 accept to student
+    //4 chat 
+
     public function postHistoryCall(Request $request){
     	$request->validate([
             'student_id' => 'required|integer',
@@ -52,6 +56,10 @@ class CerecallController extends Controller
             $title = array(
                 "en" => "Halo ".$teacher->name
             );
+
+            $send = array(
+                "status" => 1
+            );
             $content = $student->name. " ingin berkonsultasi dengan anda";
 
             OneSignal::setParam('headings', $title)
@@ -59,7 +67,7 @@ class CerecallController extends Controller
                 $content,
                 $teacher->device_id,
                 $url = null,
-                $data = $data,
+                $data = $send,
                 $buttons = null,
                 $schedule = null
             );
@@ -200,12 +208,16 @@ class CerecallController extends Controller
         $title = array(
             "en" => $request->user()->name
         );
+
+        $send = array(
+                "status" => 4
+            );
         OneSignal::setParam('headings', $title)
                     ->sendNotificationToUser(
             $request->content,
             $request->user()->device_id,
             $url = null,
-            $data = $data,
+            $data = $send,
             $buttons = null,
             $schedule = null
         );
@@ -263,13 +275,17 @@ class CerecallController extends Controller
             $title = array(
                 "en" => "Selamat ".$student->name
             );
+            $send = array(
+                "status" => 3
+            );
+
             $content = $teacher_status->name." telah menerima konsultasi anda";
             OneSignal::setParam('headings', $title)
                     ->sendNotificationToUser(
                 $content,
                 $student->device_id,
                 $url = null,
-                $data = $data,
+                $data = $send,
                 $buttons = null,
                 $schedule = null
             );
@@ -281,13 +297,17 @@ class CerecallController extends Controller
             $title = array(
                 "en" => "Mohon maaf ".$student->name
             );
+
+            $send = array(
+                "status" => 2
+            );
             $content = $teacher_status->name." sudah menerima konsultasi lain";
             OneSignal::setParam('headings', $title)
                     ->sendNotificationToUser(
                 $content,
                 $student->device_id,
                 $url = null, 
-                $data = $data,
+                $data = $send,
                 $buttons = null,
                 $schedule = null
             );
