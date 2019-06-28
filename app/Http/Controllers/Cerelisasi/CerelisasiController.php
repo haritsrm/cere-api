@@ -215,8 +215,9 @@ class CerelisasiController extends Controller
         $i = 1;
         $my_rank = 0;
         $other_ranks = [];
+        $graph = [];
         $type = Cerelisasi::where('user_id', $req->user()->id)->first()->type;
-        $rankings = Cerelisasi::where('type', $type)->where('department_id', $department_id)->orderBy('total_point', 'desc')->get();
+        $rankings = Cerelisasi::where('type', $type)->where('department_id', $department_id)->groupBy('user_id')->orderBy('total_point', 'desc')->get();
         $maximum_value = Cerelisasi::where('type', $type)->where('department_id', $department_id)->max('total_point');
 
         foreach ($rankings as $key => $ranking) {
@@ -244,6 +245,15 @@ class CerelisasiController extends Controller
                         $j++;
                     }
                 }
+            }
+            if ($graph[$i-1]['point'] == round(($ranking->total_point/$maximum_value)*100)) {
+                $graph[$i-1]['students_count'] += 1;
+            }
+            else {
+                array_push($graph, [
+                    'students_count' => 1,
+                    'point' => round(($ranking->total_point/$maximum_value)*100),
+                ]);
             }
             $i++;
         }
