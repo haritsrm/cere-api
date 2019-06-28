@@ -70,8 +70,8 @@ class CerelisasiController extends Controller
         $department_ranks = [];
         $countables = Cerelisasi::where('user_id', $req->user()->id)->get();
         $type_data = Cerelisasi::where('user_id', $req->user()->id)->first();
-        $type = $type_data ? $type_data->type : 0;
-        if ($type !== 0) {
+        $type = $type_data ? $type_data->type : -1;
+        if ($type !== -1) {
             $national_max_value = Cerelisasi::where('type', $type)->max('total_point');
             foreach ($countables as $key => $countable) {
                 $department = Department::find($countable->department_id);
