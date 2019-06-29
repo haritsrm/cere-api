@@ -79,7 +79,11 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        $user = User::where('id',$request->user()->id)->first();
+        $user->device_id = null;
+        $user->status = 0;
+        $user->save();
+        $request->user()->token()->revoke();  
         return response()->json([
             'status' => true,
             'message' => 'Successfully logged out'

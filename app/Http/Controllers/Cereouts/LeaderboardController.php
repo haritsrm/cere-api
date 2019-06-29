@@ -19,7 +19,7 @@ class LeaderboardController extends Controller
     //
     public function getLeaderboardByClass($id){
     	$data = Cereout::join('tryouts','tryouts.id','=','cereouts.tryout_id')
-    			->select('tryouts.class_id as class_id','cereouts.score as scores','cereouts.user_id as user_id',DB::raw('max(scores) as scores')
+    			->select('tryouts.class_id as class_id','cereouts.score as scores','cereouts.user_id as user_id',DB::raw('max(score) as score'))
     			->where('class_id','=',$id)
     			->where('cereouts.score','!=',null)
     			->orderBy('scores', 'DESC')
@@ -30,7 +30,7 @@ class LeaderboardController extends Controller
 
     public function getLeaderboardByLesson($id){
     	$data = Cereout::join('tryouts','tryouts.id','=','cereouts.tryout_id')
-    			->select('tryouts.lesson_id as lesson_id','cereouts.score as scores','cereouts.user_id as user_id',DB::raw('max(scores) as scores')
+    			->select('tryouts.lesson_id as lesson_id','cereouts.score as scores','cereouts.user_id as user_id',DB::raw('max(score) as score'))
     			->where('lesson_id','=',$id)
     			->where('cereouts.score','!=',null)
     			->orderBy('scores', 'DESC')
@@ -41,7 +41,7 @@ class LeaderboardController extends Controller
 
 	public function getRanking($id, Request $request){
     	$ranking = Cereout::join('tryouts','tryouts.id','=','cereouts.tryout_id')
-    			->select('tryouts.class_id as class_id','cereouts.score as scores','cereouts.user_id as user_id',DB::raw('max(scores) as scores'))
+    			->select('tryouts.class_id as class_id','cereouts.score as scores','cereouts.user_id as user_id',DB::raw('max(score) as score'))
     			->where('class_id','=',$id)
     			->where('cereouts.score','!=',null)
     			->orderBy('scores', 'DESC')
