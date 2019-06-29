@@ -184,7 +184,7 @@ class CereoutController extends Controller
                         if($wrong==0 && $right==0){
                             $correct_score = $tryout->x_value;
                         }else{
-                            $correct_score =(($wrong/($right+$wrong))*$tryout->x_value)+$tryout->x_value;
+                            $correct_score =($wrong/($right+$wrong))*$tryout->x_value;
                         }
 
                         $score += $correct_score;
