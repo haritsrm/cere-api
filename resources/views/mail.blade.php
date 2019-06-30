@@ -32,7 +32,7 @@
                 <span>Anda menerima email ini karena kami menerima permintaan pengaturan ulang kata sandi ke akun Anda.</span>
                 
                 <div style="text-align: center;margin:20px">
-                    <a href="{{ $url }}" class="btn btn-primary" style="">Reset Password</a>
+                    <!-- <a href="{{ $url }}" class="btn btn-primary" style="">Reset Password</a> -->
                 </div>
 
                 <span>Jika Anda tidak lupa kata sandi, Anda dapat dengan aman mengabaikan email ini.</span>

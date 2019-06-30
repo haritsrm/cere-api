@@ -19,3 +19,6 @@ Route::get('/', function () {
 Route::get('login/{service}', 'AuthController@redirectToProvider');
 Route::get('login/{service}/callback', 'AuthController@handleProviderCallback');
 // Social media route --end
+
+Route::get('password/find/{token}', 'PasswordResetController@find');
+Route::post('password/reset', 'PasswordResetController@reset');

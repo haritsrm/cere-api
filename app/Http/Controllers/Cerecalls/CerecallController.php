@@ -14,6 +14,7 @@ use App\Http\Resources\Cerecall\AvailTeacherResource;
 use App\Http\Resources\Cerecall\ChatResource;
 use App\Models\GeneralInformation;
 use App\User;
+use App\Notifications\PushNotification;
 use OneSignal;
 
 class CerecallController extends Controller
@@ -62,6 +63,10 @@ class CerecallController extends Controller
             );
             $content = $student->name. " ingin berkonsultasi dengan anda";
 
+            // $judul = "Halo ".$teacher->name;
+            // $isi = $student->name. " ingin berkonsultasi dengan anda";
+            // $user=User::where('id',$request->teacher_id)->first();
+            // $user->notify(new PushNotification($user->device_id, $judul, $isi, 1)); 
             OneSignal::setParam('headings', $title)
                     ->sendNotificationToUser(
                 $content,
