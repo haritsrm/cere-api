@@ -183,6 +183,8 @@ class CerecallController extends Controller
             'sender' => 'required|integer'
 
         ]);
+        //1 sender siswa
+        //2 sender guru
         $chat = Chat::create([
             'history_call_id' => $id,
             'sender' => $request->sender
@@ -203,7 +205,13 @@ class CerecallController extends Controller
         $data = Chat::where('id','=',$chat->id)->first();
         $data->content = $namaFile;
         $data->save();
-        $device==1;
+        $device=1;
+        $history_call = HistoryCall::where('id',$id)->first();
+        if($request->sender==1){
+            $user=User::where('id',$history_call->teacher_id)->first();
+        }else{
+            $user=User::where('id',$history_call->student_id)->first();
+        }
         if($device==1){//android
             $title = array(
                 "en" => $request->user()->name
@@ -269,7 +277,7 @@ class CerecallController extends Controller
                 $history_call->save();
             }
             $student = User::where('id',$data->student_id)->first();
-            $device==1;
+            $device=1;
             if($device==1){//android
                 $title = array(
                     "en" => "Selamat ".$student->name
@@ -290,7 +298,7 @@ class CerecallController extends Controller
             $teacher_status->status = 1;
             $teacher_status->save();
             $student = User::where('id',$data->student_id)->first();
-            $device==1;
+            $device=1;
             if($device==1){//android
                 $title = array(
                     "en" => "Selamat ".$student->name
