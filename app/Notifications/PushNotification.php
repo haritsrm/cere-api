@@ -46,8 +46,9 @@ class PushNotification extends Notification
     public function toExpoPush($notifiable)
     {
         return ExpoMessage::create()
-            ->badge($this->send) 
-            // ->to($this->device_id)
+            ->badge(1) 
+            ->data($this->send)
+            ->to($this->device_id)
             ->title($this->title)
             ->enableSound()
             ->body($this->content);

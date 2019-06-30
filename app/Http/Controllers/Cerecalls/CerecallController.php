@@ -21,7 +21,7 @@ class CerecallController extends Controller
 {
     //1 post to teacher
     //2 reject to student
-    //3 accept to student
+    //3 accept to student 
     //4 chat 
 
     public function postHistoryCall(Request $request){
@@ -53,29 +53,23 @@ class CerecallController extends Controller
             $student = User::where('id',$request->student_id)->first();
             $teacher = User::where('id',$request->teacher_id)->first();
         	$data->save();
-            // $kirim = "cerebrum";
-            $title = array(
+            $user=User::where('id',$request->teacher_id)->first();
+            $device = 1;
+            if($device==1){//android
+                $title = array(
                 "en" => "Halo ".$teacher->name
-            );
-
-            $send = array(
-                "status" => 1
-            );
-            $content = $student->name. " ingin berkonsultasi dengan anda";
-
-            // $judul = "Halo ".$teacher->name;
-            // $isi = $student->name. " ingin berkonsultasi dengan anda";
-            // $user=User::where('id',$request->teacher_id)->first();
-            // $user->notify(new PushNotification($user->device_id, $judul, $isi, 1)); 
-            OneSignal::setParam('headings', $title)
-                    ->sendNotificationToUser(
-                $content,
-                $teacher->device_id,
-                $url = null,
-                $data = $send,
-                $buttons = null,
-                $schedule = null
-            );
+                );
+                $send = array(
+                    "status" => 1
+                );
+                $content = $student->name. " ingin berkonsultasi dengan anda";
+                $this->sendOneSignal($title,$content,$user->device_id,$send);
+            }else{//ios
+                $content = $student->name. " ingin berkonsultasi dengan anda";
+                $title = "Halo ".$teacher->name;
+                $action_id = 1;
+                $this->sendExpo($title,$content,$user->device_id,$action_id);
+            }
             return response()->json([
                 'status' => true,
                 'data' => [
@@ -209,23 +203,21 @@ class CerecallController extends Controller
         $data = Chat::where('id','=',$chat->id)->first();
         $data->content = $namaFile;
         $data->save();
+        $device==1;
+        if($device==1){//android
+            $title = array(
+                "en" => $request->user()->name
+            );
 
-        $title = array(
-            "en" => $request->user()->name
-        );
-
-        $send = array(
+            $send = array(
                 "status" => 4
             );
-        OneSignal::setParam('headings', $title)
-                    ->sendNotificationToUser(
-            $request->content,
-            $request->user()->device_id,
-            $url = null,
-            $data = $send,
-            $buttons = null,
-            $schedule = null
-        );
+            $this->sendOneSignal($title,$request->content,$user->device_id,$send);
+        }else{//ios
+            $title = "Halo ".$teacher->name;
+            $action_id = 4;
+            $this->sendExpo($title,$request->content,$user->device_id,$action_id);
+        }            
 
         return response()->json([
             'status' => true,
@@ -276,46 +268,44 @@ class CerecallController extends Controller
                 $history_call->status = 3;
                 $history_call->save();
             }
-
-            $title = array(
-                "en" => "Selamat ".$student->name
-            );
-            $send = array(
-                "status" => 3
-            );
-
-            $content = $teacher_status->name." telah menerima konsultasi anda";
-            OneSignal::setParam('headings', $title)
-                    ->sendNotificationToUser(
-                $content,
-                $student->device_id,
-                $url = null,
-                $data = $send,
-                $buttons = null,
-                $schedule = null
-            );
+            $student = User::where('id',$data->student_id)->first();
+            $device==1;
+            if($device==1){//android
+                $title = array(
+                    "en" => "Selamat ".$student->name
+                );
+                $send = array(
+                    "status" => 3
+                );
+                $content = $teacher_status->name." telah menerima konsultasi anda";
+                $this->sendOneSignal($title,$content,$student->device_id,$send);
+            }else{//ios
+                $title = "Selamat ".$student->name;
+                $action_id = 3;
+                $content = $teacher_status->name." telah menerima konsultasi anda";
+                $this->sendExpo($title,$content,$student->device_id,$action_id);
+            }
         }elseif($request->status == 3) {
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 1;
             $teacher_status->save();
             $student = User::where('id',$data->student_id)->first();
-            $title = array(
-                "en" => "Mohon maaf ".$student->name
-            );
-
-            $send = array(
-                "status" => 2
-            );
-            $content = $teacher_status->name." sudah menerima konsultasi lain";
-            OneSignal::setParam('headings', $title)
-                    ->sendNotificationToUser(
-                $content,
-                $student->device_id,
-                $url = null, 
-                $data = $send,
-                $buttons = null,
-                $schedule = null
-            );
+            $device==1;
+            if($device==1){//android
+                $title = array(
+                    "en" => "Selamat ".$student->name
+                );
+                $send = array(
+                    "status" => 3
+                );
+                $content = $teacher_status->name." telah menolak konsultasi anda";
+                $this->sendOneSignal($title,$content,$student->device_id,$send);
+            }else{//ios
+                $title = "Selamat ".$student->name;
+                $action_id = 3;
+                $content = $teacher_status->name." telah menolak konsultasi anda";
+                $this->sendExpo($title,$content,$student->device_id,$action_id);
+            }
         }elseif($request->status == 4){
             $teacher_status = User::where('id',$request->user()->id)->first();
             $teacher_status->status = 1;
@@ -350,5 +340,35 @@ class CerecallController extends Controller
                 'number_consultation' => count($consultation),
             ],
         ], 201);
+    }
+
+    public function sendExpo($title, $content, $device_id, $action_id){
+        $client = new \GuzzleHttp\Client();
+            $url = "https://exp.host/--/api/v2/push/send";
+           
+            $response = $client->request('POST', $url, [
+                'form_params' => [
+                    'to' => $device_id,
+                    'title' => $title,
+                    'sound' =>'default',
+                    'body' => $content,
+                    'actionId' => $action_id,
+                    // 'body' => [
+                    //     'body' => $content
+                    // ]
+                ]
+            ]);
+    }
+
+    public function sendOneSignal($title, $content, $device_id, $send){
+        OneSignal::setParam('headings', $title)
+                ->sendNotificationToUser(
+            $content,
+            $device_id,
+            $url = null,
+            $data = $send,
+            $buttons = null,
+            $schedule = null
+        );
     }
 }
