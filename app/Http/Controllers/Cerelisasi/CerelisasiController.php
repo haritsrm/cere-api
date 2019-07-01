@@ -246,14 +246,14 @@ class CerelisasiController extends Controller
                     }
                 }
             }
-            if ($graph[$i-1]['point'] != round(($ranking->total_point/$maximum_value)*100)) {
+            if (isset($graph[$i-1]['point']) == round(($ranking->total_point/$maximum_value)*100)) {
+                $graph[$i-1]['students_count'] += 1;
+            }
+            else {
                 array_push($graph, [
                     'students_count' => 1,
                     'point' => round(($ranking->total_point/$maximum_value)*100),
                 ]);
-            }
-            else {
-                $graph[$i-1]['students_count'] += 1;
             }
             $i++;
         }
