@@ -22,7 +22,10 @@ class ReviewResource extends JsonResource
                 'id' => $this->id,
                 'star' => $this->star,
                 'body' => $this->body,
-                'user' => User::find($this->user_id)->name,
+                'user' => [
+                    'id' => $this->user_id,
+                    'name' => User::find($this->user_id)->name,
+                ],
                 'rated' => $rated,
                 'posted' => $this->created_at->diffForHumans(),
                 'rated' => $rated
